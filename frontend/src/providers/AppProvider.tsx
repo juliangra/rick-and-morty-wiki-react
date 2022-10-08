@@ -1,6 +1,8 @@
-import { MantineProvider, Text } from "@mantine/core"
-import { ReactNode } from "react"
-import ApolloProvider from "./ApolloProvider"
+import { ReactNode } from 'react'
+import Layout from '../components/common/Layout'
+import ApolloProvider from './ApolloProvider'
+import RouterProvider from './RouterProvider'
+import StyleProvider from './StyleProvider'
 
 type AppProviderProps = {
   children?: ReactNode
@@ -8,12 +10,13 @@ type AppProviderProps = {
 
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <ApolloProvider>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <Text>Welcome to Mantine!</Text>
-        {children}
-      </MantineProvider>
-    </ApolloProvider>
+    <RouterProvider>
+      <ApolloProvider>
+        <StyleProvider>
+          <Layout>{children}</Layout>
+        </StyleProvider>
+      </ApolloProvider>
+    </RouterProvider>
   )
 }
 

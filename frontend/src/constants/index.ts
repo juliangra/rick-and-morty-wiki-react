@@ -1,1 +1,1 @@
-export const GRAPHQL_ENDPOINT = 'https://countries.trevorblades.com/graphql'
+export const GRAPHQL_ENDPOINT = 'http://localhost:8080/graphql'

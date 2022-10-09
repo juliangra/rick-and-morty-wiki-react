@@ -1,5 +1,49 @@
 # Team 11: Project 3
 
+## Description
+
+This project is full-stack web application about countries.
+
+As a user, you can search and filter countries. As a logged in user, you can rate a give country and check off a given country as visited.
+
+## Live demo
+
+Please use [this link](http://it2810-11.idi.ntnu.no/project3) to visit a live demo of the website.
+
+## Developer Information
+
+Developed by Sebastian Sole, Julian Grande and Magnus Rødseth.
+
+## Documentation
+
+Please read the [`docs` documentation](/docs/README.md).
+
+## Tech stack and libraries
+
+### `frontend`
+
+- React
+- TypeScript
+- Mantine, a library with UI components and useful hooks
+- Zod Schema Validation
+- Apollo GraphQL client
+- Apollo global state management
+- Jest
+- React Testing Library
+- Cypress, for end-to-end testing
+
+### `backend`
+
+- Express, a web server
+- TypeScript
+- GraphQL
+- Prisma Client, a client for interacting with the PostgreSQL database
+
+### Database
+
+- PostgreSQL, a relational database running on the virtual machine hosted by NTNU
+- Docker, for setting up the PostgreSQL container
+
 ## Running the application
 
 ### Running `frontend`

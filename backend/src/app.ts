@@ -19,7 +19,7 @@ app.use(
 )
 
 app.listen(PORT, () =>
-  console.log(`Running a GraphQL API server at http://localhost:${PORT}/graphql`)
+  console.log(`🚀 Running a GraphQL API server at http://localhost:${PORT}/graphql`)
 )
 
 export { app }

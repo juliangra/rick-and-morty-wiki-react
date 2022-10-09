@@ -1,0 +1,50 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - test
+
+build-frontend:
+  stage: build
+  script:
+    - cd frontend && npm ci
+    - cd frontend && npm run lint
+    - cd frontend && npm run build
+  artifacts:
+    paths:
+      - node_modules
+
+build-backend:
+  stage: build
+  script:
+    - cd backend && npm ci
+    - cd backend && npm run lint
+    - cd backend && npm run build
+  artifacts:
+    paths:
+      - node_modules
+
+test-frontend:
+  stage: test
+  script:
+    - cd frontend && npm ci
+    - cd frontend && npm test
+    # Start server in background
+    - cd frontend && npm start &
+    - cd frontend && npm test:e2e:ci
+  artifacts:
+    paths:
+      - node_modules
+
+test-backend:
+  stage: test
+  script:
+    - cd backend && npm ci
+    - cd backend && npm test
+  artifacts:
+    paths:
+      - node_modules

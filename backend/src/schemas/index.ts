@@ -11,12 +11,9 @@ const localSchema = makeExecutableSchema({
   typeDefs
 })
 
-const getRemoteSchema = async () =>
-  await loadSchema(GRAPHQL_ENDPOINT, {
-    loaders: [new UrlLoader()]
-  })
-
-const remoteSchema = await getRemoteSchema()
+const remoteSchema = await loadSchema(GRAPHQL_ENDPOINT, {
+  loaders: [new UrlLoader()]
+})
 
 const schema = stitchSchemas({
   subschemas: [localSchema, remoteSchema]

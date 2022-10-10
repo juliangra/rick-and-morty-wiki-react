@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "gen:types": "graphql-codegen --config codegen.ts && npm run format",
+    "gen:types": "graphql-codegen --config codegen.yml && npm run format",
     "test:e2e": "cypress open",
     "test:e2e:ci": "cypress run"
   },

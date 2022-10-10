@@ -9,7 +9,7 @@ export default defineConfig({
     screenshotOnRunFailure: false,
     supportFile: './cypress/support/e2e.ts',
     retries: {
-      runMode: 3,
+      runMode: 5,
       openMode: 0
     }
   }

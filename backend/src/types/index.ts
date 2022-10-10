@@ -7,7 +7,6 @@ const typeDefs = gql`
   }
 
   type Query {
-    health: String
     users: [User!]!
   }
 

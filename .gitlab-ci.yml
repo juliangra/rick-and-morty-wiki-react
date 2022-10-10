@@ -1,50 +1,60 @@
 image: node:latest
 
+# Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
 cache:
   paths:
-    - node_modules/
+    - frontend/node_modules/
+    - backend/node_modules/
+    - frontend/build/
+    - backend/dist/
+    - .cache/*
+    - cache/Cypress
 
 stages:
   - build
   - test
 
-build-frontend:
+frontend:build:
   stage: build
   script:
-    - cd frontend && npm ci
-    - cd frontend && npm run lint
-    - cd frontend && npm run build
+    - cd frontend
+    - npm ci
+    - npm run lint
+    - npm run format
+    - npm run build
   artifacts:
     paths:
-      - node_modules
+      - frontend/node_modules
+      - frontend/build
 
-build-backend:
+backend:build:
   stage: build
   script:
-    - cd backend && npm ci
-    - cd backend && npm run lint
-    - cd backend && npm run build
-  artifacts:
-    paths:
-      - node_modules
+    - cd backend
+    - npm ci
+    - npm run lint
+    - npm run build
 
-test-frontend:
+frontend:test:
   stage: test
   script:
-    - cd frontend && npm ci
-    - cd frontend && npm test
+    - cd frontend
+    - npm ci
+    - npm test
+  artifacts:
+    paths:
+      - frontend/node_modules
+
+frontend:e2e:
+  stage: test
+  image: cypress/base:16.17.1
+  script:
+    - cd frontend
+    - npm ci
     # Start server in background
-    - cd frontend && npm start &
-    - cd frontend && npm test:e2e:ci
-  artifacts:
-    paths:
-      - node_modules
-
-test-backend:
-  stage: test
-  script:
-    - cd backend && npm ci
-    - cd backend && npm test
-  artifacts:
-    paths:
-      - node_modules
+    - npm start & npx wait-on http://localhost:3000
+    - npm run test:e2e:ci

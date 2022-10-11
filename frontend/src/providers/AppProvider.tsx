@@ -10,13 +10,13 @@ type AppProviderProps = {
 
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <RouterProvider>
-      <ApolloProvider>
-        <StyleProvider>
-          <Layout>{children}</Layout>
-        </StyleProvider>
-      </ApolloProvider>
-    </RouterProvider>
+    <ApolloProvider>
+      <StyleProvider>
+        <Layout>
+          <RouterProvider>{children}</RouterProvider>
+        </Layout>
+      </StyleProvider>
+    </ApolloProvider>
   )
 }
 

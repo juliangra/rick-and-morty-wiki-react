@@ -208,6 +208,47 @@ export type User = {
   id: Scalars['ID']
 }
 
+export type DefaultCharacterFragment = {
+  __typename?: 'Character'
+  id?: string | null
+  name?: string | null
+  gender?: string | null
+  image?: string | null
+  species?: string | null
+  status?: string | null
+  location?: {
+    __typename?: 'Location'
+    id?: string | null
+    name?: string | null
+    dimension?: string | null
+    type?: string | null
+  } | null
+}
+
+export type GetCharacterByIdQueryVariables = Exact<{
+  characterId: Scalars['ID']
+}>
+
+export type GetCharacterByIdQuery = {
+  __typename?: 'Query'
+  character?: {
+    __typename?: 'Character'
+    id?: string | null
+    name?: string | null
+    gender?: string | null
+    image?: string | null
+    species?: string | null
+    status?: string | null
+    location?: {
+      __typename?: 'Location'
+      id?: string | null
+      name?: string | null
+      dimension?: string | null
+      type?: string | null
+    } | null
+  } | null
+}
+
 export type GetCharactersQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>
   filter?: InputMaybe<FilterCharacter>
@@ -217,6 +258,7 @@ export type GetCharactersQuery = {
   __typename?: 'Query'
   characters?: {
     __typename?: 'Characters'
+    info?: { __typename?: 'Info'; pages?: number | null; count?: number | null } | null
     results?: Array<{
       __typename?: 'Character'
       id?: string | null
@@ -236,25 +278,84 @@ export type GetCharactersQuery = {
   } | null
 }
 
+export const DefaultCharacterFragmentDoc = gql`
+  fragment DefaultCharacter on Character {
+    id
+    name
+    gender
+    image
+    species
+    status
+    location {
+      id
+      name
+      dimension
+      type
+    }
+  }
+`
+export const GetCharacterByIdDocument = gql`
+  query GetCharacterById($characterId: ID!) {
+    character(id: $characterId) {
+      ...DefaultCharacter
+    }
+  }
+  ${DefaultCharacterFragmentDoc}
+`
+
+/**
+ * __useGetCharacterByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCharacterByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCharacterByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCharacterByIdQuery({
+ *   variables: {
+ *      characterId: // value for 'characterId'
+ *   },
+ * });
+ */
+export function useGetCharacterByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>(
+    GetCharacterByIdDocument,
+    options
+  )
+}
+export function useGetCharacterByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetCharacterByIdQuery, GetCharacterByIdQueryVariables>(
+    GetCharacterByIdDocument,
+    options
+  )
+}
+export type GetCharacterByIdQueryHookResult = ReturnType<typeof useGetCharacterByIdQuery>
+export type GetCharacterByIdLazyQueryHookResult = ReturnType<typeof useGetCharacterByIdLazyQuery>
+export type GetCharacterByIdQueryResult = Apollo.QueryResult<
+  GetCharacterByIdQuery,
+  GetCharacterByIdQueryVariables
+>
 export const GetCharactersDocument = gql`
   query GetCharacters($page: Int, $filter: FilterCharacter) {
     characters(page: $page, filter: $filter) {
+      info {
+        pages
+        count
+      }
       results {
-        id
-        name
-        gender
-        image
-        species
-        status
-        location {
-          id
-          name
-          dimension
-          type
-        }
+        ...DefaultCharacter
       }
     }
   }
+  ${DefaultCharacterFragmentDoc}
 `
 
 /**

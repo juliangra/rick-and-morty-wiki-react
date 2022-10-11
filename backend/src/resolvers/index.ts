@@ -1,14 +1,13 @@
-import { Context } from '../context'
+import { Resolvers } from '../generated/graphql'
 
-const resolvers = {
+const resolvers: Resolvers = {
   Query: {
-    users: (_parent: unknown, _args: unknown, context: Context) => {
+    users: (_root, _args, context) => {
       return context.prisma.user.findMany()
     }
   },
   Mutation: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    createUser: (_parent: any, args: any, context: Context) => {
+    createUser: (_root, args, context) => {
       return context.prisma.user.create({
         data: {
           email: args.email

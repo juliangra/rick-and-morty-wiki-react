@@ -21,6 +21,7 @@ export default {
     '@graphql-tools/load',
     '@graphql-tools/stitch',
     '@graphql-tools/url-loader',
-    '@graphql-tools/graphql-file-loader'
+    '@graphql-tools/graphql-file-loader',
+    'cors'
   ]
 }

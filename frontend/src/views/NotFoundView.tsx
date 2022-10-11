@@ -4,7 +4,7 @@ const NotFoundView = () => {
   // TODO: Style this view
   return (
     <div>
-      <Text size="xl" data-cy="heading">
+      <Text size="xl" data-cy="heading" data-testid="heading">
         404 - Page Not Found
       </Text>
     </div>

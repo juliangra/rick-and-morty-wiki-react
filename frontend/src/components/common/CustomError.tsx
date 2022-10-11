@@ -10,7 +10,7 @@ const CustomError: React.FC<CustomErrorProps> = ({ title, description }) => {
   return (
     <Center style={{ minHeight: '100vh' }}>
       <Alert icon={<IconAlertCircle size={16} />} title={title || 'Oops!'} color="red">
-        {description || 'An unexpected error occurred!'}
+        {description || 'An unexpected error occurred when fetching data.'}
       </Alert>
     </Center>
   )

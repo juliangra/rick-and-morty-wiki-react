@@ -10,7 +10,7 @@ type ApolloProviderProps = {
   children: ReactNode
 }
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: GRAPHQL_ENDPOINT,
   cache: new InMemoryCache()
 })

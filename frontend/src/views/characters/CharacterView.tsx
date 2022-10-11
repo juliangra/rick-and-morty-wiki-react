@@ -27,7 +27,7 @@ const CharacterView = () => {
   }
 
   if (error) {
-    return <CustomError description="An unexpected error occurred when fetching data." />
+    return <CustomError />
   }
 
   const character = data?.character

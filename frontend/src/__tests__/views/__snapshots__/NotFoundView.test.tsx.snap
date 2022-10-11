@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotFoundView matches snapshot 1`] = `
+<div>
+  <div
+    className="mantine-Text-root mantine-1k3aqg4"
+    data-cy="heading"
+    data-testid="heading"
+  >
+    404 - Page Not Found
+  </div>
+</div>
+`;

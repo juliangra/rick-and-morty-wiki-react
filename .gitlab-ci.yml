@@ -1,4 +1,4 @@
-image: node:latest
+image: node:16.17.1
 
 # Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
 variables:

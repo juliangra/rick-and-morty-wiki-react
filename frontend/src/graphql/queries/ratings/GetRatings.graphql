@@ -1,0 +1,5 @@
+query GetRatings($order: Order!) {
+  ratings(order: $order) {
+    ...DefaultRating
+  }
+}

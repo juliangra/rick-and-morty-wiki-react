@@ -1,0 +1,6 @@
+query GetRatingStatsByCharacterId($characterId: ID!, $order: Order!) {
+  ratingStatsByCharacterId(characterId: $characterId, order: $order) {
+    average
+    count
+  }
+}

@@ -1,9 +1,13 @@
-import { Center, Grid, Group, Image, Text } from '@mantine/core'
+import { Center, Grid, Group, Image, RingProgress, Text } from '@mantine/core'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import CustomError from 'src/components/common/CustomError'
 import CustomLoading from 'src/components/common/CustomLoading'
-import { useGetCharacterByIdQuery } from 'src/graphql/generated/generated'
+import {
+  Order,
+  useGetCharacterByIdQuery,
+  useGetRatingStatsByCharacterIdQuery
+} from 'src/graphql/generated/generated'
 import View from '../View'
 
 const CharacterView = () => {
@@ -16,21 +20,42 @@ const CharacterView = () => {
     }
   }, [id])
 
-  const { data, loading, error } = useGetCharacterByIdQuery({
+  const {
+    data: characterData,
+    loading: characterLoading,
+    error: characterError
+  } = useGetCharacterByIdQuery({
     variables: {
       characterId: id as string
     }
   })
 
-  if (loading) {
+  useEffect(() => {
+    if (characterData && !characterData.character) {
+      navigate('/characters')
+    }
+  }, [characterData])
+
+  // TODO: Use these to sort
+  const {
+    data: ratingStatsData,
+    loading: ratingStatsLoading,
+    error: ratingStatsError
+  } = useGetRatingStatsByCharacterIdQuery({
+    variables: { characterId: id as string, order: Order.Desc }
+  })
+
+  if (characterLoading || ratingStatsLoading) {
     return <CustomLoading />
   }
 
-  if (error) {
-    return <CustomError description="An unexpected error occurred when fetching data." overlay />
+  if (characterError || ratingStatsError) {
+    return <CustomError />
   }
 
-  const character = data?.character
+  const character = characterData?.character
+  const averageRating = ratingStatsData?.ratingStatsByCharacterId.average || 0
+  const numberOfRatings = ratingStatsData?.ratingStatsByCharacterId.count || 0
 
   return (
     <View>
@@ -62,6 +87,24 @@ const CharacterView = () => {
                 <Text size="md">Type: {character.location.type}</Text>
               </>
             )}
+            <Group>
+              <RingProgress
+                size={80}
+                roundCaps
+                thickness={8}
+                sections={[{ value: averageRating, color: 'blue' }]}
+                label={<Center>{averageRating}</Center>}
+              />
+
+              <div>
+                <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                  Ratings
+                </Text>
+                <Text weight={700} size="xl">
+                  {numberOfRatings}
+                </Text>
+              </div>
+            </Group>
           </Grid.Col>
         </Grid>
       </Center>

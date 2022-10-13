@@ -1,0 +1,5 @@
+mutation RateCharacter($userId: ID!, $characterId: ID!, $value: RatingValue!) {
+  rateCharacter(userId: $userId, characterId: $characterId, value: $value) {
+    ...DefaultRating
+  }
+}

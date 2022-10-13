@@ -69,7 +69,8 @@ const RegisterView = () => {
             onSubmit={form.onSubmit((values) => {
               handleSignUp(values)
             })}
-            data-cy="register-form">
+            data-cy="register-form"
+          >
             <TextInput
               label="Email address"
               placeholder="Email"

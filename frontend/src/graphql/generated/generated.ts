@@ -141,6 +141,8 @@ export type Mutation = {
   __typename?: 'Mutation'
   authenticateUser: AuthenticationResponse
   createUser: AuthenticationResponse
+  /** Create a rating for a given character by a given user. */
+  rateCharacter: Rating
 }
 
 export type MutationAuthenticateUserArgs = {
@@ -152,6 +154,17 @@ export type MutationCreateUserArgs = {
   email: Scalars['String']
   password: Scalars['String']
   username: Scalars['String']
+}
+
+export type MutationRateCharacterArgs = {
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
+  value: RatingValue
+}
+
+export enum Order {
+  Asc = 'asc',
+  Desc = 'desc'
 }
 
 export type Query = {
@@ -174,7 +187,14 @@ export type Query = {
   locations?: Maybe<Locations>
   /** Get a list of locations selected by ids */
   locationsByIds?: Maybe<Array<Maybe<Location>>>
+  /** Fetch a given rating by the compund ID of userId and characterId. */
+  rating?: Maybe<Rating>
+  /** Fetch all ratings for a given character. */
+  ratingStatsByCharacterId: RatingStats
+  /** Fetch all ratings in a given order. */
+  ratings: Array<Rating>
   user?: Maybe<User>
+  /** Fetch all users. */
   users: Array<User>
 }
 
@@ -217,8 +237,48 @@ export type QueryLocationsByIdsArgs = {
   ids: Array<Scalars['ID']>
 }
 
+export type QueryRatingArgs = {
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
+}
+
+export type QueryRatingStatsByCharacterIdArgs = {
+  characterId: Scalars['ID']
+  order: Order
+}
+
+export type QueryRatingsArgs = {
+  order: Order
+}
+
 export type QueryUserArgs = {
   username: Scalars['String']
+}
+
+/**
+ * A rating of a character by a user.
+ * It does not have its own ID, but rather a compund ID of userId and characterId, because it is a link table.
+ */
+export type Rating = {
+  __typename?: 'Rating'
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
+  value: Scalars['Int']
+}
+
+export type RatingStats = {
+  __typename?: 'RatingStats'
+  average: Scalars['Float']
+  count: Scalars['Int']
+}
+
+/** A rating can be a value between 1 and 5. */
+export enum RatingValue {
+  Five = 'FIVE',
+  Four = 'FOUR',
+  One = 'ONE',
+  Three = 'THREE',
+  Two = 'TWO'
 }
 
 export type User = {
@@ -227,6 +287,8 @@ export type User = {
   email: Scalars['String']
   id: Scalars['ID']
   password: Scalars['String']
+  /** A list of ratings given by this user. */
+  ratings?: Maybe<Array<Rating>>
   username: Scalars['String']
 }
 
@@ -245,6 +307,13 @@ export type DefaultCharacterFragment = {
     dimension?: string | null
     type?: string | null
   } | null
+}
+
+export type DefaultRatingFragment = {
+  __typename?: 'Rating'
+  userId: string
+  characterId: string
+  value: number
 }
 
 export type AuthenticateUserMutationVariables = Exact<{
@@ -274,6 +343,17 @@ export type CreateUserMutation = {
     token?: string | null
     error?: string | null
   }
+}
+
+export type RateCharacterMutationVariables = Exact<{
+  userId: Scalars['ID']
+  characterId: Scalars['ID']
+  value: RatingValue
+}>
+
+export type RateCharacterMutation = {
+  __typename?: 'Mutation'
+  rateCharacter: { __typename?: 'Rating'; userId: string; characterId: string; value: number }
 }
 
 export type GetCharacterByIdQueryVariables = Exact<{
@@ -329,6 +409,35 @@ export type GetCharactersQuery = {
   } | null
 }
 
+export type GetRatingQueryVariables = Exact<{
+  userId: Scalars['ID']
+  characterId: Scalars['ID']
+}>
+
+export type GetRatingQuery = {
+  __typename?: 'Query'
+  rating?: { __typename?: 'Rating'; userId: string; characterId: string; value: number } | null
+}
+
+export type GetRatingStatsByCharacterIdQueryVariables = Exact<{
+  characterId: Scalars['ID']
+  order: Order
+}>
+
+export type GetRatingStatsByCharacterIdQuery = {
+  __typename?: 'Query'
+  ratingStatsByCharacterId: { __typename?: 'RatingStats'; average: number; count: number }
+}
+
+export type GetRatingsQueryVariables = Exact<{
+  order: Order
+}>
+
+export type GetRatingsQuery = {
+  __typename?: 'Query'
+  ratings: Array<{ __typename?: 'Rating'; userId: string; characterId: string; value: number }>
+}
+
 export const DefaultCharacterFragmentDoc = gql`
   fragment DefaultCharacter on Character {
     id
@@ -343,6 +452,13 @@ export const DefaultCharacterFragmentDoc = gql`
       dimension
       type
     }
+  }
+`
+export const DefaultRatingFragmentDoc = gql`
+  fragment DefaultRating on Rating {
+    userId
+    characterId
+    value
   }
 `
 export const AuthenticateUserDocument = gql`
@@ -440,6 +556,53 @@ export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
   CreateUserMutation,
   CreateUserMutationVariables
+>
+export const RateCharacterDocument = gql`
+  mutation RateCharacter($userId: ID!, $characterId: ID!, $value: RatingValue!) {
+    rateCharacter(userId: $userId, characterId: $characterId, value: $value) {
+      ...DefaultRating
+    }
+  }
+  ${DefaultRatingFragmentDoc}
+`
+export type RateCharacterMutationFn = Apollo.MutationFunction<
+  RateCharacterMutation,
+  RateCharacterMutationVariables
+>
+
+/**
+ * __useRateCharacterMutation__
+ *
+ * To run a mutation, you first call `useRateCharacterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRateCharacterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rateCharacterMutation, { data, loading, error }] = useRateCharacterMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      characterId: // value for 'characterId'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useRateCharacterMutation(
+  baseOptions?: Apollo.MutationHookOptions<RateCharacterMutation, RateCharacterMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RateCharacterMutation, RateCharacterMutationVariables>(
+    RateCharacterDocument,
+    options
+  )
+}
+export type RateCharacterMutationHookResult = ReturnType<typeof useRateCharacterMutation>
+export type RateCharacterMutationResult = Apollo.MutationResult<RateCharacterMutation>
+export type RateCharacterMutationOptions = Apollo.BaseMutationOptions<
+  RateCharacterMutation,
+  RateCharacterMutationVariables
 >
 export const GetCharacterByIdDocument = gql`
   query GetCharacterById($characterId: ID!) {
@@ -546,3 +709,144 @@ export type GetCharactersQueryResult = Apollo.QueryResult<
   GetCharactersQuery,
   GetCharactersQueryVariables
 >
+export const GetRatingDocument = gql`
+  query GetRating($userId: ID!, $characterId: ID!) {
+    rating(userId: $userId, characterId: $characterId) {
+      ...DefaultRating
+    }
+  }
+  ${DefaultRatingFragmentDoc}
+`
+
+/**
+ * __useGetRatingQuery__
+ *
+ * To run a query within a React component, call `useGetRatingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRatingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRatingQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      characterId: // value for 'characterId'
+ *   },
+ * });
+ */
+export function useGetRatingQuery(
+  baseOptions: Apollo.QueryHookOptions<GetRatingQuery, GetRatingQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetRatingQuery, GetRatingQueryVariables>(GetRatingDocument, options)
+}
+export function useGetRatingLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetRatingQuery, GetRatingQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetRatingQuery, GetRatingQueryVariables>(GetRatingDocument, options)
+}
+export type GetRatingQueryHookResult = ReturnType<typeof useGetRatingQuery>
+export type GetRatingLazyQueryHookResult = ReturnType<typeof useGetRatingLazyQuery>
+export type GetRatingQueryResult = Apollo.QueryResult<GetRatingQuery, GetRatingQueryVariables>
+export const GetRatingStatsByCharacterIdDocument = gql`
+  query GetRatingStatsByCharacterId($characterId: ID!, $order: Order!) {
+    ratingStatsByCharacterId(characterId: $characterId, order: $order) {
+      average
+      count
+    }
+  }
+`
+
+/**
+ * __useGetRatingStatsByCharacterIdQuery__
+ *
+ * To run a query within a React component, call `useGetRatingStatsByCharacterIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRatingStatsByCharacterIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRatingStatsByCharacterIdQuery({
+ *   variables: {
+ *      characterId: // value for 'characterId'
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useGetRatingStatsByCharacterIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetRatingStatsByCharacterIdQuery,
+    GetRatingStatsByCharacterIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    GetRatingStatsByCharacterIdQuery,
+    GetRatingStatsByCharacterIdQueryVariables
+  >(GetRatingStatsByCharacterIdDocument, options)
+}
+export function useGetRatingStatsByCharacterIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetRatingStatsByCharacterIdQuery,
+    GetRatingStatsByCharacterIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetRatingStatsByCharacterIdQuery,
+    GetRatingStatsByCharacterIdQueryVariables
+  >(GetRatingStatsByCharacterIdDocument, options)
+}
+export type GetRatingStatsByCharacterIdQueryHookResult = ReturnType<
+  typeof useGetRatingStatsByCharacterIdQuery
+>
+export type GetRatingStatsByCharacterIdLazyQueryHookResult = ReturnType<
+  typeof useGetRatingStatsByCharacterIdLazyQuery
+>
+export type GetRatingStatsByCharacterIdQueryResult = Apollo.QueryResult<
+  GetRatingStatsByCharacterIdQuery,
+  GetRatingStatsByCharacterIdQueryVariables
+>
+export const GetRatingsDocument = gql`
+  query GetRatings($order: Order!) {
+    ratings(order: $order) {
+      ...DefaultRating
+    }
+  }
+  ${DefaultRatingFragmentDoc}
+`
+
+/**
+ * __useGetRatingsQuery__
+ *
+ * To run a query within a React component, call `useGetRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRatingsQuery({
+ *   variables: {
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useGetRatingsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetRatingsQuery, GetRatingsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetRatingsQuery, GetRatingsQueryVariables>(GetRatingsDocument, options)
+}
+export function useGetRatingsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetRatingsQuery, GetRatingsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetRatingsQuery, GetRatingsQueryVariables>(GetRatingsDocument, options)
+}
+export type GetRatingsQueryHookResult = ReturnType<typeof useGetRatingsQuery>
+export type GetRatingsLazyQueryHookResult = ReturnType<typeof useGetRatingsLazyQuery>
+export type GetRatingsQueryResult = Apollo.QueryResult<GetRatingsQuery, GetRatingsQueryVariables>

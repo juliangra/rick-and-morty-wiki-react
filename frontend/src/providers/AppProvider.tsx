@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import Layout from '../components/common/Layout'
 import ApolloProvider from './ApolloProvider'
 import RouterProvider from './RouterProvider'
 import StyleProvider from './StyleProvider'
@@ -12,9 +11,7 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <ApolloProvider>
       <StyleProvider>
-        <Layout>
-          <RouterProvider>{children}</RouterProvider>
-        </Layout>
+        <RouterProvider>{children}</RouterProvider>
       </StyleProvider>
     </ApolloProvider>
   )

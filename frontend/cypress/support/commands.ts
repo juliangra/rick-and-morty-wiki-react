@@ -1,11 +1,15 @@
 /// <reference types="cypress" />
 
 Cypress.Commands.add('dataCy', (value) => {
-  return cy.get(`[data-cy=${value}]`)
+  return cy.get(`[data-cy="${value}"]`)
 })
 
 Cypress.Commands.add('visitHash', (value) => {
   return cy.visit(`/#${value}`)
+})
+
+Cypress.Commands.add('inputWrapperError', () => {
+  return cy.get('.mantine-InputWrapper-error')
 })
 
 declare global {
@@ -23,6 +27,12 @@ declare global {
        * @example cy.visitHash('/characters/1') => cy.visit('/#/characters/1')
        */
       visitHash(value: string): Chainable<unknown>
+
+      /**
+       * A wrapper over cy.get() that selects the error message of an input.
+       * This is generated client side by Mantine when submitting a form.
+       */
+      inputWrapperError(): Chainable<unknown>
     }
   }
 }

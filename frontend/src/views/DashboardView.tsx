@@ -5,6 +5,7 @@ import { useGetCharactersQuery } from 'src/graphql/generated/generated'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useEffect, useState } from 'react'
 import CustomLoading from 'src/components/common/CustomLoading'
+import View from './View'
 
 const DashboardView = () => {
   const { id } = useParams()
@@ -28,34 +29,36 @@ const DashboardView = () => {
   }
 
   return (
-    <Box>
-      {!id ? (
-        <Container>
-          <Text size="xl">Characters</Text>
-          <TextInput
-            label="Search for a character"
-            value={searchInput}
-            style={{ flex: 1 }}
-            my={24}
-            onChange={(event) => setSearchInput(event.currentTarget.value)}
-            data-testid="search-input"
-          />
-          <Grid data-testid="characters-container" data-cy="characters-container">
-            {characters?.map((character) => (
-              <Grid.Col span={4} key={character?.id}>
-                <CharacterCard character={character} />
-              </Grid.Col>
-            ))}
-          </Grid>
+    <View>
+      <Box>
+        {!id ? (
+          <Container>
+            <Text size="xl">Characters</Text>
+            <TextInput
+              label="Search for a character"
+              value={searchInput}
+              style={{ flex: 1 }}
+              my={24}
+              onChange={(event) => setSearchInput(event.currentTarget.value)}
+              data-testid="search-input"
+            />
+            <Grid data-testid="characters-container" data-cy="characters-container">
+              {characters?.map((character) => (
+                <Grid.Col span={4} key={character?.id}>
+                  <CharacterCard character={character} />
+                </Grid.Col>
+              ))}
+            </Grid>
 
-          <Center style={{ marginTop: 24, marginBottom: 24 }}>
-            <Pagination page={page} onChange={setPage} total={numberOfPages} size="xl" />
-          </Center>
-        </Container>
-      ) : (
-        <Outlet />
-      )}
-    </Box>
+            <Center style={{ marginTop: 24, marginBottom: 24 }}>
+              <Pagination page={page} onChange={setPage} total={numberOfPages} size="xl" />
+            </Center>
+          </Container>
+        ) : (
+          <Outlet />
+        )}
+      </Box>
+    </View>
   )
 }
 

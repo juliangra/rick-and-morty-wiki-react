@@ -17,24 +17,46 @@ export type Scalars = {
   Float: number
 }
 
+export type AuthenticationResponse = {
+  __typename?: 'AuthenticationResponse'
+  error?: Maybe<Scalars['String']>
+  token?: Maybe<Scalars['String']>
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
-  createUser: User
+  authenticateUser: AuthenticationResponse
+  createUser: AuthenticationResponse
+}
+
+export type MutationAuthenticateUserArgs = {
+  identifier: Scalars['String']
+  password: Scalars['String']
 }
 
 export type MutationCreateUserArgs = {
   email: Scalars['String']
+  password: Scalars['String']
+  username: Scalars['String']
 }
 
 export type Query = {
   __typename?: 'Query'
+  user?: Maybe<User>
   users: Array<User>
+}
+
+export type QueryUserArgs = {
+  username: Scalars['String']
 }
 
 export type User = {
   __typename?: 'User'
+  createdAt: Scalars['String']
   email: Scalars['String']
   id: Scalars['ID']
+  password: Scalars['String']
+  username: Scalars['String']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -121,6 +143,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AuthenticationResponse: ResolverTypeWrapper<AuthenticationResponse>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Mutation: ResolverTypeWrapper<{}>
@@ -131,6 +154,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AuthenticationResponse: AuthenticationResponse
   Boolean: Scalars['Boolean']
   ID: Scalars['ID']
   Mutation: {}
@@ -139,15 +163,30 @@ export type ResolversParentTypes = {
   User: UserModel
 }
 
+export type AuthenticationResponseResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['AuthenticationResponse'] = ResolversParentTypes['AuthenticationResponse']
+> = {
+  error?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type MutationResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
-  createUser?: Resolver<
-    ResolversTypes['User'],
+  authenticateUser?: Resolver<
+    ResolversTypes['AuthenticationResponse'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateUserArgs, 'email'>
+    RequireFields<MutationAuthenticateUserArgs, 'identifier' | 'password'>
+  >
+  createUser?: Resolver<
+    ResolversTypes['AuthenticationResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>
   >
 }
 
@@ -155,6 +194,12 @@ export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  user?: Resolver<
+    Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserArgs, 'username'>
+  >
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
 }
 
@@ -162,12 +207,16 @@ export type UserResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = {
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type Resolvers<ContextType = Context> = {
+  AuthenticationResponse?: AuthenticationResponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   User?: UserResolvers<ContextType>

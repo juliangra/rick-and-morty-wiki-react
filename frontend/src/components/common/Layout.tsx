@@ -19,7 +19,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       styles={(theme) => ({
         main: {
           backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0]
+            theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+
+          height: '90vh'
         }
       })}
     >

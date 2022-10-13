@@ -1,12 +1,22 @@
 type User {
   id: ID!
   email: String!
+  username: String!
+  password: String!
+  createdAt: String!
 }
 
 type Query {
   users: [User!]!
+  user(username: String!): User
+}
+
+type AuthenticationResponse {
+  token: String
+  error: String
 }
 
 type Mutation {
-  createUser(email: String!): User!
+  createUser(email: String!, username: String!, password: String!): AuthenticationResponse!
+  authenticateUser(identifier: String!, password: String!): AuthenticationResponse!
 }

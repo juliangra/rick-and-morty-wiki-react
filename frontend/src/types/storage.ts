@@ -1,1 +1,1 @@
-export type LocalStorageKey = 'theme'
+export type LocalStorageKey = 'theme' | 'jwt'

@@ -1,15 +1,33 @@
-import { Resolvers } from '../generated/graphql'
 import { JWT_SECRET } from '../../constants'
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
 import { isValidEmail } from '../auth/isValidEmail'
 import { isValidUsername } from '../auth/isValidUsername'
+import { Resolvers } from '../generated/graphql'
+import { ratingToNumber } from '../utils/rating'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 const resolvers: Resolvers = {
   Query: {
     users: (_root, _args, context) => {
-      return context.prisma.user.findMany()
+      // Ensure that the users have connected ratings
+      return context.prisma.user.findMany({
+        select: {
+          email: true,
+          username: true,
+          password: true,
+          createdAt: true,
+          id: true,
+          ratings: {
+            select: {
+              userId: true,
+              characterId: true,
+              value: true
+            }
+          }
+        }
+      })
     },
+
     user: (_root, args, context) => {
       return context.prisma.user.findFirst({
         where: {
@@ -18,6 +36,58 @@ const resolvers: Resolvers = {
           }
         }
       })
+    },
+
+    ratings: (_root, args, context) => {
+      return context.prisma.rating.findMany({
+        orderBy: {
+          value: args.order
+        }
+      })
+    },
+
+    rating: async (_root, args, context) => {
+      const characterId = parseInt(args.characterId)
+      const userId = args.userId
+
+      return context.prisma.rating.findUnique({
+        where: {
+          userId_characterId: {
+            characterId,
+            userId
+          }
+        }
+      })
+    },
+
+    ratingStatsByCharacterId: async (_root, args, context) => {
+      const characterId = parseInt(args.characterId)
+      const order = args.order
+
+      const average = await context.prisma.rating
+        .aggregate({
+          where: {
+            characterId
+          },
+          _avg: {
+            value: true
+          },
+          orderBy: {
+            value: order
+          }
+        })
+        .then((res) => res._avg?.value)
+
+      const count = await context.prisma.rating.count({
+        where: {
+          characterId
+        }
+      })
+
+      return {
+        average: average ?? 0,
+        count
+      }
     }
   },
   Mutation: {
@@ -47,6 +117,7 @@ const resolvers: Resolvers = {
       const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET)
       return { token }
     },
+
     authenticateUser: async (_root, args, context) => {
       const { identifier, password } = args
 
@@ -77,6 +148,68 @@ const resolvers: Resolvers = {
 
       const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET)
       return { token }
+    },
+
+    rateCharacter: async (_root, args, context) => {
+      const characterId = parseInt(args.characterId)
+      const userId = args.userId
+      const value = ratingToNumber(args.value)
+
+      // Ensure that character exists in database
+      await context.prisma.character.upsert({
+        where: {
+          id: characterId
+        },
+        create: {
+          id: characterId
+        },
+        update: {
+          id: characterId
+        }
+      })
+
+      // Create or update ratings connected to user in database
+      await context.prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          ratings: {
+            connectOrCreate: {
+              create: {
+                value,
+                characterId
+              },
+              where: {
+                userId_characterId: {
+                  userId,
+                  characterId
+                }
+              }
+            }
+          }
+        }
+      })
+
+      // Create or update entry in link table of ratings
+      return context.prisma.rating.upsert({
+        where: {
+          userId_characterId: {
+            characterId,
+            userId
+          }
+        },
+        create: {
+          value,
+          characterId,
+          userId
+        },
+        update: {
+          value,
+          characterId,
+          userId
+        }
+      })
     }
   }
 }

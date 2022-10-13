@@ -12,3 +12,5 @@ generates:
       # Map GraphQL types to TypeScript types to avoid naming conflicts
       mappers:
         User: .prisma/client#User as UserModel
+        Character: .prisma/client#Character as CharacterModel
+        Rating: .prisma/client#Rating as RatingModel

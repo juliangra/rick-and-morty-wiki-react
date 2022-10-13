@@ -51,7 +51,8 @@ const HeaderContent = () => {
               <Button
                 onClick={() => navigate('/register')}
                 color="green"
-                leftIcon={<IconUserPlus size={16} />}>
+                leftIcon={<IconUserPlus size={16} />}
+              >
                 Sign up
               </Button>
             </>

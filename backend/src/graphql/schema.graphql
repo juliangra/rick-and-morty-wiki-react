@@ -4,11 +4,77 @@ type User {
   username: String!
   password: String!
   createdAt: String!
+  """
+  A list of ratings given by this user.
+  """
+  ratings: [Rating!]
 }
 
+"""
+A character from the third-party API (the Rick and Morty API).
+We only care about the ID of the character in our own API, as we can use this
+to fetch the character's details from the third-party API.
+"""
+type Character {
+  id: ID!
+}
+
+"""
+A rating of a character by a user.
+It does not have its own ID, but rather a compund ID of userId and characterId, because it is a link table.
+"""
+type Rating {
+  userId: ID!
+  characterId: ID!
+  value: Int!
+}
+
+type RatingStats {
+  average: Float!
+  count: Int!
+}
+
+type AuthenticationResponse {
+  token: String
+  error: String
+}
+
+"""
+A rating can be a value between 1 and 5.
+"""
+enum RatingValue {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+enum Order {
+  asc
+  desc
+}
+
+# Queries and mutations
 type Query {
+  """
+  Fetch all users.
+  """
   users: [User!]!
   user(username: String!): User
+  """
+  Fetch all ratings in a given order.
+  """
+  ratings(order: Order!): [Rating!]!
+  """
+  Fetch a given rating by the compund ID of userId and characterId.
+  """
+  rating(characterId: ID!, userId: ID!): Rating
+
+  """
+  Fetch all ratings for a given character.
+  """
+  ratingStatsByCharacterId(characterId: ID!, order: Order!): RatingStats!
 }
 
 type AuthenticationResponse {
@@ -19,4 +85,8 @@ type AuthenticationResponse {
 type Mutation {
   createUser(email: String!, username: String!, password: String!): AuthenticationResponse!
   authenticateUser(identifier: String!, password: String!): AuthenticationResponse!
+  """
+  Create a rating for a given character by a given user.
+  """
+  rateCharacter(characterId: ID!, userId: ID!, value: RatingValue!): Rating!
 }

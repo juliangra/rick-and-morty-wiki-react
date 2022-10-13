@@ -16,6 +16,12 @@ export type Scalars = {
   Upload: any
 }
 
+export type AuthenticationResponse = {
+  __typename?: 'AuthenticationResponse'
+  error?: Maybe<Scalars['String']>
+  token?: Maybe<Scalars['String']>
+}
+
 export enum CacheControlScope {
   Private = 'PRIVATE',
   Public = 'PUBLIC'
@@ -133,11 +139,19 @@ export type Locations = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  createUser: User
+  authenticateUser: AuthenticationResponse
+  createUser: AuthenticationResponse
+}
+
+export type MutationAuthenticateUserArgs = {
+  identifier: Scalars['String']
+  password: Scalars['String']
 }
 
 export type MutationCreateUserArgs = {
   email: Scalars['String']
+  password: Scalars['String']
+  username: Scalars['String']
 }
 
 export type Query = {
@@ -160,6 +174,7 @@ export type Query = {
   locations?: Maybe<Locations>
   /** Get a list of locations selected by ids */
   locationsByIds?: Maybe<Array<Maybe<Location>>>
+  user?: Maybe<User>
   users: Array<User>
 }
 
@@ -202,10 +217,17 @@ export type QueryLocationsByIdsArgs = {
   ids: Array<Scalars['ID']>
 }
 
+export type QueryUserArgs = {
+  username: Scalars['String']
+}
+
 export type User = {
   __typename?: 'User'
+  createdAt: Scalars['String']
   email: Scalars['String']
   id: Scalars['ID']
+  password: Scalars['String']
+  username: Scalars['String']
 }
 
 export type DefaultCharacterFragment = {
@@ -223,6 +245,35 @@ export type DefaultCharacterFragment = {
     dimension?: string | null
     type?: string | null
   } | null
+}
+
+export type AuthenticateUserMutationVariables = Exact<{
+  identifier: Scalars['String']
+  password: Scalars['String']
+}>
+
+export type AuthenticateUserMutation = {
+  __typename?: 'Mutation'
+  authenticateUser: {
+    __typename?: 'AuthenticationResponse'
+    token?: string | null
+    error?: string | null
+  }
+}
+
+export type CreateUserMutationVariables = Exact<{
+  username: Scalars['String']
+  email: Scalars['String']
+  password: Scalars['String']
+}>
+
+export type CreateUserMutation = {
+  __typename?: 'Mutation'
+  createUser: {
+    __typename?: 'AuthenticationResponse'
+    token?: string | null
+    error?: string | null
+  }
 }
 
 export type GetCharacterByIdQueryVariables = Exact<{
@@ -294,6 +345,102 @@ export const DefaultCharacterFragmentDoc = gql`
     }
   }
 `
+export const AuthenticateUserDocument = gql`
+  mutation AuthenticateUser($identifier: String!, $password: String!) {
+    authenticateUser(identifier: $identifier, password: $password) {
+      token
+      error
+    }
+  }
+`
+export type AuthenticateUserMutationFn = Apollo.MutationFunction<
+  AuthenticateUserMutation,
+  AuthenticateUserMutationVariables
+>
+
+/**
+ * __useAuthenticateUserMutation__
+ *
+ * To run a mutation, you first call `useAuthenticateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAuthenticateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [authenticateUserMutation, { data, loading, error }] = useAuthenticateUserMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useAuthenticateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AuthenticateUserMutation,
+    AuthenticateUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AuthenticateUserMutation, AuthenticateUserMutationVariables>(
+    AuthenticateUserDocument,
+    options
+  )
+}
+export type AuthenticateUserMutationHookResult = ReturnType<typeof useAuthenticateUserMutation>
+export type AuthenticateUserMutationResult = Apollo.MutationResult<AuthenticateUserMutation>
+export type AuthenticateUserMutationOptions = Apollo.BaseMutationOptions<
+  AuthenticateUserMutation,
+  AuthenticateUserMutationVariables
+>
+export const CreateUserDocument = gql`
+  mutation CreateUser($username: String!, $email: String!, $password: String!) {
+    createUser(username: $username, email: $email, password: $password) {
+      token
+      error
+    }
+  }
+`
+export type CreateUserMutationFn = Apollo.MutationFunction<
+  CreateUserMutation,
+  CreateUserMutationVariables
+>
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(
+    CreateUserDocument,
+    options
+  )
+}
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
+  CreateUserMutation,
+  CreateUserMutationVariables
+>
 export const GetCharacterByIdDocument = gql`
   query GetCharacterById($characterId: ID!) {
     character(id: $characterId) {

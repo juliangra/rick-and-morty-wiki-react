@@ -7,19 +7,26 @@ import {
   useMantineColorScheme,
   useMantineTheme
 } from '@mantine/core'
-import { IconSun, IconMoonStars } from '@tabler/icons'
+import { IconSun, IconMoonStars, IconUserPlus, IconLogin, IconLogout } from '@tabler/icons'
+import { Link, useNavigate } from 'react-router-dom'
+import useIsAuthenticated from 'src/hooks/auth/useAuthentication'
 
 const HeaderContent = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const theme = useMantineTheme()
   const isDark = colorScheme === 'dark'
 
+  const { isAuthenticated, signOut } = useIsAuthenticated()
+  const navigate = useNavigate()
+
   return (
     <Grid justify="center" align="center">
       <Grid.Col span={6}>
-        <Text size={theme.fontSizes.xl} color={theme.colors.indigo[6]}>
-          Rick and Morty API
-        </Text>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <Text size={theme.fontSizes.xl} color={theme.colors.indigo[6]}>
+            Rick and Morty API
+          </Text>
+        </Link>
       </Grid.Col>
       <Grid.Col span={6}>
         <Group position="right">
@@ -31,15 +38,24 @@ const HeaderContent = () => {
             onChange={() => toggleColorScheme()}
             checked={isDark}
           />
-          <Button
-            styles={() => ({
-              root: {
-                colorScheme
-              }
-            })}
-          >
-            Login
-          </Button>
+
+          {isAuthenticated ? (
+            <Button onClick={signOut} leftIcon={<IconLogout size={16} />}>
+              Sign out
+            </Button>
+          ) : (
+            <>
+              <Button onClick={() => navigate('/login')} leftIcon={<IconLogin size={16} />}>
+                Sign in
+              </Button>
+              <Button
+                onClick={() => navigate('/register')}
+                color="green"
+                leftIcon={<IconUserPlus size={16} />}>
+                Sign up
+              </Button>
+            </>
+          )}
         </Group>
       </Grid.Col>
     </Grid>

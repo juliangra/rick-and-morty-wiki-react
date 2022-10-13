@@ -1,0 +1,432 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RegisterView matches snapshot 1`] = `
+<div
+  className="mantine-AppShell-root mantine-osix87"
+>
+  <header
+    className="mantine-Header-root mantine-10stgci"
+  >
+    <div
+      className="mantine-Grid-root mantine-1bwbwcr"
+    >
+      <div
+        className="mantine-Col-root mantine-fhjbsl"
+      >
+        <a
+          href="/"
+          onClick={[Function]}
+          style={
+            Object {
+              "textDecoration": "none",
+            }
+          }
+        >
+          <div
+            className="mantine-Text-root mantine-1mgsv6d"
+          >
+            Rick and Morty API
+          </div>
+        </a>
+      </div>
+      <div
+        className="mantine-Col-root mantine-fhjbsl"
+      >
+        <div
+          className="mantine-Group-root mantine-puhv18"
+        >
+          <div
+            className="mantine-Switch-root mantine-15po0m8"
+          >
+            <div
+              className="mantine-17do188 mantine-Switch-body"
+            >
+              <input
+                checked={true}
+                className="mantine-rpvocz mantine-Switch-input"
+                id="mantine-r0"
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <label
+                className="mantine-1xzwilk mantine-Switch-track"
+                htmlFor="mantine-r0"
+              >
+                <div
+                  className="mantine-1b624xu mantine-Switch-thumb"
+                />
+                <div
+                  className="mantine-8zcx mantine-Switch-trackLabel"
+                >
+                  <svg
+                    className="icon icon-tabler icon-tabler-sun"
+                    fill="none"
+                    height={20}
+                    stroke="#ffd43b"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                    width={20}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0h24v24H0z"
+                      fill="none"
+                      stroke="none"
+                    />
+                    <circle
+                      cx={12}
+                      cy={12}
+                      r={4}
+                    />
+                    <path
+                      d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"
+                    />
+                  </svg>
+                </div>
+              </label>
+              <div
+                className="mantine-rer79c mantine-Switch-labelWrapper"
+              />
+            </div>
+          </div>
+          <button
+            className="mantine-UnstyledButton-root mantine-Button-root mantine-4xmesm"
+            data-button={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="mantine-3xbgk5 mantine-Button-inner"
+            >
+              <span
+                className="mantine-Button-icon mantine-Button-leftIcon mantine-1g4orza"
+              >
+                <svg
+                  className="icon icon-tabler icon-tabler-login"
+                  fill="none"
+                  height={16}
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  width={16}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0 0h24v24H0z"
+                    fill="none"
+                    stroke="none"
+                  />
+                  <path
+                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
+                  />
+                  <path
+                    d="M20 12h-13l3 -3m0 6l-3 -3"
+                  />
+                </svg>
+              </span>
+              <span
+                className="mantine-qo1k2 mantine-Button-label"
+                style={
+                  Object {
+                    "textTransform": undefined,
+                  }
+                }
+              >
+                Sign in
+              </span>
+            </div>
+          </button>
+          <button
+            className="mantine-UnstyledButton-root mantine-Button-root mantine-22dotu"
+            data-button={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="mantine-3xbgk5 mantine-Button-inner"
+            >
+              <span
+                className="mantine-Button-icon mantine-Button-leftIcon mantine-1g4orza"
+              >
+                <svg
+                  className="icon icon-tabler icon-tabler-user-plus"
+                  fill="none"
+                  height={16}
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  width={16}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0 0h24v24H0z"
+                    fill="none"
+                    stroke="none"
+                  />
+                  <circle
+                    cx={9}
+                    cy={7}
+                    r={4}
+                  />
+                  <path
+                    d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+                  />
+                  <path
+                    d="M16 11h6m-3 -3v6"
+                  />
+                </svg>
+              </span>
+              <span
+                className="mantine-qo1k2 mantine-Button-label"
+                style={
+                  Object {
+                    "textTransform": undefined,
+                  }
+                }
+              >
+                Sign up
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div
+    className="mantine-ibbm6b mantine-AppShell-body"
+  >
+    <main
+      className="mantine-u9zedp mantine-AppShell-main"
+    >
+      <div
+        className="mantine-8od8ev"
+        style={
+          Object {
+            "height": "100%",
+          }
+        }
+      >
+        <div
+          className="mantine-1avyp1d"
+          style={
+            Object {
+              "margin": "auto",
+              "minWidth": 300,
+            }
+          }
+        >
+          <form
+            data-cy="register-form"
+            onSubmit={[Function]}
+          >
+            <div
+              className="mantine-InputWrapper-root mantine-TextInput-root mantine-1m3pqry"
+            >
+              <label
+                className="mantine-InputWrapper-label mantine-TextInput-label mantine-ittua2"
+                htmlFor="mantine-r1"
+                id="mantine-r1-label"
+              >
+                Email address
+              </label>
+              <div
+                className="mantine-Input-wrapper mantine-TextInput-wrapper mantine-12sbrde"
+              >
+                <input
+                  aria-invalid={false}
+                  className="mantine-Input-input mantine-TextInput-input mantine-gqmpge"
+                  data-cy="email-input"
+                  data-testid="email-input"
+                  id="mantine-r1"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  placeholder="Email"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="mantine-InputWrapper-root mantine-TextInput-root mantine-1m3pqry"
+            >
+              <label
+                className="mantine-InputWrapper-label mantine-TextInput-label mantine-ittua2"
+                htmlFor="mantine-r2"
+                id="mantine-r2-label"
+              >
+                Username
+              </label>
+              <div
+                className="mantine-Input-wrapper mantine-TextInput-wrapper mantine-12sbrde"
+              >
+                <input
+                  aria-invalid={false}
+                  className="mantine-Input-input mantine-TextInput-input mantine-gqmpge"
+                  data-cy="username-input"
+                  data-testid="username-input"
+                  id="mantine-r2"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  placeholder="Username"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="mantine-InputWrapper-root mantine-PasswordInput-root mantine-1l2unfb"
+            >
+              <label
+                className="mantine-InputWrapper-label mantine-PasswordInput-label mantine-ittua2"
+                htmlFor="mantine-r3"
+                id="mantine-r3-label"
+              >
+                Password
+              </label>
+              <div
+                className="mantine-Input-wrapper mantine-PasswordInput-wrapper mantine-12sbrde"
+              >
+                <div
+                  aria-invalid={false}
+                  className="mantine-PasswordInput-input mantine-Input-input mantine-PasswordInput-input mantine-2gm7bs"
+                >
+                  <input
+                    className="mantine-358qno mantine-PasswordInput-innerInput"
+                    data-cy="password-input"
+                    data-testid="password-input"
+                    id="mantine-r3"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    placeholder="Password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="mantine-1jdmi3h mantine-Input-rightSection mantine-PasswordInput-rightSection"
+                >
+                  <button
+                    aria-hidden={true}
+                    className="mantine-UnstyledButton-root mantine-ActionIcon-root mantine-PasswordInput-visibilityToggle mantine-14z3xly"
+                    onKeyDown={[Function]}
+                    onMouseDown={[Function]}
+                    tabIndex={-1}
+                    type="button"
+                  >
+                    <svg
+                      fill="none"
+                      height={15}
+                      viewBox="0 0 15 15"
+                      width={15}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d="M7.5 11C4.80285 11 2.52952 9.62184 1.09622 7.50001C2.52952 5.37816 4.80285 4 7.5 4C10.1971 4 12.4705 5.37816 13.9038 7.50001C12.4705 9.62183 10.1971 11 7.5 11ZM7.5 3C4.30786 3 1.65639 4.70638 0.0760002 7.23501C-0.0253338 7.39715 -0.0253334 7.60288 0.0760014 7.76501C1.65639 10.2936 4.30786 12 7.5 12C10.6921 12 13.3436 10.2936 14.924 7.76501C15.0253 7.60288 15.0253 7.39715 14.924 7.23501C13.3436 4.70638 10.6921 3 7.5 3ZM7.5 9.5C8.60457 9.5 9.5 8.60457 9.5 7.5C9.5 6.39543 8.60457 5.5 7.5 5.5C6.39543 5.5 5.5 6.39543 5.5 7.5C5.5 8.60457 6.39543 9.5 7.5 9.5Z"
+                        fill="currentColor"
+                        fillRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="mantine-InputWrapper-root mantine-PasswordInput-root mantine-1l2unfb"
+            >
+              <label
+                className="mantine-InputWrapper-label mantine-PasswordInput-label mantine-ittua2"
+                htmlFor="mantine-r4"
+                id="mantine-r4-label"
+              >
+                Repeat password
+              </label>
+              <div
+                className="mantine-Input-wrapper mantine-PasswordInput-wrapper mantine-12sbrde"
+              >
+                <div
+                  aria-invalid={false}
+                  className="mantine-PasswordInput-input mantine-Input-input mantine-PasswordInput-input mantine-2gm7bs"
+                >
+                  <input
+                    className="mantine-358qno mantine-PasswordInput-innerInput"
+                    data-cy="repeatPassword-input"
+                    data-testid="repeatPassword-input"
+                    id="mantine-r4"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    placeholder="Repeat password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="mantine-1jdmi3h mantine-Input-rightSection mantine-PasswordInput-rightSection"
+                >
+                  <button
+                    aria-hidden={true}
+                    className="mantine-UnstyledButton-root mantine-ActionIcon-root mantine-PasswordInput-visibilityToggle mantine-14z3xly"
+                    onKeyDown={[Function]}
+                    onMouseDown={[Function]}
+                    tabIndex={-1}
+                    type="button"
+                  >
+                    <svg
+                      fill="none"
+                      height={15}
+                      viewBox="0 0 15 15"
+                      width={15}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d="M7.5 11C4.80285 11 2.52952 9.62184 1.09622 7.50001C2.52952 5.37816 4.80285 4 7.5 4C10.1971 4 12.4705 5.37816 13.9038 7.50001C12.4705 9.62183 10.1971 11 7.5 11ZM7.5 3C4.30786 3 1.65639 4.70638 0.0760002 7.23501C-0.0253338 7.39715 -0.0253334 7.60288 0.0760014 7.76501C1.65639 10.2936 4.30786 12 7.5 12C10.6921 12 13.3436 10.2936 14.924 7.76501C15.0253 7.60288 15.0253 7.39715 14.924 7.23501C13.3436 4.70638 10.6921 3 7.5 3ZM7.5 9.5C8.60457 9.5 9.5 8.60457 9.5 7.5C9.5 6.39543 8.60457 5.5 7.5 5.5C6.39543 5.5 5.5 6.39543 5.5 7.5C5.5 8.60457 6.39543 9.5 7.5 9.5Z"
+                        fill="currentColor"
+                        fillRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="mantine-Group-root mantine-1gsh4oo"
+            >
+              <button
+                className="mantine-UnstyledButton-root mantine-Button-root mantine-no0aay"
+                data-button={true}
+                type="submit"
+              >
+                <div
+                  className="mantine-3xbgk5 mantine-Button-inner"
+                >
+                  <span
+                    className="mantine-qo1k2 mantine-Button-label"
+                    style={
+                      Object {
+                        "textTransform": undefined,
+                      }
+                    }
+                  >
+                    Sign Up
+                  </span>
+                </div>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+`;

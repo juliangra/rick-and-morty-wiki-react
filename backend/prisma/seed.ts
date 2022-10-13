@@ -1,7 +1,11 @@
 import { context } from '../src/context'
+import bcrypt from 'bcrypt'
 
 const main = async () => {
-  const firstId = 1
+  const firstId = 'c01234db-a6a1-49de-98d7-3419dfe6200b'
+  const password = 'testPassword'
+
+  const encryptedPassword = await bcrypt.hash(password, 10)
 
   await context.prisma.user.upsert({
     where: {
@@ -9,11 +13,14 @@ const main = async () => {
     },
     create: {
       id: firstId,
-      email: 'john.doe@example.com'
+      email: 'john.doe@example.com',
+      username: 'john',
+      password: encryptedPassword
     },
     update: {
       id: firstId,
-      email: 'john.doe@example.com'
+      email: 'john.doe@example.com',
+      username: 'john'
     }
   })
 }

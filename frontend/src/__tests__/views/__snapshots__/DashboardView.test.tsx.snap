@@ -11,6 +11,7 @@ exports[`DashboardView matches snapshot 1`] = `
 >
   <svg
     className="mantine-1avyp1d"
+    data-cy="loading"
     data-testid="loading"
     height="36px"
     role="presentation"

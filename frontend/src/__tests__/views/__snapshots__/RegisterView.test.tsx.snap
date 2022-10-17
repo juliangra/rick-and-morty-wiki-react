@@ -248,6 +248,7 @@ exports[`RegisterView matches snapshot 1`] = `
                   onChange={[Function]}
                   onFocus={[Function]}
                   placeholder="Email"
+                  testid="email-input"
                   type="text"
                   value=""
                 />
@@ -276,6 +277,7 @@ exports[`RegisterView matches snapshot 1`] = `
                   onChange={[Function]}
                   onFocus={[Function]}
                   placeholder="Username"
+                  testid="username-input"
                   type="text"
                   value=""
                 />

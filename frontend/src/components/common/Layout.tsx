@@ -1,6 +1,5 @@
 import { AppShell, Header } from '@mantine/core'
 import { ReactNode } from 'react'
-import { HEADER_HEIGHT_PX } from 'src/constants/style'
 import HeaderContent from './HeaderContent'
 
 type LayoutProps = {
@@ -12,7 +11,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <AppShell
       padding="xs"
       header={
-        <Header height={HEADER_HEIGHT_PX} p="xs">
+        <Header height={60} p="xs">
           <HeaderContent />
         </Header>
       }

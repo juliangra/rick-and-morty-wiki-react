@@ -2,6 +2,7 @@ import { useLocalStorage } from '@mantine/hooks'
 import { JWT_SECRET } from 'src/constants/index'
 import jwt from 'jsonwebtoken'
 import useRedirect from './useRedirect'
+import { DecodedToken } from 'src/types/auth'
 
 /**
  * Custom hook that signs in, signs out and verifies authentication status.
@@ -13,16 +14,19 @@ import useRedirect from './useRedirect'
 const useAuthentication = () => {
   const [token, setToken, removeToken] = useLocalStorage({ key: 'jwt' })
 
-  const signIn = (jwt: string) => setToken(jwt)
+  const signIn = (jwt: string) => {
+    setToken(jwt)
+  }
 
   const signOut = () => {
     removeToken()
     useRedirect('/')
   }
 
-  const isAuthenticated = token ? jwt.verify(token, JWT_SECRET, (err) => !err) : false
+  const isAuthenticated = (token ? jwt.verify(token, JWT_SECRET, (err) => !err) : false) as boolean
+  const decoded = (token ? jwt.verify(token, JWT_SECRET) : null) as DecodedToken | null
 
-  return { token, isAuthenticated, signIn, signOut }
+  return { token, isAuthenticated, signIn, signOut, decoded }
 }
 
 export default useAuthentication

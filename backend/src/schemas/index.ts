@@ -2,7 +2,7 @@ import { loadSchema } from '@graphql-tools/load'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { stitchSchemas } from '@graphql-tools/stitch'
 import { UrlLoader } from '@graphql-tools/url-loader'
-import { GRAPHQL_ENDPOINT } from '../../constants'
+import { GRAPHQL_ENDPOINT } from '../constants'
 import resolvers from '../resolvers'
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 

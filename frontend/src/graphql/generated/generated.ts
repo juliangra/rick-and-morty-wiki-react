@@ -141,6 +141,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   authenticateUser: AuthenticationResponse
   createUser: AuthenticationResponse
+  deleteRating: Rating
   /** Create a rating for a given character by a given user. */
   rateCharacter: Rating
 }
@@ -154,6 +155,11 @@ export type MutationCreateUserArgs = {
   email: Scalars['String']
   password: Scalars['String']
   username: Scalars['String']
+}
+
+export type MutationDeleteRatingArgs = {
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
 }
 
 export type MutationRateCharacterArgs = {
@@ -181,6 +187,8 @@ export type Query = {
   episodes?: Maybe<Episodes>
   /** Get a list of episodes selected by ids */
   episodesByIds?: Maybe<Array<Maybe<Episode>>>
+  /** Check if a user has rated a given character. */
+  hasRatedCharacter: Scalars['Boolean']
   /** Get a specific locations by ID */
   location?: Maybe<Location>
   /** Get the list of all locations */
@@ -222,6 +230,11 @@ export type QueryEpisodesArgs = {
 
 export type QueryEpisodesByIdsArgs = {
   ids: Array<Scalars['ID']>
+}
+
+export type QueryHasRatedCharacterArgs = {
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
 }
 
 export type QueryLocationArgs = {
@@ -286,7 +299,6 @@ export type User = {
   createdAt: Scalars['String']
   email: Scalars['String']
   id: Scalars['ID']
-  password: Scalars['String']
   /** A list of ratings given by this user. */
   ratings?: Maybe<Array<Rating>>
   username: Scalars['String']
@@ -316,6 +328,27 @@ export type DefaultRatingFragment = {
   value: number
 }
 
+export type DeleteRatingMutationVariables = Exact<{
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
+}>
+
+export type DeleteRatingMutation = {
+  __typename?: 'Mutation'
+  deleteRating: { __typename?: 'Rating'; userId: string; characterId: string; value: number }
+}
+
+export type RateCharacterMutationVariables = Exact<{
+  userId: Scalars['ID']
+  characterId: Scalars['ID']
+  value: RatingValue
+}>
+
+export type RateCharacterMutation = {
+  __typename?: 'Mutation'
+  rateCharacter: { __typename?: 'Rating'; userId: string; characterId: string; value: number }
+}
+
 export type AuthenticateUserMutationVariables = Exact<{
   identifier: Scalars['String']
   password: Scalars['String']
@@ -343,17 +376,6 @@ export type CreateUserMutation = {
     token?: string | null
     error?: string | null
   }
-}
-
-export type RateCharacterMutationVariables = Exact<{
-  userId: Scalars['ID']
-  characterId: Scalars['ID']
-  value: RatingValue
-}>
-
-export type RateCharacterMutation = {
-  __typename?: 'Mutation'
-  rateCharacter: { __typename?: 'Rating'; userId: string; characterId: string; value: number }
 }
 
 export type GetCharacterByIdQueryVariables = Exact<{
@@ -438,6 +460,13 @@ export type GetRatingsQuery = {
   ratings: Array<{ __typename?: 'Rating'; userId: string; characterId: string; value: number }>
 }
 
+export type HasRatedCharacterQueryVariables = Exact<{
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
+}>
+
+export type HasRatedCharacterQuery = { __typename?: 'Query'; hasRatedCharacter: boolean }
+
 export const DefaultCharacterFragmentDoc = gql`
   fragment DefaultCharacter on Character {
     id
@@ -461,6 +490,99 @@ export const DefaultRatingFragmentDoc = gql`
     value
   }
 `
+export const DeleteRatingDocument = gql`
+  mutation DeleteRating($characterId: ID!, $userId: ID!) {
+    deleteRating(characterId: $characterId, userId: $userId) {
+      ...DefaultRating
+    }
+  }
+  ${DefaultRatingFragmentDoc}
+`
+export type DeleteRatingMutationFn = Apollo.MutationFunction<
+  DeleteRatingMutation,
+  DeleteRatingMutationVariables
+>
+
+/**
+ * __useDeleteRatingMutation__
+ *
+ * To run a mutation, you first call `useDeleteRatingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteRatingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteRatingMutation, { data, loading, error }] = useDeleteRatingMutation({
+ *   variables: {
+ *      characterId: // value for 'characterId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useDeleteRatingMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteRatingMutation, DeleteRatingMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteRatingMutation, DeleteRatingMutationVariables>(
+    DeleteRatingDocument,
+    options
+  )
+}
+export type DeleteRatingMutationHookResult = ReturnType<typeof useDeleteRatingMutation>
+export type DeleteRatingMutationResult = Apollo.MutationResult<DeleteRatingMutation>
+export type DeleteRatingMutationOptions = Apollo.BaseMutationOptions<
+  DeleteRatingMutation,
+  DeleteRatingMutationVariables
+>
+export const RateCharacterDocument = gql`
+  mutation RateCharacter($userId: ID!, $characterId: ID!, $value: RatingValue!) {
+    rateCharacter(userId: $userId, characterId: $characterId, value: $value) {
+      ...DefaultRating
+    }
+  }
+  ${DefaultRatingFragmentDoc}
+`
+export type RateCharacterMutationFn = Apollo.MutationFunction<
+  RateCharacterMutation,
+  RateCharacterMutationVariables
+>
+
+/**
+ * __useRateCharacterMutation__
+ *
+ * To run a mutation, you first call `useRateCharacterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRateCharacterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rateCharacterMutation, { data, loading, error }] = useRateCharacterMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      characterId: // value for 'characterId'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useRateCharacterMutation(
+  baseOptions?: Apollo.MutationHookOptions<RateCharacterMutation, RateCharacterMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RateCharacterMutation, RateCharacterMutationVariables>(
+    RateCharacterDocument,
+    options
+  )
+}
+export type RateCharacterMutationHookResult = ReturnType<typeof useRateCharacterMutation>
+export type RateCharacterMutationResult = Apollo.MutationResult<RateCharacterMutation>
+export type RateCharacterMutationOptions = Apollo.BaseMutationOptions<
+  RateCharacterMutation,
+  RateCharacterMutationVariables
+>
 export const AuthenticateUserDocument = gql`
   mutation AuthenticateUser($identifier: String!, $password: String!) {
     authenticateUser(identifier: $identifier, password: $password) {
@@ -556,53 +678,6 @@ export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
   CreateUserMutation,
   CreateUserMutationVariables
->
-export const RateCharacterDocument = gql`
-  mutation RateCharacter($userId: ID!, $characterId: ID!, $value: RatingValue!) {
-    rateCharacter(userId: $userId, characterId: $characterId, value: $value) {
-      ...DefaultRating
-    }
-  }
-  ${DefaultRatingFragmentDoc}
-`
-export type RateCharacterMutationFn = Apollo.MutationFunction<
-  RateCharacterMutation,
-  RateCharacterMutationVariables
->
-
-/**
- * __useRateCharacterMutation__
- *
- * To run a mutation, you first call `useRateCharacterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRateCharacterMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [rateCharacterMutation, { data, loading, error }] = useRateCharacterMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *      characterId: // value for 'characterId'
- *      value: // value for 'value'
- *   },
- * });
- */
-export function useRateCharacterMutation(
-  baseOptions?: Apollo.MutationHookOptions<RateCharacterMutation, RateCharacterMutationVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<RateCharacterMutation, RateCharacterMutationVariables>(
-    RateCharacterDocument,
-    options
-  )
-}
-export type RateCharacterMutationHookResult = ReturnType<typeof useRateCharacterMutation>
-export type RateCharacterMutationResult = Apollo.MutationResult<RateCharacterMutation>
-export type RateCharacterMutationOptions = Apollo.BaseMutationOptions<
-  RateCharacterMutation,
-  RateCharacterMutationVariables
 >
 export const GetCharacterByIdDocument = gql`
   query GetCharacterById($characterId: ID!) {
@@ -850,3 +925,50 @@ export function useGetRatingsLazyQuery(
 export type GetRatingsQueryHookResult = ReturnType<typeof useGetRatingsQuery>
 export type GetRatingsLazyQueryHookResult = ReturnType<typeof useGetRatingsLazyQuery>
 export type GetRatingsQueryResult = Apollo.QueryResult<GetRatingsQuery, GetRatingsQueryVariables>
+export const HasRatedCharacterDocument = gql`
+  query HasRatedCharacter($characterId: ID!, $userId: ID!) {
+    hasRatedCharacter(characterId: $characterId, userId: $userId)
+  }
+`
+
+/**
+ * __useHasRatedCharacterQuery__
+ *
+ * To run a query within a React component, call `useHasRatedCharacterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHasRatedCharacterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHasRatedCharacterQuery({
+ *   variables: {
+ *      characterId: // value for 'characterId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useHasRatedCharacterQuery(
+  baseOptions: Apollo.QueryHookOptions<HasRatedCharacterQuery, HasRatedCharacterQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<HasRatedCharacterQuery, HasRatedCharacterQueryVariables>(
+    HasRatedCharacterDocument,
+    options
+  )
+}
+export function useHasRatedCharacterLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<HasRatedCharacterQuery, HasRatedCharacterQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<HasRatedCharacterQuery, HasRatedCharacterQueryVariables>(
+    HasRatedCharacterDocument,
+    options
+  )
+}
+export type HasRatedCharacterQueryHookResult = ReturnType<typeof useHasRatedCharacterQuery>
+export type HasRatedCharacterLazyQueryHookResult = ReturnType<typeof useHasRatedCharacterLazyQuery>
+export type HasRatedCharacterQueryResult = Apollo.QueryResult<
+  HasRatedCharacterQuery,
+  HasRatedCharacterQueryVariables
+>

@@ -23,6 +23,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ form, handleOnSubmit, error
           {...form.getInputProps('email')}
         />
         <TextField
+          mt="md"
           label="Username"
           placeholder="Username"
           testid="username-input"

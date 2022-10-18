@@ -41,6 +41,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   authenticateUser: AuthenticationResponse
   createUser: AuthenticationResponse
+  deleteRating: Rating
   /** Create a rating for a given character by a given user. */
   rateCharacter: Rating
 }
@@ -56,6 +57,11 @@ export type MutationCreateUserArgs = {
   username: Scalars['String']
 }
 
+export type MutationDeleteRatingArgs = {
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
+}
+
 export type MutationRateCharacterArgs = {
   characterId: Scalars['ID']
   userId: Scalars['ID']
@@ -69,6 +75,8 @@ export enum Order {
 
 export type Query = {
   __typename?: 'Query'
+  /** Check if a user has rated a given character. */
+  hasRatedCharacter: Scalars['Boolean']
   /** Fetch a given rating by the compund ID of userId and characterId. */
   rating?: Maybe<Rating>
   /** Fetch all ratings for a given character. */
@@ -78,6 +86,11 @@ export type Query = {
   user?: Maybe<User>
   /** Fetch all users. */
   users: Array<User>
+}
+
+export type QueryHasRatedCharacterArgs = {
+  characterId: Scalars['ID']
+  userId: Scalars['ID']
 }
 
 export type QueryRatingArgs = {
@@ -129,7 +142,6 @@ export type User = {
   createdAt: Scalars['String']
   email: Scalars['String']
   id: Scalars['ID']
-  password: Scalars['String']
   /** A list of ratings given by this user. */
   ratings?: Maybe<Array<Rating>>
   username: Scalars['String']
@@ -284,6 +296,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>
   >
+  deleteRating?: Resolver<
+    ResolversTypes['Rating'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteRatingArgs, 'characterId' | 'userId'>
+  >
   rateCharacter?: Resolver<
     ResolversTypes['Rating'],
     ParentType,
@@ -296,6 +314,12 @@ export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  hasRatedCharacter?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryHasRatedCharacterArgs, 'characterId' | 'userId'>
+  >
   rating?: Resolver<
     Maybe<ResolversTypes['Rating']>,
     ParentType,
@@ -349,7 +373,6 @@ export type UserResolvers<
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   ratings?: Resolver<Maybe<Array<ResolversTypes['Rating']>>, ParentType, ContextType>
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>

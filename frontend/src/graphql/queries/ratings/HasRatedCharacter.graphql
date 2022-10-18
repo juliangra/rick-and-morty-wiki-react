@@ -1,0 +1,3 @@
+query HasRatedCharacter($characterId: ID!, $userId: ID!) {
+  hasRatedCharacter(characterId: $characterId, userId: $userId)
+}

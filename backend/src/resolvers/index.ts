@@ -1,4 +1,4 @@
-import { JWT_SECRET } from '../../constants'
+import { JWT_SECRET } from '../constants'
 import { isValidEmail } from '../auth/isValidEmail'
 import { isValidUsername } from '../auth/isValidUsername'
 import { Resolvers } from '../generated/graphql'
@@ -88,6 +88,22 @@ const resolvers: Resolvers = {
         average: average ?? 0,
         count
       }
+    },
+
+    hasRatedCharacter: async (_root, args, context) => {
+      const characterId = parseInt(args.characterId)
+      const userId = args.userId
+
+      const rating = await context.prisma.rating.findUnique({
+        where: {
+          userId_characterId: {
+            characterId,
+            userId
+          }
+        }
+      })
+
+      return rating !== null
     }
   },
   Mutation: {
@@ -115,7 +131,9 @@ const resolvers: Resolvers = {
       if (!user.id) return { error: 'User could not be created. Please try again' }
 
       const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET)
-      return { token }
+      return {
+        token
+      }
     },
 
     authenticateUser: async (_root, args, context) => {
@@ -142,11 +160,13 @@ const resolvers: Resolvers = {
 
       if (!user?.id) return { error: 'No user found with given credentials!' }
 
-      const validPassword = await bcrypt.compare(password, user.password)
+      const { password: dbPassword, id, username } = user
+
+      const validPassword = await bcrypt.compare(password, dbPassword)
 
       if (!validPassword) return { error: 'No user found with given credentials!' }
 
-      const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET)
+      const token = jwt.sign({ id, username }, JWT_SECRET)
       return { token }
     },
 
@@ -208,6 +228,20 @@ const resolvers: Resolvers = {
           value,
           characterId,
           userId
+        }
+      })
+    },
+
+    deleteRating: async (_root, args, context) => {
+      const characterId = parseInt(args.characterId)
+      const userId = args.userId
+
+      return context.prisma.rating.delete({
+        where: {
+          userId_characterId: {
+            characterId,
+            userId
+          }
         }
       })
     }

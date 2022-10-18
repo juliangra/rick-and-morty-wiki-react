@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stats matches snapshot 1`] = `
+<div
+  className="mantine-RingProgress-root mantine-12sbrde"
+  style={
+    Object {
+      "height": 80,
+      "width": 80,
+    }
+  }
+>
+  <svg
+    height={80}
+    style={
+      Object {
+        "transform": "rotate(-90deg)",
+      }
+    }
+    width={80}
+  >
+    <circle
+      cx={40}
+      cy={40}
+      fill="none"
+      r={28}
+      stroke="#f1f3f5"
+      strokeDasharray="140.74335088082273, 35.18583772020568"
+      strokeDashoffset={0}
+      strokeLinecap="butt"
+      strokeWidth={8}
+      transform="scale(1, -1) translate(0, -80)"
+    />
+    <circle
+      cx={40}
+      cy={40}
+      fill="none"
+      r={28}
+      stroke="#4c6ef5"
+      strokeDasharray="35.18583772020568, 140.74335088082273"
+      strokeDashoffset={175.92918860102841}
+      strokeLinecap="round"
+      strokeWidth={8}
+      transform={null}
+    />
+  </svg>
+  <div
+    className="mantine-37msp1 mantine-RingProgress-label"
+    style={
+      Object {
+        "left": 16,
+        "right": 16,
+      }
+    }
+  >
+    <div
+      className="mantine-8od8ev"
+    >
+      1.0
+    </div>
+  </div>
+</div>
+`;

@@ -1,6 +1,6 @@
 import { Outlet, useParams } from 'react-router'
 import { Box, Center, Container, Grid, Pagination, Text } from '@mantine/core'
-import CharacterCard from 'src/components/CharacterCard'
+import CharacterCard from 'src/components/characters/CharacterCard'
 import { useState } from 'react'
 import CustomLoading from 'src/components/common/CustomLoading'
 import View from './View'

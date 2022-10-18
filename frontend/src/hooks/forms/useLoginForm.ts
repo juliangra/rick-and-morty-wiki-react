@@ -42,6 +42,7 @@ const useLoginForm = () => {
     })
 
     const { error, token } = data?.authenticateUser || {}
+
     if (error) {
       setError(error)
       return

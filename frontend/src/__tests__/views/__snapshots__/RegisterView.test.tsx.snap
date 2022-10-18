@@ -202,7 +202,7 @@ exports[`RegisterView matches snapshot 1`] = `
     className="mantine-ibbm6b mantine-AppShell-body"
   >
     <main
-      className="mantine-u9zedp mantine-AppShell-main"
+      className="mantine-1x7lc64 mantine-AppShell-main"
     >
       <div
         className="mantine-8od8ev"
@@ -255,7 +255,7 @@ exports[`RegisterView matches snapshot 1`] = `
               </div>
             </div>
             <div
-              className="mantine-InputWrapper-root mantine-TextInput-root mantine-1m3pqry"
+              className="mantine-InputWrapper-root mantine-TextInput-root mantine-1l2unfb"
             >
               <label
                 className="mantine-InputWrapper-label mantine-TextInput-label mantine-ittua2"

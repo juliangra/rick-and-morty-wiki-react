@@ -2,7 +2,6 @@ type User {
   id: ID!
   email: String!
   username: String!
-  password: String!
   createdAt: String!
   """
   A list of ratings given by this user.
@@ -75,11 +74,10 @@ type Query {
   Fetch all ratings for a given character.
   """
   ratingStatsByCharacterId(characterId: ID!, order: Order!): RatingStats!
-}
-
-type AuthenticationResponse {
-  token: String
-  error: String
+  """
+  Check if a user has rated a given character.
+  """
+  hasRatedCharacter(characterId: ID!, userId: ID!): Boolean!
 }
 
 type Mutation {
@@ -89,4 +87,5 @@ type Mutation {
   Create a rating for a given character by a given user.
   """
   rateCharacter(characterId: ID!, userId: ID!, value: RatingValue!): Rating!
+  deleteRating(characterId: ID!, userId: ID!): Rating!
 }

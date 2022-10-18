@@ -1,24 +1,27 @@
-import { Center, Grid, Group, Image, RingProgress, Text } from '@mantine/core'
+import { Box, Center, Grid, Group, Image, Text } from '@mantine/core'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import DeleteRatingButton from 'src/components/characters/DeleteRatingButton'
 import CustomError from 'src/components/common/CustomError'
 import CustomLoading from 'src/components/common/CustomLoading'
+import RatingSlider from 'src/components/characters/RatingSlider'
+import Stats from 'src/components/characters/Stats'
 import {
   Order,
   useGetCharacterByIdQuery,
-  useGetRatingStatsByCharacterIdQuery
+  useGetRatingQuery,
+  useGetRatingStatsByCharacterIdQuery,
+  useHasRatedCharacterQuery
 } from 'src/graphql/generated/generated'
+import useAuthentication from 'src/hooks/auth/useAuthentication'
+import useRedirectIfInvalidId from 'src/hooks/characters/useRedirectIfInvalidId'
 import View from '../View'
 
 const CharacterView = () => {
   const navigate = useNavigate()
   const { id } = useParams()
 
-  useEffect(() => {
-    if (!id || !parseInt(id)) {
-      navigate('/404')
-    }
-  }, [id])
+  useRedirectIfInvalidId(id)
 
   const {
     data: characterData,
@@ -32,18 +35,45 @@ const CharacterView = () => {
 
   useEffect(() => {
     if (characterData && !characterData.character) {
-      navigate('/characters')
+      navigate('/404')
     }
   }, [characterData])
 
-  // TODO: Use these to sort
   const {
     data: ratingStatsData,
     loading: ratingStatsLoading,
-    error: ratingStatsError
+    error: ratingStatsError,
+    refetch: refetchRatingStats
   } = useGetRatingStatsByCharacterIdQuery({
     variables: { characterId: id as string, order: Order.Desc }
   })
+
+  const { isAuthenticated, decoded } = useAuthentication()
+  const userId = decoded?.id || ''
+
+  const { data: hasRatedCharacterData, refetch: refetchHasRatedCharacter } =
+    useHasRatedCharacterQuery({
+      variables: {
+        characterId: id as string,
+        userId: userId
+      }
+    })
+
+  const { data: ratingData, refetch: refetchRating } = useGetRatingQuery({
+    variables: {
+      characterId: id as string,
+      userId: userId
+    }
+  })
+
+  /**
+   * Refetches neccessary data in a batch.
+   */
+  const refetch = () => {
+    refetchRatingStats()
+    refetchHasRatedCharacter()
+    refetchRating()
+  }
 
   if (characterLoading || ratingStatsLoading) {
     return <CustomLoading />
@@ -63,6 +93,29 @@ const CharacterView = () => {
         <Grid style={{ width: '80%' }}>
           <Grid.Col>
             <Text size="xl">{character?.name}</Text>
+
+            {isAuthenticated && (
+              <Box
+                style={{
+                  width: '20%'
+                }}>
+                <RatingSlider
+                  characterId={id as string}
+                  userId={userId}
+                  refetch={refetch}
+                  value={ratingData?.rating?.value}
+                />
+                {hasRatedCharacterData?.hasRatedCharacter ? (
+                  <DeleteRatingButton
+                    characterId={id as string}
+                    userId={userId}
+                    refetch={refetch}
+                  />
+                ) : (
+                  <Text>No rating given yet</Text>
+                )}
+              </Box>
+            )}
 
             <Group style={{ width: '25%' }}>
               {character?.image && (
@@ -87,23 +140,25 @@ const CharacterView = () => {
                 <Text size="md">Type: {character.location.type}</Text>
               </>
             )}
-            <Group>
-              <RingProgress
-                size={80}
-                roundCaps
-                thickness={8}
-                sections={[{ value: averageRating, color: 'blue' }]}
-                label={<Center>{averageRating}</Center>}
-              />
 
-              <div>
+            <Group>
+              <Grid>
+                <Grid.Col>
+                  <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                    Average rating
+                  </Text>
+                  <Stats rating={averageRating} />
+                </Grid.Col>
+              </Grid>
+
+              <Box>
                 <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-                  Ratings
+                  Number of ratings
                 </Text>
                 <Text weight={700} size="xl">
                   {numberOfRatings}
                 </Text>
-              </div>
+              </Box>
             </Group>
           </Grid.Col>
         </Grid>

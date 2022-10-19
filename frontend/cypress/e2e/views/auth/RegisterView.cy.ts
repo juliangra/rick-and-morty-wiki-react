@@ -1,4 +1,4 @@
-describe('Register', () => {
+describe('RegisterView', () => {
   const invalidEmail = 'not.valid.email'
   const invalidUsername = 't'
   const invalidPassword = 'abcde'

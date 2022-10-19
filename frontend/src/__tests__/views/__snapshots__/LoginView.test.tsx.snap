@@ -202,7 +202,7 @@ exports[`LoginView matches snapshot 1`] = `
     className="mantine-ibbm6b mantine-AppShell-body"
   >
     <main
-      className="mantine-1x7lc64 mantine-AppShell-main"
+      className="mantine-1kfyi4k mantine-AppShell-main"
     >
       <div
         className="mantine-8od8ev"

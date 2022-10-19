@@ -16,3 +16,9 @@ export const RegisterFormSchema = z
     path: ['repeatPassword'],
     message: 'Passwords do not match.'
   })
+
+export const FilterFormSchema = z.object({
+  species: z.string().nullable(),
+  gender: z.string().nullable(),
+  status: z.string().nullable()
+})

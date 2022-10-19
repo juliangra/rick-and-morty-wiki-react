@@ -6,6 +6,7 @@ import CharacterView from 'src/views/characters/CharacterView'
 import DashboardView from 'src/views/DashboardView'
 import HomeView from 'src/views/HomeView'
 import NotFoundView from 'src/views/NotFoundView'
+import FilterProvider from './FilterProvider'
 
 type RouterProviderProps = {
   children: ReactNode
@@ -19,7 +20,14 @@ const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
         <Route path="/login" element={<LoginView />} />
         <Route path="/register" element={<RegisterView />} />
 
-        <Route path="/characters/*" element={<DashboardView />}>
+        <Route
+          path="/characters/*"
+          element={
+            <FilterProvider>
+              <DashboardView />
+            </FilterProvider>
+          }
+        >
           <Route path=":id" element={<CharacterView />} />
           <Route path="*" element={<NotFoundView />} />
         </Route>

@@ -11,7 +11,18 @@ const StyleProvider: React.FC<StyleProviderProps> = ({ children }) => {
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-      <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+      <MantineProvider
+        theme={{
+          colorScheme,
+          globalStyles: () => ({
+            'a:has(button)': {
+              textDecoration: 'none'
+            }
+          })
+        }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
         {children}
       </MantineProvider>
     </ColorSchemeProvider>

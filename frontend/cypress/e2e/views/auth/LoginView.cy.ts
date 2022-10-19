@@ -1,4 +1,4 @@
-describe('Login', () => {
+describe('LoginView', () => {
   const invalidUsername = 't'
 
   const randomAvailableUsername = (Math.random() + 1).toString(36).substring(6)

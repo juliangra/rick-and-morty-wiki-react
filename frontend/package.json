@@ -11,14 +11,13 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "gen:types": "graphql-codegen --config codegen.yml && npm run format",
+    "test:e2e:setup": "npm run test:db:migrate && npm run test:db:seed && npm run test:backend",
     "test:e2e": "npm run test:e2e:setup & cypress open",
-    "test:e2e:setup": "npm run test:db:migrate && npm run test:backend",
-    "test:db:delete": "rm ../db/test-db.db",
-    "posttest:e2e": "npm run test:db:delete",
-    "posttest:e2e:ci": "npm run test:db:delete",
-    "test:db:migrate": "cd ../backend && DATABASE_URL=file:../../db/test-db.db npm run db:migrate",
-    "test:backend": "cd ../backend && DATABASE_URL=file:../../db/test-db.db PORT=8080 node .",
-    "test:e2e:ci": "npm run test:e2e:setup & cypress run"
+    "test:db:migrate": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project3_test\" npm run db:migrate",
+    "test:db:seed": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project3_test\" npm run db:seed",
+    "test:backend": "cd ../backend && npm run build && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project3_test\" PORT=8080 node . &",
+    "test:db:reset": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project3_test\" npm run db:reset",
+    "test:e2e:ci": "npm run test:e2e:setup && cypress run && npm run test:db:reset"
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",

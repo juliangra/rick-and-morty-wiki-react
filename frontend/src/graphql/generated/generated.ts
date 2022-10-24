@@ -203,7 +203,7 @@ export type Query = {
   ratings: Array<Rating>
   user?: Maybe<User>
   /** Fetch all users. */
-  users: Array<User>
+  users: Users
 }
 
 export type QueryCharacterArgs = {
@@ -257,7 +257,6 @@ export type QueryRatingArgs = {
 
 export type QueryRatingStatsByCharacterIdArgs = {
   characterId: Scalars['ID']
-  order: Order
 }
 
 export type QueryRatingsArgs = {
@@ -266,6 +265,11 @@ export type QueryRatingsArgs = {
 
 export type QueryUserArgs = {
   username: Scalars['String']
+}
+
+export type QueryUsersArgs = {
+  orderBy: Order
+  page: Scalars['Int']
 }
 
 /**
@@ -304,6 +308,13 @@ export type User = {
   username: Scalars['String']
 }
 
+/** A wrapper to be used in paginated queries. */
+export type Users = {
+  __typename?: 'Users'
+  count: Scalars['Int']
+  users: Array<User>
+}
+
 export type DefaultCharacterFragment = {
   __typename?: 'Character'
   id?: string | null
@@ -319,6 +330,20 @@ export type DefaultCharacterFragment = {
     dimension?: string | null
     type?: string | null
   } | null
+}
+
+export type DefaultUserFragment = {
+  __typename?: 'User'
+  id: string
+  email: string
+  username: string
+  createdAt: string
+  ratings?: Array<{
+    __typename?: 'Rating'
+    userId: string
+    characterId: string
+    value: number
+  }> | null
 }
 
 export type DefaultRatingFragment = {
@@ -443,7 +468,6 @@ export type GetRatingQuery = {
 
 export type GetRatingStatsByCharacterIdQueryVariables = Exact<{
   characterId: Scalars['ID']
-  order: Order
 }>
 
 export type GetRatingStatsByCharacterIdQuery = {
@@ -467,6 +491,32 @@ export type HasRatedCharacterQueryVariables = Exact<{
 
 export type HasRatedCharacterQuery = { __typename?: 'Query'; hasRatedCharacter: boolean }
 
+export type GetUsersQueryVariables = Exact<{
+  page: Scalars['Int']
+  orderBy: Order
+}>
+
+export type GetUsersQuery = {
+  __typename?: 'Query'
+  users: {
+    __typename?: 'Users'
+    count: number
+    users: Array<{
+      __typename?: 'User'
+      id: string
+      email: string
+      username: string
+      createdAt: string
+      ratings?: Array<{
+        __typename?: 'Rating'
+        userId: string
+        characterId: string
+        value: number
+      }> | null
+    }>
+  }
+}
+
 export const DefaultCharacterFragmentDoc = gql`
   fragment DefaultCharacter on Character {
     id
@@ -480,6 +530,19 @@ export const DefaultCharacterFragmentDoc = gql`
       name
       dimension
       type
+    }
+  }
+`
+export const DefaultUserFragmentDoc = gql`
+  fragment DefaultUser on User {
+    id
+    email
+    username
+    createdAt
+    ratings {
+      userId
+      characterId
+      value
     }
   }
 `
@@ -826,8 +889,8 @@ export type GetRatingQueryHookResult = ReturnType<typeof useGetRatingQuery>
 export type GetRatingLazyQueryHookResult = ReturnType<typeof useGetRatingLazyQuery>
 export type GetRatingQueryResult = Apollo.QueryResult<GetRatingQuery, GetRatingQueryVariables>
 export const GetRatingStatsByCharacterIdDocument = gql`
-  query GetRatingStatsByCharacterId($characterId: ID!, $order: Order!) {
-    ratingStatsByCharacterId(characterId: $characterId, order: $order) {
+  query GetRatingStatsByCharacterId($characterId: ID!) {
+    ratingStatsByCharacterId(characterId: $characterId) {
       average
       count
     }
@@ -847,7 +910,6 @@ export const GetRatingStatsByCharacterIdDocument = gql`
  * const { data, loading, error } = useGetRatingStatsByCharacterIdQuery({
  *   variables: {
  *      characterId: // value for 'characterId'
- *      order: // value for 'order'
  *   },
  * });
  */
@@ -972,3 +1034,47 @@ export type HasRatedCharacterQueryResult = Apollo.QueryResult<
   HasRatedCharacterQuery,
   HasRatedCharacterQueryVariables
 >
+export const GetUsersDocument = gql`
+  query GetUsers($page: Int!, $orderBy: Order!) {
+    users(page: $page, orderBy: $orderBy) {
+      users {
+        ...DefaultUser
+      }
+      count
+    }
+  }
+  ${DefaultUserFragmentDoc}
+`
+
+/**
+ * __useGetUsersQuery__
+ *
+ * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      orderBy: // value for 'orderBy'
+ *   },
+ * });
+ */
+export function useGetUsersQuery(
+  baseOptions: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options)
+}
+export function useGetUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetUsersQuery, GetUsersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options)
+}
+export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>
+export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>
+export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>

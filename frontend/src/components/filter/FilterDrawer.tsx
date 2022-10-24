@@ -15,7 +15,8 @@ const FilterDrawer = () => {
       onClose={() => setOpen(false)}
       title="Filter characters"
       padding="xl"
-      size="xl">
+      size="xl"
+    >
       <form onSubmit={form.onSubmit((values) => handleOnSubmit(values))} data-cy="filter-form">
         <Select
           label="Species"
@@ -51,7 +52,8 @@ const FilterDrawer = () => {
               color="red"
               onClick={() => handleOnSubmit()}
               fullWidth
-              leftIcon={<IconFilterOff size={16} />}>
+              leftIcon={<IconFilterOff size={16} />}
+            >
               Reset
             </Button>
           </Grid.Col>

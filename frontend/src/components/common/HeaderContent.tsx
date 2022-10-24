@@ -23,13 +23,18 @@ const HeaderContent = () => {
     <Grid justify="center" align="center">
       <Grid.Col span={6}>
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <Text size={theme.fontSizes.xl} color={theme.colors.indigo[6]}>
+          <Text size={theme.fontSizes.xl} color={theme.colors.indigo[5]}>
             Rick and Morty API
           </Text>
         </Link>
       </Grid.Col>
       <Grid.Col span={6}>
         <Group position="right">
+          <Link to="/leaderboard" style={{ textDecoration: 'none' }}>
+            <Text size={theme.fontSizes.md} color={theme.colors.indigo[5]}>
+              Leaderboard
+            </Text>
+          </Link>
           <Switch
             size="lg"
             color={'dark'}

@@ -1,6 +1,6 @@
 import { ColorScheme } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
-import { LocalStorageKey } from '../types/storage'
+import { LocalStorageKey } from '../../types/storage'
 
 /**
  * Manages the theme state persistently in the local storage.

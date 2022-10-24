@@ -7,7 +7,6 @@ import CustomLoading from 'src/components/common/CustomLoading'
 import RatingSlider from 'src/components/characters/RatingSlider'
 import Stats from 'src/components/characters/Stats'
 import {
-  Order,
   useGetCharacterByIdQuery,
   useGetRatingQuery,
   useGetRatingStatsByCharacterIdQuery,
@@ -45,7 +44,7 @@ const CharacterView = () => {
     error: ratingStatsError,
     refetch: refetchRatingStats
   } = useGetRatingStatsByCharacterIdQuery({
-    variables: { characterId: id as string, order: Order.Desc }
+    variables: { characterId: id as string }
   })
 
   const { isAuthenticated, decoded } = useAuthentication()

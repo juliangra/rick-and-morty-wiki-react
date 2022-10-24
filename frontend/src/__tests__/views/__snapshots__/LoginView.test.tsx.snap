@@ -23,7 +23,7 @@ exports[`LoginView matches snapshot 1`] = `
           }
         >
           <div
-            className="mantine-Text-root mantine-1mgsv6d"
+            className="mantine-Text-root mantine-sxjqga"
           >
             Rick and Morty API
           </div>
@@ -35,6 +35,21 @@ exports[`LoginView matches snapshot 1`] = `
         <div
           className="mantine-Group-root mantine-puhv18"
         >
+          <a
+            href="/leaderboard"
+            onClick={[Function]}
+            style={
+              Object {
+                "textDecoration": "none",
+              }
+            }
+          >
+            <div
+              className="mantine-Text-root mantine-1s5yosa"
+            >
+              Leaderboard
+            </div>
+          </a>
           <div
             className="mantine-Switch-root mantine-15po0m8"
           >

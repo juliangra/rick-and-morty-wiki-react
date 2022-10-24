@@ -1,0 +1,11 @@
+fragment DefaultUser on User {
+  id
+  email
+  username
+  createdAt
+  ratings {
+    userId
+    characterId
+    value
+  }
+}

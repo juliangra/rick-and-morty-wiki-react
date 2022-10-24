@@ -7,7 +7,6 @@ import DashboardView from 'src/views/DashboardView'
 import HomeView from 'src/views/HomeView'
 import LeaderboardView from 'src/views/LeaderboardView'
 import NotFoundView from 'src/views/NotFoundView'
-import FilterProvider from './FilterProvider'
 
 type RouterProviderProps = {
   children: ReactNode
@@ -22,14 +21,7 @@ const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
         <Route path="/register" element={<RegisterView />} />
         <Route path="/leaderboard" element={<LeaderboardView />} />
 
-        <Route
-          path="/characters/*"
-          element={
-            <FilterProvider>
-              <DashboardView />
-            </FilterProvider>
-          }
-        >
+        <Route path="/characters/*" element={<DashboardView />}>
           <Route path=":id" element={<CharacterView />} />
           <Route path="*" element={<NotFoundView />} />
         </Route>

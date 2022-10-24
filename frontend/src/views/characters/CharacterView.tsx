@@ -94,8 +94,7 @@ const CharacterView = () => {
             leftIcon={<IconChevronLeft size={16} />}
             onClick={() => {
               navigate(-1)
-            }}
-          >
+            }}>
             Back
           </Button>
           <Text size="xl">{character?.name}</Text>
@@ -104,8 +103,7 @@ const CharacterView = () => {
             <Box
               style={{
                 width: '20%'
-              }}
-            >
+              }}>
               <RatingSlider
                 characterId={id as string}
                 userId={userId}

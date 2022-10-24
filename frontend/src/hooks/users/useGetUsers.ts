@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useReactiveVar } from '@apollo/client'
 import { Order, useGetUsersQuery } from 'src/graphql/generated/generated'
+import { orderByVar } from 'src/state/leaderboard'
 
 /**
  * Handles logic related to fetching users, paginated and in a given order.
@@ -7,22 +8,18 @@ import { Order, useGetUsersQuery } from 'src/graphql/generated/generated'
  * @returns all neccessary objects and handlers for getting users.
  */
 const useGetUsers = (page: number) => {
-  const [orderBy, setOrderBy] = useState<Order>(Order.Desc)
+  const orderBy = useReactiveVar(orderByVar)
 
-  const { data, loading, error, refetch } = useGetUsersQuery({
+  const { data, loading, error } = useGetUsersQuery({
     variables: { page, orderBy }
   })
 
   const handleOnChange = (value: string) => {
     const orderBy = value.toLowerCase() as Order
-    setOrderBy(orderBy)
+    orderByVar(orderBy)
   }
 
-  useEffect(() => {
-    refetch({ page, orderBy })
-  }, [page, orderBy])
-
-  return { data, loading, error, handleOnChange, page, orderBy }
+  return { data, loading, error, handleOnChange, page }
 }
 
 export default useGetUsers

@@ -11,7 +11,7 @@
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "db:reset": "prisma migrate reset --force && rm ./db/static/characters.json",
+    "db:reset": "rm ./db/static/characters.json && prisma migrate reset --force",
     "db:studio": "prisma studio",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",

@@ -1,7 +1,7 @@
 import { useForm, zodResolver } from '@mantine/form'
-import { useContext, useState } from 'react'
-import { FilterContext } from 'src/context/FilterContext'
+import { useState } from 'react'
 import { FilterFormSchema } from 'src/schemas/forms'
+import { filterDrawerIsOpenVar, filterVar } from 'src/state/dashboard'
 import { FilterFormType } from 'src/types/forms'
 
 const initialValues: FilterFormType = {
@@ -17,7 +17,6 @@ const initialValues: FilterFormType = {
  * @returns all neccessary objects and handlers for interacting with the form.
  */
 const useFilterForm = () => {
-  const { setOpen, setFilters } = useContext(FilterContext)
   const [formValues] = useState<FilterFormType>(initialValues)
 
   const form = useForm({
@@ -28,8 +27,8 @@ const useFilterForm = () => {
   const handleOnSubmit = (values?: FilterFormType) => {
     if (!values) form.reset()
 
-    setFilters(values || initialValues)
-    setOpen(false)
+    filterVar(values || initialValues)
+    filterDrawerIsOpenVar(false)
   }
 
   return { form, handleOnSubmit }

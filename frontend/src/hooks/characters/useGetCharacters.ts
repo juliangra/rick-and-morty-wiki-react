@@ -1,10 +1,13 @@
+import { useReactiveVar } from '@apollo/client'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useEffect, useState } from 'react'
-import { FilterCharacterInput, useGetCharactersQuery } from 'src/graphql/generated/generated'
+import { useGetCharactersQuery } from 'src/graphql/generated/generated'
+import { filterVar } from 'src/state/dashboard'
 
-const useGetCharacters = (page: number, filter?: FilterCharacterInput) => {
+const useGetCharacters = (page: number) => {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearchInput] = useDebouncedValue(searchInput, 400)
+  const filter = useReactiveVar(filterVar)
 
   const { data, loading, error, refetch } = useGetCharactersQuery({
     variables: { page, filter },

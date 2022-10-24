@@ -57,11 +57,6 @@ frontend:e2e:
     - npm start & npx wait-on http://localhost:3000
     - cd ../backend
     - npm ci
-    # # Setup simple backend
-    # - npm run build
-    # - npm run db:migrate
-    # - npm run db:seed
-    # # Start backend server in background
-    # - PORT=8080 node . &
     - cd ../frontend
+    - npx cypress install
     - npm run test:e2e:ci

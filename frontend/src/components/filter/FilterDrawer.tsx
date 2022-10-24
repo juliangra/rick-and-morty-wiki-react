@@ -1,18 +1,18 @@
+import { useReactiveVar } from '@apollo/client'
 import { Drawer, Select, Button, Grid } from '@mantine/core'
 import { IconFilter, IconFilterOff } from '@tabler/icons'
-import React, { useContext } from 'react'
 import { FILTER_SPECIES, FILTER_GENDERS, FILTER_STATUS } from 'src/constants/filter'
-import { FilterContext } from 'src/context/FilterContext'
 import useFilterForm from 'src/hooks/forms/useFilterForm'
+import { filterDrawerIsOpenVar } from 'src/state/dashboard'
 
 const FilterDrawer = () => {
-  const { open, setOpen } = useContext(FilterContext)
+  const open = useReactiveVar(filterDrawerIsOpenVar)
   const { form, handleOnSubmit } = useFilterForm()
 
   return (
     <Drawer
       opened={open}
-      onClose={() => setOpen(false)}
+      onClose={() => filterDrawerIsOpenVar(false)}
       title="Filter characters"
       padding="xl"
       size="xl"

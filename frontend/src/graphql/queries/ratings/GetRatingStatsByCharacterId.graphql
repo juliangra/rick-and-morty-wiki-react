@@ -1,5 +1,5 @@
-query GetRatingStatsByCharacterId($characterId: ID!, $order: Order!) {
-  ratingStatsByCharacterId(characterId: $characterId, order: $order) {
+query GetRatingStatsByCharacterId($characterId: ID!) {
+  ratingStatsByCharacterId(characterId: $characterId) {
     average
     count
   }

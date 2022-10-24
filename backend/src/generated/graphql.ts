@@ -11,6 +11,7 @@ export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -85,7 +86,7 @@ export type Query = {
   ratings: Array<Rating>
   user?: Maybe<User>
   /** Fetch all users. */
-  users: Array<User>
+  users: Users
 }
 
 export type QueryHasRatedCharacterArgs = {
@@ -100,7 +101,6 @@ export type QueryRatingArgs = {
 
 export type QueryRatingStatsByCharacterIdArgs = {
   characterId: Scalars['ID']
-  order: Order
 }
 
 export type QueryRatingsArgs = {
@@ -109,6 +109,11 @@ export type QueryRatingsArgs = {
 
 export type QueryUserArgs = {
   username: Scalars['String']
+}
+
+export type QueryUsersArgs = {
+  orderBy: Order
+  page: Scalars['Int']
 }
 
 /**
@@ -145,6 +150,12 @@ export type User = {
   /** A list of ratings given by this user. */
   ratings?: Maybe<Array<Rating>>
   username: Scalars['String']
+}
+
+export type Users = {
+  __typename?: 'Users'
+  count: Scalars['Int']
+  users: Array<User>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -245,6 +256,7 @@ export type ResolversTypes = {
   RatingValue: RatingValue
   String: ResolverTypeWrapper<Scalars['String']>
   User: ResolverTypeWrapper<UserModel>
+  Users: ResolverTypeWrapper<Omit<Users, 'users'> & { users: Array<ResolversTypes['User']> }>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -261,6 +273,7 @@ export type ResolversParentTypes = {
   RatingStats: RatingStats
   String: Scalars['String']
   User: UserModel
+  Users: Omit<Users, 'users'> & { users: Array<ResolversParentTypes['User']> }
 }
 
 export type AuthenticationResponseResolvers<
@@ -330,7 +343,7 @@ export type QueryResolvers<
     ResolversTypes['RatingStats'],
     ParentType,
     ContextType,
-    RequireFields<QueryRatingStatsByCharacterIdArgs, 'characterId' | 'order'>
+    RequireFields<QueryRatingStatsByCharacterIdArgs, 'characterId'>
   >
   ratings?: Resolver<
     Array<ResolversTypes['Rating']>,
@@ -344,7 +357,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryUserArgs, 'username'>
   >
-  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
+  users?: Resolver<
+    ResolversTypes['Users'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryUsersArgs, 'orderBy' | 'page'>
+  >
 }
 
 export type RatingResolvers<
@@ -378,6 +396,15 @@ export type UserResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
+export type UsersResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Users'] = ResolversParentTypes['Users']
+> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type Resolvers<ContextType = Context> = {
   AuthenticationResponse?: AuthenticationResponseResolvers<ContextType>
   Character?: CharacterResolvers<ContextType>
@@ -386,4 +413,5 @@ export type Resolvers<ContextType = Context> = {
   Rating?: RatingResolvers<ContextType>
   RatingStats?: RatingStatsResolvers<ContextType>
   User?: UserResolvers<ContextType>
+  Users?: UsersResolvers<ContextType>
 }

@@ -1,6 +1,6 @@
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { ReactNode } from 'react'
-import useColorScheme from '../hooks/useColorScheme'
+import useColorScheme from '../hooks/common/useColorScheme'
 
 type StyleProviderProps = {
   children: ReactNode

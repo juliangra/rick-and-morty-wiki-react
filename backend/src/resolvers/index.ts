@@ -1,4 +1,4 @@
-import { JWT_SECRET } from '../constants'
+import { CURSOR_OFFSET, JWT_SECRET } from '../constants'
 import { isValidEmail } from '../auth/isValidEmail'
 import { isValidUsername } from '../auth/isValidUsername'
 import { Resolvers } from '../generated/graphql'
@@ -8,15 +8,20 @@ import jwt from 'jsonwebtoken'
 
 const resolvers: Resolvers = {
   Query: {
-    users: (_root, _args, context) => {
+    users: async (_root, args, context) => {
+      const page = args.page
+      const orderBy = args.orderBy
+
+      const count = await context.prisma.user.count()
+
       // Ensure that the users have connected ratings
-      return context.prisma.user.findMany({
+      const users = await context.prisma.user.findMany({
         select: {
+          id: true,
           email: true,
           username: true,
-          password: true,
           createdAt: true,
-          id: true,
+          password: true,
           ratings: {
             select: {
               userId: true,
@@ -24,8 +29,20 @@ const resolvers: Resolvers = {
               value: true
             }
           }
-        }
+        },
+        orderBy: {
+          ratings: {
+            _count: orderBy
+          }
+        },
+        take: CURSOR_OFFSET,
+        skip: CURSOR_OFFSET * (page - 1)
       })
+
+      return {
+        users,
+        count
+      }
     },
 
     user: (_root, args, context) => {
@@ -62,7 +79,6 @@ const resolvers: Resolvers = {
 
     ratingStatsByCharacterId: async (_root, args, context) => {
       const characterId = parseInt(args.characterId)
-      const order = args.order
 
       const average = await context.prisma.rating
         .aggregate({
@@ -71,9 +87,6 @@ const resolvers: Resolvers = {
           },
           _avg: {
             value: true
-          },
-          orderBy: {
-            value: order
           }
         })
         .then((res) => res._avg?.value)

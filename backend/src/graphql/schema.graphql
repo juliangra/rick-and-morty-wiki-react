@@ -10,6 +10,15 @@ type User {
 }
 
 """
+A wrapper to be used in paginated queries when fetching users.
+In order to provide pagination, we need to know the count of all users.
+"""
+type Users {
+  users: [User!]!
+  count: Int!
+}
+
+"""
 A character from the third-party API (the Rick and Morty API).
 We only care about the ID of the character in our own API, as we can use this
 to fetch the character's details from the third-party API.
@@ -59,7 +68,7 @@ type Query {
   """
   Fetch all users.
   """
-  users: [User!]!
+  users(page: Int!, orderBy: Order!): Users!
   user(username: String!): User
   """
   Fetch all ratings in a given order.
@@ -73,7 +82,7 @@ type Query {
   """
   Fetch all ratings for a given character.
   """
-  ratingStatsByCharacterId(characterId: ID!, order: Order!): RatingStats!
+  ratingStatsByCharacterId(characterId: ID!): RatingStats!
   """
   Check if a user has rated a given character.
   """

@@ -1,0 +1,8 @@
+query GetUsers($page: Int!, $orderBy: Order!) {
+  users(page: $page, orderBy: $orderBy) {
+    users {
+      ...DefaultUser
+    }
+    count
+  }
+}

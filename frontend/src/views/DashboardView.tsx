@@ -1,7 +1,7 @@
 import { Outlet, useParams } from 'react-router'
 import { Box, Button, Center, Container, Grid, Group, Pagination, Text } from '@mantine/core'
 import CharacterCard from 'src/components/characters/CharacterCard'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import CustomLoading from 'src/components/common/CustomLoading'
 import View from './View'
 import useGetCharacters from 'src/hooks/characters/useGetCharacters'
@@ -9,16 +9,13 @@ import CustomError from 'src/components/common/CustomError'
 import TextField from 'src/components/forms/TextField'
 import { IconFilter, IconX, IconZoomCancel } from '@tabler/icons'
 import FilterDrawer from 'src/components/filter/FilterDrawer'
-import { FilterContext } from 'src/context/FilterContext'
+import { filterDrawerIsOpenVar } from 'src/state/dashboard'
 
 const DashboardView = () => {
   const { id } = useParams()
   const [page, setPage] = useState(1)
 
-  // Filter context to share state and avoid prop drilling
-  const { setOpen, filters } = useContext(FilterContext)
-
-  const { data, loading, error, searchInput, setSearchInput } = useGetCharacters(page, filters)
+  const { data, loading, error, searchInput, setSearchInput } = useGetCharacters(page)
 
   const characters = data?.characters?.results
   const numberOfPages = data?.characters?.info?.pages || 0
@@ -34,7 +31,9 @@ const DashboardView = () => {
             <Text size="xl">Characters</Text>
             <Text>Search for any character from any episode of Rick and Morty</Text>
             <Group>
-              <Button leftIcon={<IconFilter size={16} />} onClick={() => setOpen(true)}>
+              <Button
+                leftIcon={<IconFilter size={16} />}
+                onClick={() => filterDrawerIsOpenVar(true)}>
                 Filter
               </Button>
             </Group>

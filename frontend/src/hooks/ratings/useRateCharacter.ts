@@ -39,7 +39,7 @@ const useRateCharacter = ({ characterId, userId, refetch, defaultValue }: RateCh
   const onChangeEnd = async (value: number) => {
     // Ensure value is a valid rating
     try {
-      RatingSchema.parse(value)
+      RatingSchema.safeParse(value)
     } catch (error) {
       if (error instanceof ZodError) {
         setError(error.issues[0].message)

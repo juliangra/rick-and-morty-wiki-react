@@ -1,3 +1,4 @@
+import { useReactiveVar } from '@apollo/client'
 import { Box, Center, Grid, Pagination, Select } from '@mantine/core'
 import { IconSortAscending, IconSortDescending } from '@tabler/icons'
 import { useState } from 'react'
@@ -6,12 +7,15 @@ import CustomLoading from 'src/components/common/CustomLoading'
 import UserCard from 'src/components/leaderboard/UserCard'
 import { Order } from 'src/graphql/generated/generated'
 import useGetUsers from 'src/hooks/users/useGetUsers'
+import { orderByVar } from 'src/state/leaderboard'
 import capitalize from 'src/utils/capitalize'
 import View from './View'
 
 const LeaderboardView = () => {
   const [page, setPage] = useState(1)
-  const { data, loading, error, handleOnChange, orderBy } = useGetUsers(page)
+  const orderBy = useReactiveVar(orderByVar)
+
+  const { data, loading, error, handleOnChange } = useGetUsers(page)
 
   const numberOfPages = data?.users.info.pages || 0
   const availableOrders = Object.keys(Order)

@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt'
-import { CURSOR_OFFSET } from '../src/constants'
 import { context } from '../src/context'
+import bcrypt from 'bcrypt'
 import { databaseIsSeeded, getRandomRating, upsertTestUser } from '../src/utils/seed'
+import { CURSOR_OFFSET } from '../src/constants'
 import downloadCharactersFromApi from './download'
 import populateCharactersFromApi from './populate'
 

@@ -28,14 +28,34 @@ export type AuthenticationResponse = {
   token?: Maybe<Scalars['String']>
 }
 
-/**
- * A character from the third-party API (the Rick and Morty API).
- * We only care about the ID of the character in our own API, as we can use this
- * to fetch the character's details from the third-party API.
- */
 export type Character = {
   __typename?: 'Character'
+  gender: Scalars['String']
   id: Scalars['ID']
+  image: Scalars['String']
+  location: Scalars['String']
+  name: Scalars['String']
+  species: Scalars['String']
+  status: Scalars['String']
+  type: Scalars['String']
+}
+
+/**
+ * A wrapper to be used in paginated queries when fetching characters.
+ * In order to provide pagination, we need to know the count.
+ */
+export type Characters = {
+  __typename?: 'Characters'
+  info: PageInfo
+  results: Array<Character>
+}
+
+export type FilterCharacterInput = {
+  gender?: InputMaybe<Scalars['String']>
+  name?: InputMaybe<Scalars['String']>
+  species?: InputMaybe<Scalars['String']>
+  status?: InputMaybe<Scalars['String']>
+  type?: InputMaybe<Scalars['String']>
 }
 
 export type Mutation = {
@@ -74,8 +94,16 @@ export enum Order {
   Desc = 'desc'
 }
 
+export type PageInfo = {
+  __typename?: 'PageInfo'
+  count: Scalars['Int']
+  pages: Scalars['Int']
+}
+
 export type Query = {
   __typename?: 'Query'
+  character?: Maybe<Character>
+  characters: Characters
   /** Check if a user has rated a given character. */
   hasRatedCharacter: Scalars['Boolean']
   /** Fetch a given rating by the compund ID of userId and characterId. */
@@ -85,8 +113,16 @@ export type Query = {
   /** Fetch all ratings in a given order. */
   ratings: Array<Rating>
   user?: Maybe<User>
-  /** Fetch all users. */
   users: Users
+}
+
+export type QueryCharacterArgs = {
+  id: Scalars['ID']
+}
+
+export type QueryCharactersArgs = {
+  filter?: InputMaybe<FilterCharacterInput>
+  page?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryHasRatedCharacterArgs = {
@@ -112,8 +148,8 @@ export type QueryUserArgs = {
 }
 
 export type QueryUsersArgs = {
-  orderBy: Order
-  page: Scalars['Int']
+  orderBy?: InputMaybe<Order>
+  page?: InputMaybe<Scalars['Int']>
 }
 
 /**
@@ -152,10 +188,14 @@ export type User = {
   username: Scalars['String']
 }
 
+/**
+ * A wrapper to be used in paginated queries when fetching users.
+ * In order to provide pagination, we need to know the count.
+ */
 export type Users = {
   __typename?: 'Users'
-  count: Scalars['Int']
-  users: Array<User>
+  info: PageInfo
+  results: Array<User>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -245,18 +285,23 @@ export type ResolversTypes = {
   AuthenticationResponse: ResolverTypeWrapper<AuthenticationResponse>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   Character: ResolverTypeWrapper<CharacterModel>
+  Characters: ResolverTypeWrapper<
+    Omit<Characters, 'results'> & { results: Array<ResolversTypes['Character']> }
+  >
+  FilterCharacterInput: FilterCharacterInput
   Float: ResolverTypeWrapper<Scalars['Float']>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Int: ResolverTypeWrapper<Scalars['Int']>
   Mutation: ResolverTypeWrapper<{}>
   Order: Order
+  PageInfo: ResolverTypeWrapper<PageInfo>
   Query: ResolverTypeWrapper<{}>
   Rating: ResolverTypeWrapper<RatingModel>
   RatingStats: ResolverTypeWrapper<RatingStats>
   RatingValue: RatingValue
   String: ResolverTypeWrapper<Scalars['String']>
   User: ResolverTypeWrapper<UserModel>
-  Users: ResolverTypeWrapper<Omit<Users, 'users'> & { users: Array<ResolversTypes['User']> }>
+  Users: ResolverTypeWrapper<Omit<Users, 'results'> & { results: Array<ResolversTypes['User']> }>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -264,16 +309,19 @@ export type ResolversParentTypes = {
   AuthenticationResponse: AuthenticationResponse
   Boolean: Scalars['Boolean']
   Character: CharacterModel
+  Characters: Omit<Characters, 'results'> & { results: Array<ResolversParentTypes['Character']> }
+  FilterCharacterInput: FilterCharacterInput
   Float: Scalars['Float']
   ID: Scalars['ID']
   Int: Scalars['Int']
   Mutation: {}
+  PageInfo: PageInfo
   Query: {}
   Rating: RatingModel
   RatingStats: RatingStats
   String: Scalars['String']
   User: UserModel
-  Users: Omit<Users, 'users'> & { users: Array<ResolversParentTypes['User']> }
+  Users: Omit<Users, 'results'> & { results: Array<ResolversParentTypes['User']> }
 }
 
 export type AuthenticationResponseResolvers<
@@ -289,7 +337,23 @@ export type CharacterResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Character'] = ResolversParentTypes['Character']
 > = {
+  gender?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  image?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  species?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type CharactersResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['Characters'] = ResolversParentTypes['Characters']
+> = {
+  info?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>
+  results?: Resolver<Array<ResolversTypes['Character']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -323,10 +387,31 @@ export type MutationResolvers<
   >
 }
 
+export type PageInfoResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
+> = {
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  pages?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  character?: Resolver<
+    Maybe<ResolversTypes['Character']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryCharacterArgs, 'id'>
+  >
+  characters?: Resolver<
+    ResolversTypes['Characters'],
+    ParentType,
+    ContextType,
+    Partial<QueryCharactersArgs>
+  >
   hasRatedCharacter?: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
@@ -357,12 +442,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryUserArgs, 'username'>
   >
-  users?: Resolver<
-    ResolversTypes['Users'],
-    ParentType,
-    ContextType,
-    RequireFields<QueryUsersArgs, 'orderBy' | 'page'>
-  >
+  users?: Resolver<ResolversTypes['Users'], ParentType, ContextType, Partial<QueryUsersArgs>>
 }
 
 export type RatingResolvers<
@@ -400,15 +480,17 @@ export type UsersResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes['Users'] = ResolversParentTypes['Users']
 > = {
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
+  info?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>
+  results?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type Resolvers<ContextType = Context> = {
   AuthenticationResponse?: AuthenticationResponseResolvers<ContextType>
   Character?: CharacterResolvers<ContextType>
+  Characters?: CharactersResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
+  PageInfo?: PageInfoResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Rating?: RatingResolvers<ContextType>
   RatingStats?: RatingStatsResolvers<ContextType>

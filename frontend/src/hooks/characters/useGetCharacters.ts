@@ -1,8 +1,8 @@
 import { useDebouncedValue } from '@mantine/hooks'
 import { useEffect, useState } from 'react'
-import { FilterCharacter, useGetCharactersQuery } from 'src/graphql/generated/generated'
+import { FilterCharacterInput, useGetCharactersQuery } from 'src/graphql/generated/generated'
 
-const useGetCharacters = (page: number, filter?: FilterCharacter) => {
+const useGetCharacters = (page: number, filter?: FilterCharacterInput) => {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearchInput] = useDebouncedValue(searchInput, 400)
 

@@ -1,14 +1,10 @@
 fragment DefaultCharacter on Character {
   id
   name
-  gender
-  image
-  species
   status
-  location {
-    id
-    name
-    dimension
-    type
-  }
+  species
+  type
+  gender
+  location
+  image
 }

@@ -2,11 +2,11 @@
 
 destination="/var/www/html/project3"
 
-# Install dependencies
+echo "📦 Installing dependencies..."
 npm ci
 
-# Builds project
-npm run build
+echo "🛠️ Building project..."
+npm run build:prod
 
 # If folder exists, remove it
 if [ -d $destination ]
@@ -17,5 +17,7 @@ fi
 # Create folder
 sudo mkdir $destination
 
-# Copy files from build to destination
+echo "📂 Copying build to destination directory..."
 sudo rsync -a build/ $destination
+
+echo "🚀 Deployed frontend! It is now live at http://it2810-11.idi.ntnu.no/project3/"

@@ -1,5 +1,4 @@
 .env
-dist
 
 node_modules
 
@@ -20,6 +19,7 @@ query_engine-windows.dll.node
 
 *tmp.db
 dist/
+db/static/characters.json
 
 *.tsbuildinfo
 .prisma
@@ -34,7 +34,6 @@ coverage
 node_modules
 .pnpm-store/
 yarn-error.log
-.DS_Store
 pnpm-debug.log
 .pnpm-debug.log
 
@@ -49,3 +48,4 @@ reproductions/*
 dev.db
 junit.xml
 /output.txt
+

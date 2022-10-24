@@ -13,7 +13,6 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  Upload: any
 }
 
 export type AuthenticationResponse = {
@@ -22,119 +21,34 @@ export type AuthenticationResponse = {
   token?: Maybe<Scalars['String']>
 }
 
-export enum CacheControlScope {
-  Private = 'PRIVATE',
-  Public = 'PUBLIC'
-}
-
 export type Character = {
   __typename?: 'Character'
-  /** Time at which the character was created in the database. */
-  created?: Maybe<Scalars['String']>
-  /** Episodes in which this character appeared. */
-  episode: Array<Maybe<Episode>>
-  /** The gender of the character ('Female', 'Male', 'Genderless' or 'unknown'). */
-  gender?: Maybe<Scalars['String']>
-  /** The id of the character. */
-  id?: Maybe<Scalars['ID']>
-  /**
-   * Link to the character's image.
-   * All images are 300x300px and most are medium shots or portraits since they are intended to be used as avatars.
-   */
-  image?: Maybe<Scalars['String']>
-  /** The character's last known location */
-  location?: Maybe<Location>
-  /** The name of the character. */
-  name?: Maybe<Scalars['String']>
-  /** The character's origin location */
-  origin?: Maybe<Location>
-  /** The species of the character. */
-  species?: Maybe<Scalars['String']>
-  /** The status of the character ('Alive', 'Dead' or 'unknown'). */
-  status?: Maybe<Scalars['String']>
-  /** The type or subspecies of the character. */
-  type?: Maybe<Scalars['String']>
+  gender: Scalars['String']
+  id: Scalars['ID']
+  image: Scalars['String']
+  location: Scalars['String']
+  name: Scalars['String']
+  species: Scalars['String']
+  status: Scalars['String']
+  type: Scalars['String']
 }
 
+/**
+ * A wrapper to be used in paginated queries when fetching characters.
+ * In order to provide pagination, we need to know the count.
+ */
 export type Characters = {
   __typename?: 'Characters'
-  info?: Maybe<Info>
-  results?: Maybe<Array<Maybe<Character>>>
+  info: PageInfo
+  results: Array<Character>
 }
 
-export type Episode = {
-  __typename?: 'Episode'
-  /** The air date of the episode. */
-  air_date?: Maybe<Scalars['String']>
-  /** List of characters who have been seen in the episode. */
-  characters: Array<Maybe<Character>>
-  /** Time at which the episode was created in the database. */
-  created?: Maybe<Scalars['String']>
-  /** The code of the episode. */
-  episode?: Maybe<Scalars['String']>
-  /** The id of the episode. */
-  id?: Maybe<Scalars['ID']>
-  /** The name of the episode. */
-  name?: Maybe<Scalars['String']>
-}
-
-export type Episodes = {
-  __typename?: 'Episodes'
-  info?: Maybe<Info>
-  results?: Maybe<Array<Maybe<Episode>>>
-}
-
-export type FilterCharacter = {
+export type FilterCharacterInput = {
   gender?: InputMaybe<Scalars['String']>
   name?: InputMaybe<Scalars['String']>
   species?: InputMaybe<Scalars['String']>
   status?: InputMaybe<Scalars['String']>
   type?: InputMaybe<Scalars['String']>
-}
-
-export type FilterEpisode = {
-  episode?: InputMaybe<Scalars['String']>
-  name?: InputMaybe<Scalars['String']>
-}
-
-export type FilterLocation = {
-  dimension?: InputMaybe<Scalars['String']>
-  name?: InputMaybe<Scalars['String']>
-  type?: InputMaybe<Scalars['String']>
-}
-
-export type Info = {
-  __typename?: 'Info'
-  /** The length of the response. */
-  count?: Maybe<Scalars['Int']>
-  /** Number of the next page (if it exists) */
-  next?: Maybe<Scalars['Int']>
-  /** The amount of pages. */
-  pages?: Maybe<Scalars['Int']>
-  /** Number of the previous page (if it exists) */
-  prev?: Maybe<Scalars['Int']>
-}
-
-export type Location = {
-  __typename?: 'Location'
-  /** Time at which the location was created in the database. */
-  created?: Maybe<Scalars['String']>
-  /** The dimension in which the location is located. */
-  dimension?: Maybe<Scalars['String']>
-  /** The id of the location. */
-  id?: Maybe<Scalars['ID']>
-  /** The name of the location. */
-  name?: Maybe<Scalars['String']>
-  /** List of characters who have been last seen in the location. */
-  residents: Array<Maybe<Character>>
-  /** The type of the location. */
-  type?: Maybe<Scalars['String']>
-}
-
-export type Locations = {
-  __typename?: 'Locations'
-  info?: Maybe<Info>
-  results?: Maybe<Array<Maybe<Location>>>
 }
 
 export type Mutation = {
@@ -173,28 +87,18 @@ export enum Order {
   Desc = 'desc'
 }
 
+export type PageInfo = {
+  __typename?: 'PageInfo'
+  count: Scalars['Int']
+  pages: Scalars['Int']
+}
+
 export type Query = {
   __typename?: 'Query'
-  /** Get a specific character by ID */
   character?: Maybe<Character>
-  /** Get the list of all characters */
-  characters?: Maybe<Characters>
-  /** Get a list of characters selected by ids */
-  charactersByIds?: Maybe<Array<Maybe<Character>>>
-  /** Get a specific episode by ID */
-  episode?: Maybe<Episode>
-  /** Get the list of all episodes */
-  episodes?: Maybe<Episodes>
-  /** Get a list of episodes selected by ids */
-  episodesByIds?: Maybe<Array<Maybe<Episode>>>
+  characters: Characters
   /** Check if a user has rated a given character. */
   hasRatedCharacter: Scalars['Boolean']
-  /** Get a specific locations by ID */
-  location?: Maybe<Location>
-  /** Get the list of all locations */
-  locations?: Maybe<Locations>
-  /** Get a list of locations selected by ids */
-  locationsByIds?: Maybe<Array<Maybe<Location>>>
   /** Fetch a given rating by the compund ID of userId and characterId. */
   rating?: Maybe<Rating>
   /** Fetch all ratings for a given character. */
@@ -202,7 +106,6 @@ export type Query = {
   /** Fetch all ratings in a given order. */
   ratings: Array<Rating>
   user?: Maybe<User>
-  /** Fetch all users. */
   users: Users
 }
 
@@ -211,43 +114,13 @@ export type QueryCharacterArgs = {
 }
 
 export type QueryCharactersArgs = {
-  filter?: InputMaybe<FilterCharacter>
+  filter?: InputMaybe<FilterCharacterInput>
   page?: InputMaybe<Scalars['Int']>
-}
-
-export type QueryCharactersByIdsArgs = {
-  ids: Array<Scalars['ID']>
-}
-
-export type QueryEpisodeArgs = {
-  id: Scalars['ID']
-}
-
-export type QueryEpisodesArgs = {
-  filter?: InputMaybe<FilterEpisode>
-  page?: InputMaybe<Scalars['Int']>
-}
-
-export type QueryEpisodesByIdsArgs = {
-  ids: Array<Scalars['ID']>
 }
 
 export type QueryHasRatedCharacterArgs = {
   characterId: Scalars['ID']
   userId: Scalars['ID']
-}
-
-export type QueryLocationArgs = {
-  id: Scalars['ID']
-}
-
-export type QueryLocationsArgs = {
-  filter?: InputMaybe<FilterLocation>
-  page?: InputMaybe<Scalars['Int']>
-}
-
-export type QueryLocationsByIdsArgs = {
-  ids: Array<Scalars['ID']>
 }
 
 export type QueryRatingArgs = {
@@ -268,8 +141,8 @@ export type QueryUserArgs = {
 }
 
 export type QueryUsersArgs = {
-  orderBy: Order
-  page: Scalars['Int']
+  orderBy?: InputMaybe<Order>
+  page?: InputMaybe<Scalars['Int']>
 }
 
 /**
@@ -308,28 +181,26 @@ export type User = {
   username: Scalars['String']
 }
 
-/** A wrapper to be used in paginated queries. */
+/**
+ * A wrapper to be used in paginated queries when fetching users.
+ * In order to provide pagination, we need to know the count.
+ */
 export type Users = {
   __typename?: 'Users'
-  count: Scalars['Int']
-  users: Array<User>
+  info: PageInfo
+  results: Array<User>
 }
 
 export type DefaultCharacterFragment = {
   __typename?: 'Character'
-  id?: string | null
-  name?: string | null
-  gender?: string | null
-  image?: string | null
-  species?: string | null
-  status?: string | null
-  location?: {
-    __typename?: 'Location'
-    id?: string | null
-    name?: string | null
-    dimension?: string | null
-    type?: string | null
-  } | null
+  id: string
+  name: string
+  status: string
+  species: string
+  type: string
+  gender: string
+  location: string
+  image: string
 }
 
 export type DefaultUserFragment = {
@@ -345,6 +216,8 @@ export type DefaultUserFragment = {
     value: number
   }> | null
 }
+
+export type DefaultPageInfoFragment = { __typename?: 'PageInfo'; count: number; pages: number }
 
 export type DefaultRatingFragment = {
   __typename?: 'Rating'
@@ -411,49 +284,39 @@ export type GetCharacterByIdQuery = {
   __typename?: 'Query'
   character?: {
     __typename?: 'Character'
-    id?: string | null
-    name?: string | null
-    gender?: string | null
-    image?: string | null
-    species?: string | null
-    status?: string | null
-    location?: {
-      __typename?: 'Location'
-      id?: string | null
-      name?: string | null
-      dimension?: string | null
-      type?: string | null
-    } | null
+    id: string
+    name: string
+    status: string
+    species: string
+    type: string
+    gender: string
+    location: string
+    image: string
   } | null
 }
 
 export type GetCharactersQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>
-  filter?: InputMaybe<FilterCharacter>
+  filter?: InputMaybe<FilterCharacterInput>
 }>
 
 export type GetCharactersQuery = {
   __typename?: 'Query'
-  characters?: {
+  characters: {
     __typename?: 'Characters'
-    info?: { __typename?: 'Info'; pages?: number | null; count?: number | null } | null
-    results?: Array<{
+    info: { __typename?: 'PageInfo'; count: number; pages: number }
+    results: Array<{
       __typename?: 'Character'
-      id?: string | null
-      name?: string | null
-      gender?: string | null
-      image?: string | null
-      species?: string | null
-      status?: string | null
-      location?: {
-        __typename?: 'Location'
-        id?: string | null
-        name?: string | null
-        dimension?: string | null
-        type?: string | null
-      } | null
-    } | null> | null
-  } | null
+      id: string
+      name: string
+      status: string
+      species: string
+      type: string
+      gender: string
+      location: string
+      image: string
+    }>
+  }
 }
 
 export type GetRatingQueryVariables = Exact<{
@@ -492,16 +355,16 @@ export type HasRatedCharacterQueryVariables = Exact<{
 export type HasRatedCharacterQuery = { __typename?: 'Query'; hasRatedCharacter: boolean }
 
 export type GetUsersQueryVariables = Exact<{
-  page: Scalars['Int']
-  orderBy: Order
+  page?: InputMaybe<Scalars['Int']>
+  orderBy?: InputMaybe<Order>
 }>
 
 export type GetUsersQuery = {
   __typename?: 'Query'
   users: {
     __typename?: 'Users'
-    count: number
-    users: Array<{
+    info: { __typename?: 'PageInfo'; count: number; pages: number }
+    results: Array<{
       __typename?: 'User'
       id: string
       email: string
@@ -521,16 +384,12 @@ export const DefaultCharacterFragmentDoc = gql`
   fragment DefaultCharacter on Character {
     id
     name
-    gender
-    image
-    species
     status
-    location {
-      id
-      name
-      dimension
-      type
-    }
+    species
+    type
+    gender
+    location
+    image
   }
 `
 export const DefaultUserFragmentDoc = gql`
@@ -544,6 +403,12 @@ export const DefaultUserFragmentDoc = gql`
       characterId
       value
     }
+  }
+`
+export const DefaultPageInfoFragmentDoc = gql`
+  fragment DefaultPageInfo on PageInfo {
+    count
+    pages
   }
 `
 export const DefaultRatingFragmentDoc = gql`
@@ -792,17 +657,17 @@ export type GetCharacterByIdQueryResult = Apollo.QueryResult<
   GetCharacterByIdQueryVariables
 >
 export const GetCharactersDocument = gql`
-  query GetCharacters($page: Int, $filter: FilterCharacter) {
+  query GetCharacters($page: Int, $filter: FilterCharacterInput) {
     characters(page: $page, filter: $filter) {
       info {
-        pages
-        count
+        ...DefaultPageInfo
       }
       results {
         ...DefaultCharacter
       }
     }
   }
+  ${DefaultPageInfoFragmentDoc}
   ${DefaultCharacterFragmentDoc}
 `
 
@@ -1035,14 +900,17 @@ export type HasRatedCharacterQueryResult = Apollo.QueryResult<
   HasRatedCharacterQueryVariables
 >
 export const GetUsersDocument = gql`
-  query GetUsers($page: Int!, $orderBy: Order!) {
+  query GetUsers($page: Int, $orderBy: Order) {
     users(page: $page, orderBy: $orderBy) {
-      users {
+      info {
+        ...DefaultPageInfo
+      }
+      results {
         ...DefaultUser
       }
-      count
     }
   }
+  ${DefaultPageInfoFragmentDoc}
   ${DefaultUserFragmentDoc}
 `
 
@@ -1064,7 +932,7 @@ export const GetUsersDocument = gql`
  * });
  */
 export function useGetUsersQuery(
-  baseOptions: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(GetUsersDocument, options)

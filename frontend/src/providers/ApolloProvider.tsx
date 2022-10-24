@@ -4,14 +4,14 @@ import {
   InMemoryCache
 } from '@apollo/client'
 import { ReactNode } from 'react'
-import { GRAPHQL_ENDPOINT } from '../constants'
+import getAPIEndpoint from 'src/utils/api'
 
 type ApolloProviderProps = {
   children: ReactNode
 }
 
 export const client = new ApolloClient({
-  uri: GRAPHQL_ENDPOINT,
+  uri: getAPIEndpoint(),
   cache: new InMemoryCache()
 })
 

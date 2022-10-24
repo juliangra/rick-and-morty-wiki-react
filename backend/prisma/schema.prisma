@@ -20,7 +20,15 @@ model User {
 }
 
 model Character {
-  id      Int      @id
+  id       Int    @id
+  name     String
+  status   String
+  species  String
+  type     String
+  gender   String
+  image    String
+  location String
+
   ratings Rating[]
 }
 

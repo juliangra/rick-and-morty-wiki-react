@@ -1,0 +1,4 @@
+fragment DefaultPageInfo on PageInfo {
+  count
+  pages
+}

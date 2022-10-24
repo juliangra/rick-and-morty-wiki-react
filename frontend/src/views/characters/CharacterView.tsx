@@ -138,9 +138,7 @@ const CharacterView = () => {
           {character?.location && (
             <>
               <Text size="xl">Location</Text>
-              <Text size="md">Name: {character.location.name}</Text>
-              <Text size="md">Dimension: {character.location.dimension}</Text>
-              <Text size="md">Type: {character.location.type}</Text>
+              <Text size="md">Name: {character.location}</Text>
             </>
           )}
 

@@ -9,9 +9,7 @@ type DeleteRatingProps = {
 
 /**
  * Handles logic related to deleting a rating.
- * @param characterId
- * @param userId
- * @param refetch
+ *
  * @returns an object with values and handlers for deleting a rating.
  */
 const useDeleteRating = ({ characterId, userId, refetch }: DeleteRatingProps) => {

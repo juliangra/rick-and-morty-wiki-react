@@ -1,12 +1,38 @@
-import { context } from '../src/context'
 import bcrypt from 'bcrypt'
-import { getRandomRating } from '../src/utils/seed'
+import { CURSOR_OFFSET } from '../src/constants'
+import { context } from '../src/context'
+import { databaseIsSeeded, getRandomRating, upsertTestUser } from '../src/utils/seed'
+import downloadCharactersFromApi from './download'
+import populateCharactersFromApi from './populate'
 
 const main = async () => {
+  if (databaseIsSeeded()) {
+    console.log('✅ Characters already downloaded. Skipping download.')
+    return
+  }
+
+  // Ensure that characters exists in database
+  await downloadCharactersFromApi().catch((err) => {
+    throw new Error(err)
+  })
+  await populateCharactersFromApi().catch((err) => {
+    throw new Error(err)
+  })
+
   // These base values are used to ensure deterministic seeding
-  const numberOfUsers = 20
+  const numberOfUsers = 3 * CURSOR_OFFSET
   const baseId = 'c01234db-a6a1-49de-98d7-3419dfe6200b'
   const basePassword = 'password'
+
+  console.log('📂 Adding users to database...')
+
+  // Start by adding deterministic user to be used in tests
+  upsertTestUser({
+    id: baseId,
+    username: 'test',
+    email: 'test@example.com',
+    password: await bcrypt.hash(basePassword, 10)
+  })
 
   for (let i = 0; i < numberOfUsers; i++) {
     // Create deterministic props for each user
@@ -20,31 +46,6 @@ const main = async () => {
     const characterId = i + 1
     const nextCharacterId = characterId + 1
     const value = getRandomRating()
-
-    // Ensure that characters exists in database
-    await context.prisma.character.upsert({
-      where: {
-        id: characterId
-      },
-      create: {
-        id: characterId
-      },
-      update: {
-        id: characterId
-      }
-    })
-
-    await context.prisma.character.upsert({
-      where: {
-        id: nextCharacterId
-      },
-      create: {
-        id: nextCharacterId
-      },
-      update: {
-        id: nextCharacterId
-      }
-    })
 
     // Ensure that users with ratings exist in database
     await context.prisma.user.upsert({
@@ -119,6 +120,7 @@ const main = async () => {
       })
     }
   }
+  console.log('✅ Successfully populated database with users.')
 }
 
 main()

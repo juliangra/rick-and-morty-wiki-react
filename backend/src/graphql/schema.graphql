@@ -9,22 +9,29 @@ type User {
   ratings: [Rating!]
 }
 
-"""
-A wrapper to be used in paginated queries when fetching users.
-In order to provide pagination, we need to know the count of all users.
-"""
-type Users {
-  users: [User!]!
+type PageInfo {
   count: Int!
+  pages: Int!
 }
 
 """
-A character from the third-party API (the Rick and Morty API).
-We only care about the ID of the character in our own API, as we can use this
-to fetch the character's details from the third-party API.
+A wrapper to be used in paginated queries when fetching users.
+In order to provide pagination, we need to know the count.
 """
+type Users {
+  results: [User!]!
+  info: PageInfo!
+}
+
 type Character {
   id: ID!
+  name: String!
+  status: String!
+  species: String!
+  type: String!
+  gender: String!
+  location: String!
+  image: String!
 }
 
 """
@@ -47,6 +54,23 @@ type AuthenticationResponse {
   error: String
 }
 
+input FilterCharacterInput {
+  name: String
+  status: String
+  species: String
+  type: String
+  gender: String
+}
+
+"""
+A wrapper to be used in paginated queries when fetching characters.
+In order to provide pagination, we need to know the count.
+"""
+type Characters {
+  results: [Character!]!
+  info: PageInfo!
+}
+
 """
 A rating can be a value between 1 and 5.
 """
@@ -65,11 +89,12 @@ enum Order {
 
 # Queries and mutations
 type Query {
-  """
-  Fetch all users.
-  """
-  users(page: Int!, orderBy: Order!): Users!
+  users(page: Int, orderBy: Order): Users!
   user(username: String!): User
+
+  characters(page: Int, filter: FilterCharacterInput): Characters!
+  character(id: ID!): Character
+
   """
   Fetch all ratings in a given order.
   """

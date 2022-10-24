@@ -1,18 +1,17 @@
-import { CURSOR_OFFSET, JWT_SECRET } from '../constants'
+import { CURSOR_OFFSET, JWT_SECRET, START_PAGE } from '../constants'
 import { isValidEmail } from '../auth/isValidEmail'
 import { isValidUsername } from '../auth/isValidUsername'
-import { Resolvers } from '../generated/graphql'
+import { Order, Resolvers } from '../generated/graphql'
 import { ratingToNumber } from '../utils/rating'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { addFiltersToQuery } from '../utils/resolvers'
 
 const resolvers: Resolvers = {
   Query: {
     users: async (_root, args, context) => {
-      const page = args.page
-      const orderBy = args.orderBy
-
-      const count = await context.prisma.user.count()
+      const page = args.page ?? START_PAGE
+      const orderBy = args.orderBy || Order.Desc
 
       // Ensure that the users have connected ratings
       const users = await context.prisma.user.findMany({
@@ -39,9 +38,15 @@ const resolvers: Resolvers = {
         skip: CURSOR_OFFSET * (page - 1)
       })
 
+      const count = await context.prisma.user.count()
+      const pages = Math.ceil(count / CURSOR_OFFSET)
+
       return {
-        users,
-        count
+        results: users,
+        info: {
+          count,
+          pages
+        }
       }
     },
 
@@ -51,6 +56,44 @@ const resolvers: Resolvers = {
           username: {
             equals: args.username
           }
+        }
+      })
+    },
+
+    characters: async (_root, args, context) => {
+      const page = args.page ?? START_PAGE
+      const filter = args.filter
+
+      const options = addFiltersToQuery(filter)
+
+      const results = await context.prisma.character.findMany({
+        ...options,
+        take: CURSOR_OFFSET,
+        skip: CURSOR_OFFSET * (page - 1)
+      })
+
+      const count = await context.prisma.character.count({
+        where: {
+          ...options.where
+        }
+      })
+      const pages = Math.ceil(count / CURSOR_OFFSET)
+
+      return {
+        results,
+        info: {
+          count,
+          pages
+        }
+      }
+    },
+
+    character: (_root, args, context) => {
+      const id = parseInt(args.id)
+
+      return context.prisma.character.findUnique({
+        where: {
+          id
         }
       })
     },
@@ -187,19 +230,6 @@ const resolvers: Resolvers = {
       const characterId = parseInt(args.characterId)
       const userId = args.userId
       const value = ratingToNumber(args.value)
-
-      // Ensure that character exists in database
-      await context.prisma.character.upsert({
-        where: {
-          id: characterId
-        },
-        create: {
-          id: characterId
-        },
-        update: {
-          id: characterId
-        }
-      })
 
       // Create or update ratings connected to user in database
       await context.prisma.user.update({

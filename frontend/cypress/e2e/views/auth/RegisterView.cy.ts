@@ -11,8 +11,8 @@ describe('RegisterView', () => {
   const randomAvailableUsername = (Math.random() + 1).toString(36).substring(6)
   const randomAvailableEmail = `${randomAvailableUsername}@example.com`
 
-  const unavailableEmail = 'john.doe@example.com'
-  const unavailableUsername = 'john'
+  const unavailableEmail = 'test@example.com'
+  const unavailableUsername = 'test'
 
   const INVALID_EMAIL_ERROR = 'Invalid e-mail.'
   const USERNAME_TOO_SHORT_ERROR = 'Username must be at least 2 characters.'
@@ -58,7 +58,7 @@ describe('RegisterView', () => {
 
   it('does not allow already registered email', () => {
     cy.visitHash('/register')
-    cy.dataCy('email-input').click().type(unavailableEmail)
+    cy.dataCy('email-input').type(unavailableEmail)
     cy.dataCy('username-input').type(availableUsername)
     cy.dataCy('password-input').type(validPassword)
     cy.dataCy('repeatPassword-input').type(validPassword)
@@ -68,7 +68,7 @@ describe('RegisterView', () => {
 
   it('does not allow already registered username', () => {
     cy.visitHash('/register')
-    cy.dataCy('email-input').click().type(validEmail)
+    cy.dataCy('email-input').type(validEmail)
     cy.dataCy('username-input').type(unavailableUsername)
     cy.dataCy('password-input').type(validPassword)
     cy.dataCy('repeatPassword-input').type(validPassword)

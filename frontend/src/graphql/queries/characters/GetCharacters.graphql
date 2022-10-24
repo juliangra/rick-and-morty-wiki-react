@@ -1,8 +1,7 @@
-query GetCharacters($page: Int, $filter: FilterCharacter) {
+query GetCharacters($page: Int, $filter: FilterCharacterInput) {
   characters(page: $page, filter: $filter) {
     info {
-      pages
-      count
+      ...DefaultPageInfo
     }
     results {
       ...DefaultCharacter

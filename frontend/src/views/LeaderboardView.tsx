@@ -4,7 +4,6 @@ import { useState } from 'react'
 import CustomError from 'src/components/common/CustomError'
 import CustomLoading from 'src/components/common/CustomLoading'
 import UserCard from 'src/components/leaderboard/UserCard'
-import { CURSOR_OFFSET } from 'src/constants'
 import { Order } from 'src/graphql/generated/generated'
 import useGetUsers from 'src/hooks/users/useGetUsers'
 import capitalize from 'src/utils/capitalize'
@@ -14,10 +13,9 @@ const LeaderboardView = () => {
   const [page, setPage] = useState(1)
   const { data, loading, error, handleOnChange, orderBy } = useGetUsers(page)
 
-  const numberOfUsers = data?.users.count || 0
-  const numberOfPages = Math.ceil(numberOfUsers / CURSOR_OFFSET)
+  const numberOfPages = data?.users.info.pages || 0
   const availableOrders = Object.keys(Order)
-  const users = data?.users.users
+  const users = data?.users.results
 
   return (
     <View>

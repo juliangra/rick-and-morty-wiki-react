@@ -2,9 +2,8 @@ import { SelectOption } from 'src/types/forms'
 
 /**
  * These constants are not retrievable from the GraphQL API
- * and have therefore been retrieved with a custom script
- * and hardcoded. These seldom change, and therefore this
- * shouldn't be an issue.
+ * and have therefore been retrieved with a custom script and hardcoded.
+ * These never change, and therefore this shouldn't be an issue.
  */
 export const FILTER_SPECIES: SelectOption[] = [
   {

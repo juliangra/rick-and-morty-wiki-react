@@ -6,6 +6,9 @@ type StyleProviderProps = {
   children: ReactNode
 }
 
+/**
+ * Provides the application with a color scheme and the Mantine UI component library.
+ */
 const StyleProvider: React.FC<StyleProviderProps> = ({ children }) => {
   const [colorScheme, toggleColorScheme] = useColorScheme()
 
@@ -21,8 +24,7 @@ const StyleProvider: React.FC<StyleProviderProps> = ({ children }) => {
           })
         }}
         withGlobalStyles
-        withNormalizeCSS
-      >
+        withNormalizeCSS>
         {children}
       </MantineProvider>
     </ColorSchemeProvider>

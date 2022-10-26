@@ -7,6 +7,9 @@ type AppProviderProps = {
   children?: ReactNode
 }
 
+/**
+ * Provides the application with all the providers it needs.
+ */
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <ApolloProvider>

@@ -7,7 +7,7 @@ type StatsProps = {
 }
 
 const Stats: React.FC<StatsProps> = ({ rating, testId }) => {
-  // The rating is a number between 0 and 100, but our implementation of rating is between 0 and 5
+  // The component's interval is a number between 0 and 100, but our implementation of rating is between 0 and 5
   const calculatedRating = (rating * 100) / MAX_RATING
 
   return (

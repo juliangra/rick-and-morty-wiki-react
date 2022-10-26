@@ -4,11 +4,14 @@ type User {
   username: String!
   createdAt: String!
   """
-  A list of ratings given by this user.
+  A list of ratings that this user has made.
   """
   ratings: [Rating!]
 }
 
+"""
+Describes metadata regarding a page of results.
+"""
 type PageInfo {
   count: Int!
   pages: Int!
@@ -16,13 +19,16 @@ type PageInfo {
 
 """
 A wrapper to be used in paginated queries when fetching users.
-In order to provide pagination, we need to know the count.
 """
 type Users {
   results: [User!]!
   info: PageInfo!
 }
 
+"""
+A mapped character from the external Rick and Morty API,
+including only the fields the application needs to use.
+"""
 type Character {
   id: ID!
   name: String!
@@ -44,13 +50,24 @@ type Rating {
   value: Int!
 }
 
+"""
+A wrapper for data to be used when displaying the rating stats of a character.
+"""
 type RatingStats {
   average: Float!
   count: Int!
 }
 
 type AuthenticationResponse {
+  """
+  A token that can be used to authenticate the user in future requests.
+  It is undefined if the user is not authenticated.
+  """
   token: String
+  """
+  An error message describing what part of the authentication failed.
+  It is undefined if the user is successfully authenticated.
+  """
   error: String
 }
 
@@ -64,7 +81,6 @@ input FilterCharacterInput {
 
 """
 A wrapper to be used in paginated queries when fetching characters.
-In order to provide pagination, we need to know the count.
 """
 type Characters {
   results: [Character!]!
@@ -90,24 +106,23 @@ enum Order {
 # Queries and mutations
 type Query {
   users(page: Int, orderBy: Order): Users!
+
   user(username: String!): User
 
   characters(page: Int, filter: FilterCharacterInput): Characters!
+
   character(id: ID!): Character
 
-  """
-  Fetch all ratings in a given order.
-  """
-  ratings(order: Order!): [Rating!]!
   """
   Fetch a given rating by the compund ID of userId and characterId.
   """
   rating(characterId: ID!, userId: ID!): Rating
 
   """
-  Fetch all ratings for a given character.
+  Fetch all rating stats for a given character.
   """
   ratingStatsByCharacterId(characterId: ID!): RatingStats!
+
   """
   Check if a user has rated a given character.
   """
@@ -116,10 +131,13 @@ type Query {
 
 type Mutation {
   createUser(email: String!, username: String!, password: String!): AuthenticationResponse!
+
   authenticateUser(identifier: String!, password: String!): AuthenticationResponse!
+
   """
   Create a rating for a given character by a given user.
   """
   rateCharacter(characterId: ID!, userId: ID!, value: RatingValue!): Rating!
+
   deleteRating(characterId: ID!, userId: ID!): Rating!
 }

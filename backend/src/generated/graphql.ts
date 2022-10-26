@@ -24,10 +24,22 @@ export type Scalars = {
 
 export type AuthenticationResponse = {
   __typename?: 'AuthenticationResponse'
+  /**
+   * An error message describing what part of the authentication failed.
+   * It is undefined if the user is successfully authenticated.
+   */
   error?: Maybe<Scalars['String']>
+  /**
+   * A token that can be used to authenticate the user in future requests.
+   * It is undefined if the user is not authenticated.
+   */
   token?: Maybe<Scalars['String']>
 }
 
+/**
+ * A mapped character from the external Rick and Morty API,
+ * including only the fields the application needs to use.
+ */
 export type Character = {
   __typename?: 'Character'
   gender: Scalars['String']
@@ -40,10 +52,7 @@ export type Character = {
   type: Scalars['String']
 }
 
-/**
- * A wrapper to be used in paginated queries when fetching characters.
- * In order to provide pagination, we need to know the count.
- */
+/** A wrapper to be used in paginated queries when fetching characters. */
 export type Characters = {
   __typename?: 'Characters'
   info: PageInfo
@@ -94,6 +103,7 @@ export enum Order {
   Desc = 'desc'
 }
 
+/** Describes metadata regarding a page of results. */
 export type PageInfo = {
   __typename?: 'PageInfo'
   count: Scalars['Int']
@@ -108,10 +118,8 @@ export type Query = {
   hasRatedCharacter: Scalars['Boolean']
   /** Fetch a given rating by the compund ID of userId and characterId. */
   rating?: Maybe<Rating>
-  /** Fetch all ratings for a given character. */
+  /** Fetch all rating stats for a given character. */
   ratingStatsByCharacterId: RatingStats
-  /** Fetch all ratings in a given order. */
-  ratings: Array<Rating>
   user?: Maybe<User>
   users: Users
 }
@@ -139,10 +147,6 @@ export type QueryRatingStatsByCharacterIdArgs = {
   characterId: Scalars['ID']
 }
 
-export type QueryRatingsArgs = {
-  order: Order
-}
-
 export type QueryUserArgs = {
   username: Scalars['String']
 }
@@ -163,6 +167,7 @@ export type Rating = {
   value: Scalars['Int']
 }
 
+/** A wrapper for data to be used when displaying the rating stats of a character. */
 export type RatingStats = {
   __typename?: 'RatingStats'
   average: Scalars['Float']
@@ -183,15 +188,12 @@ export type User = {
   createdAt: Scalars['String']
   email: Scalars['String']
   id: Scalars['ID']
-  /** A list of ratings given by this user. */
+  /** A list of ratings that this user has made. */
   ratings?: Maybe<Array<Rating>>
   username: Scalars['String']
 }
 
-/**
- * A wrapper to be used in paginated queries when fetching users.
- * In order to provide pagination, we need to know the count.
- */
+/** A wrapper to be used in paginated queries when fetching users. */
 export type Users = {
   __typename?: 'Users'
   info: PageInfo
@@ -429,12 +431,6 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryRatingStatsByCharacterIdArgs, 'characterId'>
-  >
-  ratings?: Resolver<
-    Array<ResolversTypes['Rating']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryRatingsArgs, 'order'>
   >
   user?: Resolver<
     Maybe<ResolversTypes['User']>,

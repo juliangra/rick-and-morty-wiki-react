@@ -15,6 +15,9 @@ export const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
+/**
+ * Provides the GraphQL client to the application.
+ */
 const ApolloProvider: React.FC<ApolloProviderProps> = ({ children }) => {
   return <GraphQLClientProvider client={client}>{children}</GraphQLClientProvider>
 }

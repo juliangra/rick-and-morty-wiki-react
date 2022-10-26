@@ -9,6 +9,7 @@ import { ColorSchemeProvider } from '@mantine/core'
 /**
  * Wrapper around the necessary providers used in the app.
  * @param ui is the component to render.
+ *
  * @returns the rendered component, wrapped in the providers.
  */
 export const renderWithProviders = async (ui: ReactNode) =>
@@ -27,6 +28,7 @@ export const renderWithProviders = async (ui: ReactNode) =>
 /**
  * Wrapper around react-test-renderer for creating components with the necessary providers used in the app.
  * @param ui is the component to render.
+ *
  * @returns the rendered component, wrapped in the providers.
  */
 export const createWithProviders = (ui: ReactNode) =>

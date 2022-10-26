@@ -17,5 +17,3 @@ describe('RegisterView', () => {
     expect(screen.getByTestId('repeatPassword-input')).toBeInTheDocument()
   })
 })
-
-export {}

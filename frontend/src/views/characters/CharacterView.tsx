@@ -1,86 +1,38 @@
 import { Box, Button, Center, Grid, Group, Image, Text } from '@mantine/core'
-import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import DeleteRatingButton from 'src/components/characters/DeleteRatingButton'
 import CustomError from 'src/components/common/CustomError'
 import CustomLoading from 'src/components/common/CustomLoading'
 import RatingSlider from 'src/components/characters/RatingSlider'
 import Stats from 'src/components/characters/Stats'
-import {
-  useGetCharacterByIdQuery,
-  useGetRatingQuery,
-  useGetRatingStatsByCharacterIdQuery,
-  useHasRatedCharacterQuery
-} from 'src/graphql/generated/generated'
 import useAuthentication from 'src/hooks/auth/useAuthentication'
-import useRedirectIfInvalidId from 'src/hooks/characters/useRedirectIfInvalidId'
+import useRedirectIfInvalidCharacterId from 'src/hooks/characters/useRedirectIfInvalidId'
 import { IconChevronLeft } from '@tabler/icons'
+import useGetCharacterById from 'src/hooks/characters/useGetCharacterById'
+import useGetRatingByCharacterId from 'src/hooks/characters/useGetRatingByCharacterId'
 
 const CharacterView = () => {
   const navigate = useNavigate()
-  const { id } = useParams()
+  const { id: characterId } = useParams()
+  useRedirectIfInvalidCharacterId(characterId)
 
-  useRedirectIfInvalidId(id)
-
+  // Get character
   const {
     data: characterData,
     loading: characterLoading,
     error: characterError
-  } = useGetCharacterByIdQuery({
-    variables: {
-      characterId: id as string
-    }
-  })
+  } = useGetCharacterById(characterId as string)
 
-  useEffect(() => {
-    if (characterData && !characterData.character) {
-      navigate('/404')
-    }
-  }, [characterData])
-
-  const {
-    data: ratingStatsData,
-    loading: ratingStatsLoading,
-    error: ratingStatsError,
-    refetch: refetchRatingStats
-  } = useGetRatingStatsByCharacterIdQuery({
-    variables: { characterId: id as string }
-  })
-
+  // Get user session
   const { isAuthenticated, decoded } = useAuthentication()
   const userId = decoded?.id || ''
 
-  const { data: hasRatedCharacterData, refetch: refetchHasRatedCharacter } =
-    useHasRatedCharacterQuery({
-      variables: {
-        characterId: id as string,
-        userId: userId
-      }
-    })
+  // Get all necessary data about a rating
+  const { ratingData, ratingStatsData, hasRatedCharacterData, loading, error, refetch } =
+    useGetRatingByCharacterId(characterId as string, userId)
 
-  const { data: ratingData, refetch: refetchRating } = useGetRatingQuery({
-    variables: {
-      characterId: id as string,
-      userId: userId
-    }
-  })
-
-  /**
-   * Refetches neccessary data in a batch.
-   */
-  const refetch = () => {
-    refetchRatingStats()
-    refetchHasRatedCharacter()
-    refetchRating()
-  }
-
-  if (characterLoading || ratingStatsLoading) {
-    return <CustomLoading />
-  }
-
-  if (characterError || ratingStatsError) {
-    return <CustomError />
-  }
+  if (loading || characterLoading) return <CustomLoading />
+  if (error || characterError) return <CustomError />
 
   const character = characterData?.character
   const averageRating = ratingStatsData?.ratingStatsByCharacterId.average || 0
@@ -105,13 +57,17 @@ const CharacterView = () => {
                 width: '20%'
               }}>
               <RatingSlider
-                characterId={id as string}
+                characterId={characterId as string}
                 userId={userId}
                 refetch={refetch}
                 value={ratingData?.rating?.value}
               />
               {hasRatedCharacterData?.hasRatedCharacter ? (
-                <DeleteRatingButton characterId={id as string} userId={userId} refetch={refetch} />
+                <DeleteRatingButton
+                  characterId={characterId as string}
+                  userId={userId}
+                  refetch={refetch}
+                />
               ) : (
                 <Text>No rating given yet</Text>
               )}

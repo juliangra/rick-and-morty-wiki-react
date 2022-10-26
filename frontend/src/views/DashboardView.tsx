@@ -33,7 +33,8 @@ const DashboardView = () => {
             <Group>
               <Button
                 leftIcon={<IconFilter size={16} />}
-                onClick={() => filterDrawerIsOpenVar(true)}>
+                onClick={() => filterDrawerIsOpenVar(true)}
+              >
                 Filter
               </Button>
             </Group>

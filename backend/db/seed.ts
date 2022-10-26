@@ -5,6 +5,9 @@ import { CURSOR_OFFSET } from '../src/constants'
 import downloadCharactersFromApi from './download'
 import populateCharactersFromApi from './populate'
 
+/**
+ * Seed the database with test data, including characters, users and ratings.
+ */
 const main = async () => {
   if (databaseIsSeeded()) {
     console.log('✅ Characters already downloaded. Skipping download.')
@@ -94,7 +97,7 @@ const main = async () => {
     })
 
     // Ensure that some users have more ratings than others
-    // in order to allow sorting by number of ratings
+    // in order to facilitate sorting by number of ratings
     const nextValue = getRandomRating()
     if (i % 3 === 0) {
       await context.prisma.user.update({

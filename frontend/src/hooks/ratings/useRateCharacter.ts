@@ -18,10 +18,6 @@ type RateCharacterProps = {
  * The `rating` state is the current rating of the character,
  * and is not mutated until the user is finished changing the input.
  *
- * @param characterId is the ID of the character to rate.
- * @param userId is the current user's ID.
- * @param refetch is a function that refetches the character's ratings.
- * @param defaultRating is the initial rating of the character.
  * @returns an object with values and handlers for rating a character.
  */
 const useRateCharacter = ({ characterId, userId, refetch, defaultValue }: RateCharacterProps) => {

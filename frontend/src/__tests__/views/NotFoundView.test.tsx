@@ -16,5 +16,3 @@ describe('NotFoundView', () => {
     })
   })
 })
-
-export {}

@@ -10,6 +10,7 @@ interface RatingSliderProps extends SliderProps {
   testId?: string
   refetch: () => void
 }
+
 const RatingSlider: React.FC<RatingSliderProps> = ({
   characterId,
   userId,

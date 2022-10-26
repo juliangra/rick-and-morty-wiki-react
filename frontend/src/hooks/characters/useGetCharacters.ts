@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react'
 import { useGetCharactersQuery } from 'src/graphql/generated/generated'
 import { filterVar } from 'src/state/dashboard'
 
+/**
+ * A wrapper hook for `useGetCharactersQuery`,
+ * responsible for fetching characters and handling loading and error states.
+ * @param page is the page number to fetch.
+ *
+ * @returns all necessary values and handlers for fetching characters.
+ */
 const useGetCharacters = (page: number) => {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearchInput] = useDebouncedValue(searchInput, 400)

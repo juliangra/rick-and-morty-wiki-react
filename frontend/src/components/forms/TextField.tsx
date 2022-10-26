@@ -5,8 +5,7 @@ interface TextFieldProps extends TextInputProps {
   testid?: string
 }
 
-const TextField: React.FC<TextFieldProps> = (props) => {
-  const { testid } = props
+const TextField: React.FC<TextFieldProps> = ({ testid, ...props }) => {
   return <TextInput data-cy={testid} data-testid={testid} {...props} />
 }
 

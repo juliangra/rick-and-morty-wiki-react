@@ -4,13 +4,14 @@ import { FilterQueryKey, OperationQueryKey } from '../types/resolvers'
 
 /**
  * Adds a strictly-typed filter to a Prisma query for finding many characters.
+ *
  * @param options is the query options to add the filter to.
  * @param key is the key of the filter to add.
  * @param filter is the filter to add.
  *
  * @example
  *
- * The parameters (options, 'gender', 'Female') will add the a filter where `gender = 'female'` to the query.
+ * The parameters (options, 'gender', 'equals', 'Female') will add the a filter where `gender = 'female'` to the query.
  */
 export const addSingleFilterToQuery = (
   options: Prisma.CharacterFindManyArgs,
@@ -30,6 +31,7 @@ export const addSingleFilterToQuery = (
 
 /**
  * Adds all defined filters to a Prisma query for finding many characters.
+ *
  * @param filter is the filter to add.
  * @returns the query options with the filters added.
  */
@@ -37,6 +39,7 @@ export const addFiltersToQuery = (filter?: InputMaybe<FilterCharacterInput>) => 
   if (!filter) return {}
 
   const options: Prisma.CharacterFindManyArgs = {}
+
   const availableFilters = Object.keys(filter) as FilterQueryKey[]
 
   availableFilters.forEach((key) => {

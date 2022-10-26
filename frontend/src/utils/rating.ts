@@ -1,5 +1,11 @@
 import { RatingValue } from 'src/graphql/generated/generated'
 
+/**
+ * Maps a rating value to a number.
+ * @param rating the rating value to map
+ *
+ * @returns the number corresponding to the rating value.
+ */
 export const ratingToNumber = (rating: RatingValue) => {
   switch (rating) {
     case RatingValue.One:
@@ -15,6 +21,12 @@ export const ratingToNumber = (rating: RatingValue) => {
   }
 }
 
+/**
+ * Maps a number to a rating value.
+ * @param rating the number to map
+ *
+ * @returns the rating value corresponding to the number.
+ */
 export const numberToRating = (rating: number) => {
   switch (rating) {
     case 1:

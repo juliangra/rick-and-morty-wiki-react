@@ -29,6 +29,8 @@ const useDeleteRating = ({ characterId, userId, refetch }: DeleteRatingProps) =>
     })
 
     refetch()
+
+    // Refresh current page
     useRedirect(location.hash)
   }
 

@@ -13,7 +13,6 @@ const initialValues: FilterFormType = {
 /**
  * Handles logic related to filtering characters.
  *
- * @param props is the handlers for toggling the form, and setting the filters.
  * @returns all neccessary objects and handlers for interacting with the form.
  */
 const useFilterForm = () => {

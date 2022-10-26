@@ -15,5 +15,3 @@ describe('LoginView', () => {
     expect(screen.getByTestId('password-input')).toBeInTheDocument()
   })
 })
-
-export {}

@@ -12,6 +12,9 @@ type RouterProviderProps = {
   children: ReactNode
 }
 
+/**
+ * Provides the application with a router.
+ */
 const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
   return (
     <HashRouter>

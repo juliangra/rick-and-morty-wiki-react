@@ -263,7 +263,6 @@ exports[`LoginView matches snapshot 1`] = `
                   onChange={[Function]}
                   onFocus={[Function]}
                   placeholder="Username / Email"
-                  testid="identifier-input"
                   type="text"
                   value=""
                 />

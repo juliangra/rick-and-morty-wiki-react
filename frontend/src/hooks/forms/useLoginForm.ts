@@ -9,6 +9,7 @@ import useRedirectIfAuthenticated from '../auth/useRedirectIfAuthenticated'
 
 /**
  * Handles the logic for the login form.
+ *
  * @returns all neccessary objects and handlers for interacting with the form.
  */
 const useLoginForm = () => {

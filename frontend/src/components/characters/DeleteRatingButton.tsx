@@ -6,12 +6,14 @@ interface DeleteRatingButtonProps extends ActionIconProps {
   characterId: string
   userId: string
   refetch: () => void
+  testId?: string
 }
 
 const DeleteRatingButton: React.FC<DeleteRatingButtonProps> = ({
   characterId,
   userId,
-  refetch
+  refetch,
+  testId
 }) => {
   const { handleOnClick } = useDeleteRating({
     characterId,
@@ -20,7 +22,13 @@ const DeleteRatingButton: React.FC<DeleteRatingButtonProps> = ({
   })
 
   return (
-    <Button color="red" leftIcon={<IconTrash size={18} />} variant="light" onClick={handleOnClick}>
+    <Button
+      color="red"
+      leftIcon={<IconTrash size={18} />}
+      variant="light"
+      onClick={handleOnClick}
+      data-testid={testId}
+      data-cy={testId}>
       Delete rating
     </Button>
   )

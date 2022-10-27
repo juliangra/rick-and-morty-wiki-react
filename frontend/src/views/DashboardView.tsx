@@ -46,7 +46,7 @@ const DashboardView = () => {
                 <Button
                   leftIcon={<IconFilter size={16} />}
                   onClick={() => filterDrawerIsOpenVar(true)}
-                >
+                  data-cy="filter-button">
                   Filter
                 </Button>
               </MediaQuery>
@@ -62,6 +62,7 @@ const DashboardView = () => {
               styles={{ rightSection: { cursor: 'pointer' } }}
               onChange={(event) => setSearchInput(event.currentTarget.value)}
               data-testid="search-input"
+              data-cy="search-bar"
             />
             {charactersFound ? (
               <>

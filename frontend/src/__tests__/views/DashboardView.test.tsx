@@ -10,4 +10,8 @@ describe('DashboardView', () => {
     await renderWithProviders(<DashboardView />)
     expect(screen.getByTestId('loading')).toBeInTheDocument()
   })
+  it('loads with a list of characters', async () => {
+    await renderWithProviders(<DashboardView />)
+    expect(screen.getByTestId('characters-container')).toBeInTheDocument()
+  })
 })

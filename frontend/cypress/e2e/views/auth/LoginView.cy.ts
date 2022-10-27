@@ -13,6 +13,10 @@ describe('LoginView', () => {
   const NO_PASSWORD_ERROR = 'Please enter your password.'
   const NO_USER_FOUND_ERROR = 'No user found with given credentials!'
 
+  beforeEach(() => {
+    cy.clearLocalStorage()
+  })
+
   it('renders login page', () => {
     cy.visitHash('/login')
     cy.dataCy('login-form').children().should('have.length.at.least', 1)

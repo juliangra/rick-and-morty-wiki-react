@@ -21,6 +21,10 @@ describe('RegisterView', () => {
   const EMAIL_IN_USE_ERROR = 'Email is already in use.'
   const USERNAME_IN_USE_ERROR = 'Username is already in use.'
 
+  beforeEach(() => {
+    cy.clearLocalStorage()
+  })
+
   it('renders register page', () => {
     cy.visitHash('/register')
     cy.dataCy('register-form').children().should('have.length.at.least', 1)

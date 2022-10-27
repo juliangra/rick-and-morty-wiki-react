@@ -40,12 +40,19 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
         <Text weight={500}>{character?.name}</Text>
       </Group>
 
-      <Text size="sm" color="dimmed">
+      <Text size="sm" color="dimmed" data-cy={`species-text-${character?.id}`}>
         Species: {character?.species}
       </Text>
 
       <Link to={`/characters/${character?.id}`}>
-        <Button variant="light" color="blue" fullWidth mt="md" radius="md" tabIndex={-1}>
+        <Button
+          variant="light"
+          color="blue"
+          fullWidth
+          mt="md"
+          radius="md"
+          tabIndex={-1}
+          data-cy={`more-info-${character?.id}`}>
           More information
         </Button>
       </Link>

@@ -1,8 +1,11 @@
+import { screen, waitFor } from '@testing-library/react'
+import setupReactPortal from 'src/utils/tests/portals'
 import NotFoundView from 'src/views/NotFoundView'
 import { createWithProviders, renderWithProviders } from '../../utils/tests/render'
-import { screen, waitFor } from '@testing-library/react'
 
 describe('NotFoundView', () => {
+  setupReactPortal()
+
   it('matches snapshot', () => {
     const component = createWithProviders(<NotFoundView />)
     const tree = component.toJSON()

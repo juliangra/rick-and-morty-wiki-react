@@ -1,4 +1,4 @@
-import { Box, Group, Button } from '@mantine/core'
+import { Box, Button, Group } from '@mantine/core'
 import { UseFormReturnType } from '@mantine/form'
 import { LoginFormType } from 'src/types/forms'
 import CustomError from '../common/CustomError'
@@ -20,6 +20,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ form, handleOnSubmit, error }) =>
           label="Username / Email address"
           placeholder="Username / Email"
           testid="identifier-input"
+          autoFocus
           {...form.getInputProps('identifier')}
         />
         <PasswordField

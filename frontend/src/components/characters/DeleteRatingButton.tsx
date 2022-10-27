@@ -1,4 +1,4 @@
-import { ActionIcon, ActionIconProps } from '@mantine/core'
+import { ActionIconProps, Button } from '@mantine/core'
 import { IconTrash } from '@tabler/icons'
 import useDeleteRating from 'src/hooks/ratings/useDeleteRating'
 
@@ -20,9 +20,9 @@ const DeleteRatingButton: React.FC<DeleteRatingButtonProps> = ({
   })
 
   return (
-    <ActionIcon color="red" radius="md" variant="light" onClick={handleOnClick}>
-      <IconTrash size={18} />
-    </ActionIcon>
+    <Button color="red" leftIcon={<IconTrash size={18} />} variant="light" onClick={handleOnClick}>
+      Delete rating
+    </Button>
   )
 }
 

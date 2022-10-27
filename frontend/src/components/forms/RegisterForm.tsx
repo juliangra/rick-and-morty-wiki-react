@@ -1,4 +1,4 @@
-import { Box, Group, Button } from '@mantine/core'
+import { Box, Button, Group } from '@mantine/core'
 import { UseFormReturnType } from '@mantine/form'
 import { RegisterFormType } from 'src/types/forms'
 import CustomError from '../common/CustomError'
@@ -20,6 +20,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ form, handleOnSubmit, error
           label="Email address"
           placeholder="Email"
           testid="email-input"
+          autoFocus
           {...form.getInputProps('email')}
         />
         <TextField

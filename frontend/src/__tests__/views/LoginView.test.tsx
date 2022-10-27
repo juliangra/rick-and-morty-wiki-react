@@ -1,8 +1,11 @@
 import { screen } from '@testing-library/react'
-import { createWithProviders, renderWithProviders } from '../../utils/tests/render'
+import setupReactPortal from 'src/utils/tests/portals'
 import LoginView from 'src/views/auth/LoginView'
+import { createWithProviders, renderWithProviders } from '../../utils/tests/render'
 
 describe('LoginView', () => {
+  setupReactPortal()
+
   it('matches snapshot', () => {
     const component = createWithProviders(<LoginView />)
     const tree = component.toJSON()

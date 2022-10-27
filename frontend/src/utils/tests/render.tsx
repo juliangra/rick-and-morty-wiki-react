@@ -1,10 +1,10 @@
 import { ApolloProvider } from '@apollo/client'
-import { client } from 'src/providers/ApolloProvider'
-import { ReactNode } from 'react'
-import renderer from 'react-test-renderer'
-import { render, waitFor } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
 import { ColorSchemeProvider } from '@mantine/core'
+import { render, waitFor } from '@testing-library/react'
+import { ReactNode } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import renderer from 'react-test-renderer'
+import { client } from 'src/providers/ApolloProvider'
 
 /**
  * Wrapper around the necessary providers used in the app.

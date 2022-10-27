@@ -3,6 +3,7 @@ import {
   useGetRatingStatsByCharacterIdQuery,
   useHasRatedCharacterQuery
 } from 'src/graphql/generated/generated'
+import useGetCharacterById from './useGetCharacterById'
 
 /**
  * A wrapper hook for all the queries related to a character's rating.
@@ -12,6 +13,13 @@ import {
  * @returns all necessary values and handlers for fetching a character's rating.
  */
 const useGetRatingByCharacterId = (characterId: string, userId: string) => {
+  // Get character
+  const {
+    data: characterData,
+    loading: characterLoading,
+    error: characterError
+  } = useGetCharacterById(characterId as string)
+
   // Get rating stats
   const {
     data: ratingStatsData,
@@ -57,10 +65,12 @@ const useGetRatingByCharacterId = (characterId: string, userId: string) => {
     refetchRating()
   }
 
-  const loading = ratingStatsLoading || hasRatedCharacterLoading || ratingLoading
-  const error = ratingStatsError || hasRatedCharacterError || ratingError
+  const loading =
+    characterLoading || ratingStatsLoading || hasRatedCharacterLoading || ratingLoading
+  const error = characterError || ratingStatsError || hasRatedCharacterError || ratingError
 
   return {
+    characterData,
     ratingStatsData,
     hasRatedCharacterData,
     ratingData,

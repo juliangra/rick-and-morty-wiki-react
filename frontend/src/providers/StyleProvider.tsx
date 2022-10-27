@@ -1,4 +1,5 @@
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
+import { NotificationsProvider } from '@mantine/notifications'
 import { ReactNode } from 'react'
 import useColorScheme from '../hooks/common/useColorScheme'
 
@@ -24,8 +25,9 @@ const StyleProvider: React.FC<StyleProviderProps> = ({ children }) => {
           })
         }}
         withGlobalStyles
-        withNormalizeCSS>
-        {children}
+        withNormalizeCSS
+      >
+        <NotificationsProvider>{children}</NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   )

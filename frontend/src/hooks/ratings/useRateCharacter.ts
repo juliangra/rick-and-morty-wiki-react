@@ -23,16 +23,11 @@ type RateCharacterProps = {
 const useRateCharacter = ({ characterId, userId, refetch, defaultValue }: RateCharacterProps) => {
   const initialValue = defaultValue ?? FALLBACK_VALUE
 
-  const [ratingOnChange, setRatingOnChange] = useState(initialValue)
   const [rating, setRating] = useState(initialValue)
   const [error, setError] = useState<string | undefined>(undefined)
   const [rateCharacter, { data, loading }] = useRateCharacterMutation()
 
-  const onChange = (value: number) => {
-    setRatingOnChange(value)
-  }
-
-  const onChangeEnd = async (value: number) => {
+  const saveRating = async (value: number) => {
     // Ensure value is a valid rating
     try {
       RatingSchema.safeParse(value)
@@ -58,7 +53,7 @@ const useRateCharacter = ({ characterId, userId, refetch, defaultValue }: RateCh
     refetch()
   }, [data])
 
-  return { ratingOnChange, rating, error, onChange, onChangeEnd, loading }
+  return { saveRating, rating, error, loading }
 }
 
 export default useRateCharacter

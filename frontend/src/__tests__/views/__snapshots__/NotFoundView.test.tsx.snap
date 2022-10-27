@@ -8,10 +8,18 @@ exports[`NotFoundView matches snapshot 1`] = `
     className="mantine-Header-root mantine-10stgci"
   >
     <div
-      className="mantine-Grid-root mantine-1bwbwcr"
+      className="mantine-1avyp1d"
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "height": "95%",
+          "justifyContent": "space-between",
+        }
+      }
     >
       <div
-        className="mantine-Col-root mantine-fhjbsl"
+        className="mantine-1avyp1d"
       >
         <a
           href="/"
@@ -30,59 +38,139 @@ exports[`NotFoundView matches snapshot 1`] = `
         </a>
       </div>
       <div
-        className="mantine-Col-root mantine-fhjbsl"
+        dir="ltr"
       >
         <div
-          className="mantine-Group-root mantine-puhv18"
+          className="mantine-MediaQuery-media mantine-1oo9yf0"
+        />
+      </div>
+      <div
+        className="mantine-MediaQuery-media mantine-ptflan"
+      >
+        <div
+          className="mantine-1avyp1d"
         >
-          <a
-            href="/leaderboard"
-            onClick={[Function]}
-            style={
-              Object {
-                "textDecoration": "none",
-              }
-            }
-          >
-            <div
-              className="mantine-Text-root mantine-1s5yosa"
-            >
-              Leaderboard
-            </div>
-          </a>
           <div
-            className="mantine-Switch-root mantine-15po0m8"
+            className="mantine-Group-root mantine-puhv18"
           >
-            <div
-              className="mantine-17do188 mantine-Switch-body"
+            <a
+              href="/leaderboard"
+              onClick={[Function]}
+              style={
+                Object {
+                  "textDecoration": "none",
+                }
+              }
             >
-              <input
-                checked={true}
-                className="mantine-rpvocz mantine-Switch-input"
-                id="mantine-r0"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                className="mantine-1xzwilk mantine-Switch-track"
-                htmlFor="mantine-r0"
+              <div
+                className="mantine-Text-root mantine-1s5yosa"
               >
-                <div
-                  className="mantine-1b624xu mantine-Switch-thumb"
+                Leaderboard
+              </div>
+            </a>
+            <button
+              className="mantine-UnstyledButton-root mantine-ActionIcon-root mantine-1659fq7"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="icon icon-tabler icon-tabler-sun"
+                fill="none"
+                height={16}
+                stroke="white"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+                width={16}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0 0h24v24H0z"
+                  fill="none"
+                  stroke="none"
                 />
-                <div
-                  className="mantine-8zcx mantine-Switch-trackLabel"
+                <circle
+                  cx={12}
+                  cy={12}
+                  r={4}
+                />
+                <path
+                  d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"
+                />
+              </svg>
+            </button>
+            <button
+              className="mantine-UnstyledButton-root mantine-Button-root mantine-4xmesm"
+              data-button={true}
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="mantine-3xbgk5 mantine-Button-inner"
+              >
+                <span
+                  className="mantine-Button-icon mantine-Button-leftIcon mantine-1g4orza"
                 >
                   <svg
-                    className="icon icon-tabler icon-tabler-sun"
+                    className="icon icon-tabler icon-tabler-login"
                     fill="none"
-                    height={20}
-                    stroke="#ffd43b"
+                    height={16}
+                    stroke="currentColor"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2.5}
+                    strokeWidth={2}
                     viewBox="0 0 24 24"
-                    width={20}
+                    width={16}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0h24v24H0z"
+                      fill="none"
+                      stroke="none"
+                    />
+                    <path
+                      d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
+                    />
+                    <path
+                      d="M20 12h-13l3 -3m0 6l-3 -3"
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="mantine-qo1k2 mantine-Button-label"
+                  style={
+                    Object {
+                      "textTransform": undefined,
+                    }
+                  }
+                >
+                  Sign in
+                </span>
+              </div>
+            </button>
+            <button
+              className="mantine-UnstyledButton-root mantine-Button-root mantine-22dotu"
+              data-button={true}
+              onClick={[Function]}
+              type="button"
+            >
+              <div
+                className="mantine-3xbgk5 mantine-Button-inner"
+              >
+                <span
+                  className="mantine-Button-icon mantine-Button-leftIcon mantine-1g4orza"
+                >
+                  <svg
+                    className="icon icon-tabler icon-tabler-user-plus"
+                    fill="none"
+                    height={16}
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                    width={16}
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
@@ -91,126 +179,48 @@ exports[`NotFoundView matches snapshot 1`] = `
                       stroke="none"
                     />
                     <circle
-                      cx={12}
-                      cy={12}
+                      cx={9}
+                      cy={7}
                       r={4}
                     />
                     <path
-                      d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"
+                      d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+                    />
+                    <path
+                      d="M16 11h6m-3 -3v6"
                     />
                   </svg>
-                </div>
-              </label>
-              <div
-                className="mantine-rer79c mantine-Switch-labelWrapper"
-              />
-            </div>
+                </span>
+                <span
+                  className="mantine-qo1k2 mantine-Button-label"
+                  style={
+                    Object {
+                      "textTransform": undefined,
+                    }
+                  }
+                >
+                  Sign up
+                </span>
+              </div>
+            </button>
           </div>
-          <button
-            className="mantine-UnstyledButton-root mantine-Button-root mantine-4xmesm"
-            data-button={true}
-            onClick={[Function]}
-            type="button"
-          >
-            <div
-              className="mantine-3xbgk5 mantine-Button-inner"
-            >
-              <span
-                className="mantine-Button-icon mantine-Button-leftIcon mantine-1g4orza"
-              >
-                <svg
-                  className="icon icon-tabler icon-tabler-login"
-                  fill="none"
-                  height={16}
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
-                  width={16}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0 0h24v24H0z"
-                    fill="none"
-                    stroke="none"
-                  />
-                  <path
-                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
-                  />
-                  <path
-                    d="M20 12h-13l3 -3m0 6l-3 -3"
-                  />
-                </svg>
-              </span>
-              <span
-                className="mantine-qo1k2 mantine-Button-label"
-                style={
-                  Object {
-                    "textTransform": undefined,
-                  }
-                }
-              >
-                Sign in
-              </span>
-            </div>
-          </button>
-          <button
-            className="mantine-UnstyledButton-root mantine-Button-root mantine-22dotu"
-            data-button={true}
-            onClick={[Function]}
-            type="button"
-          >
-            <div
-              className="mantine-3xbgk5 mantine-Button-inner"
-            >
-              <span
-                className="mantine-Button-icon mantine-Button-leftIcon mantine-1g4orza"
-              >
-                <svg
-                  className="icon icon-tabler icon-tabler-user-plus"
-                  fill="none"
-                  height={16}
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
-                  width={16}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0 0h24v24H0z"
-                    fill="none"
-                    stroke="none"
-                  />
-                  <circle
-                    cx={9}
-                    cy={7}
-                    r={4}
-                  />
-                  <path
-                    d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
-                  />
-                  <path
-                    d="M16 11h6m-3 -3v6"
-                  />
-                </svg>
-              </span>
-              <span
-                className="mantine-qo1k2 mantine-Button-label"
-                style={
-                  Object {
-                    "textTransform": undefined,
-                  }
-                }
-              >
-                Sign up
-              </span>
-            </div>
-          </button>
         </div>
       </div>
+      <button
+        aria-controls="mantine-r0-dropdown"
+        aria-expanded={false}
+        aria-haspopup="menu"
+        className="mantine-UnstyledButton-root mantine-Burger-root mantine-MediaQuery-media mantine-7ueeb2"
+        id="mantine-r0-target"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        type="button"
+      >
+        <div
+          className="mantine-1hfrgwx mantine-Burger-burger"
+        />
+      </button>
     </div>
   </header>
   <div

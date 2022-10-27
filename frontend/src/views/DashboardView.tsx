@@ -1,15 +1,26 @@
-import { Outlet, useParams } from 'react-router'
-import { Box, Button, Center, Container, Grid, Group, Pagination, Text } from '@mantine/core'
-import CharacterCard from 'src/components/characters/CharacterCard'
-import { useState } from 'react'
-import CustomLoading from 'src/components/common/CustomLoading'
-import View from './View'
-import useGetCharacters from 'src/hooks/characters/useGetCharacters'
-import CustomError from 'src/components/common/CustomError'
-import TextField from 'src/components/forms/TextField'
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Grid,
+  Group,
+  MediaQuery,
+  Pagination,
+  Text
+} from '@mantine/core'
 import { IconFilter, IconX, IconZoomCancel } from '@tabler/icons'
+import { useState } from 'react'
+import { Outlet, useParams } from 'react-router'
+import CharacterCard from 'src/components/characters/CharacterCard'
+import CustomError from 'src/components/common/CustomError'
+import CustomLoading from 'src/components/common/CustomLoading'
 import FilterDrawer from 'src/components/filter/FilterDrawer'
+import TextField from 'src/components/forms/TextField'
+import MobilePagination from 'src/components/pagination/MobilePagination'
+import useGetCharacters from 'src/hooks/characters/useGetCharacters'
 import { filterDrawerIsOpenVar } from 'src/state/dashboard'
+import View from './View'
 
 const DashboardView = () => {
   const { id } = useParams()
@@ -31,12 +42,14 @@ const DashboardView = () => {
             <Text size="xl">Characters</Text>
             <Text>Search for any character from any episode of Rick and Morty</Text>
             <Group>
-              <Button
-                leftIcon={<IconFilter size={16} />}
-                onClick={() => filterDrawerIsOpenVar(true)}
-              >
-                Filter
-              </Button>
+              <MediaQuery smallerThan="sm" styles={{ width: '100%' }}>
+                <Button
+                  leftIcon={<IconFilter size={16} />}
+                  onClick={() => filterDrawerIsOpenVar(true)}
+                >
+                  Filter
+                </Button>
+              </MediaQuery>
             </Group>
 
             <TextField
@@ -57,7 +70,7 @@ const DashboardView = () => {
                     <CustomLoading />
                   ) : (
                     characters?.map((character) => (
-                      <Grid.Col span={4} key={character?.id}>
+                      <Grid.Col lg={4} xs={6} key={character?.id}>
                         <CharacterCard character={character} />
                       </Grid.Col>
                     ))
@@ -65,7 +78,13 @@ const DashboardView = () => {
                 </Grid>
 
                 <Center style={{ marginTop: 24, marginBottom: 24 }}>
-                  <Pagination page={page} onChange={setPage} total={numberOfPages} size="xl" />
+                  <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                    <Pagination page={page} onChange={setPage} total={numberOfPages} size="xl" />
+                  </MediaQuery>
+
+                  <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                    <MobilePagination page={page} onChange={setPage} total={numberOfPages} />
+                  </MediaQuery>
                 </Center>
               </>
             ) : (

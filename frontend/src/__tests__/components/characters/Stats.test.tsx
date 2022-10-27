@@ -1,6 +1,6 @@
+import { screen } from '@testing-library/react'
 import Stats from 'src/components/characters/Stats'
 import { createWithProviders, renderWithProviders } from 'src/utils/tests/render'
-import { screen } from '@testing-library/react'
 
 describe('Stats', () => {
   it('matches snapshot', () => {

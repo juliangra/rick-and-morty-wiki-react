@@ -1,123 +1,146 @@
-import { Box, Button, Center, Grid, Group, Image, Text } from '@mantine/core'
+import { Box, Button, Card, Center, Divider, Grid, Group, Image, Text, Title } from '@mantine/core'
+import { IconChevronLeft, IconStars } from '@tabler/icons'
 import { useNavigate, useParams } from 'react-router'
 import DeleteRatingButton from 'src/components/characters/DeleteRatingButton'
+import Label from 'src/components/characters/Label'
+import RatingModal from 'src/components/characters/RatingModal'
+import Stats from 'src/components/characters/Stats'
 import CustomError from 'src/components/common/CustomError'
 import CustomLoading from 'src/components/common/CustomLoading'
-import RatingSlider from 'src/components/characters/RatingSlider'
-import Stats from 'src/components/characters/Stats'
 import useAuthentication from 'src/hooks/auth/useAuthentication'
-import useRedirectIfInvalidCharacterId from 'src/hooks/characters/useRedirectIfInvalidId'
-import { IconChevronLeft } from '@tabler/icons'
-import useGetCharacterById from 'src/hooks/characters/useGetCharacterById'
 import useGetRatingByCharacterId from 'src/hooks/characters/useGetRatingByCharacterId'
+import useRedirectIfInvalidCharacterId from 'src/hooks/characters/useRedirectIfInvalidId'
+import { ratingModalIsOpenVar } from 'src/state/character'
 
 const CharacterView = () => {
   const navigate = useNavigate()
   const { id: characterId } = useParams()
   useRedirectIfInvalidCharacterId(characterId)
 
-  // Get character
-  const {
-    data: characterData,
-    loading: characterLoading,
-    error: characterError
-  } = useGetCharacterById(characterId as string)
-
   // Get user session
   const { isAuthenticated, decoded } = useAuthentication()
   const userId = decoded?.id || ''
 
-  // Get all necessary data about a rating
-  const { ratingData, ratingStatsData, hasRatedCharacterData, loading, error, refetch } =
-    useGetRatingByCharacterId(characterId as string, userId)
+  // Get all necessary data about a character and rating
+  const {
+    characterData,
+    ratingData,
+    ratingStatsData,
+    hasRatedCharacterData,
+    loading,
+    error,
+    refetch
+  } = useGetRatingByCharacterId(characterId as string, userId)
 
-  if (loading || characterLoading) return <CustomLoading />
-  if (error || characterError) return <CustomError />
+  if (loading) return <CustomLoading />
+  if (error || !characterData?.character) return <CustomError />
 
-  const character = characterData?.character
+  const { name, image, status, species, gender, location } = characterData?.character || {}
+  const rating = ratingData?.rating
+
   const averageRating = ratingStatsData?.ratingStatsByCharacterId.average || 0
   const numberOfRatings = ratingStatsData?.ratingStatsByCharacterId.count || 0
+  const hasRatedCharacter = hasRatedCharacterData?.hasRatedCharacter || false
 
   return (
-    <Center>
-      <Grid style={{ width: '80%' }}>
-        <Grid.Col>
-          <Button
-            leftIcon={<IconChevronLeft size={16} />}
-            onClick={() => {
-              navigate(-1)
-            }}>
-            Back
-          </Button>
-          <Text size="xl">{character?.name}</Text>
+    <>
+      <RatingModal
+        characterId={characterId as string}
+        userId={userId}
+        refetch={refetch}
+        value={rating?.value || 0}
+      />
+      <Button
+        leftIcon={<IconChevronLeft size={16} />}
+        onClick={() => {
+          navigate('/characters')
+        }}>
+        Back
+      </Button>
+      <Center>
+        <Card shadow="sm" style={{ width: '350px', marginTop: 10 }} withBorder>
+          <Grid>
+            <Grid.Col span={12}>
+              <Group style={{ justifyContent: 'center', marginBottom: 10 }}>
+                <Title order={2}>{name}</Title>
 
-          {isAuthenticated && (
-            <Box
-              style={{
-                width: '20%'
-              }}>
-              <RatingSlider
-                characterId={characterId as string}
-                userId={userId}
-                refetch={refetch}
-                value={ratingData?.rating?.value}
-              />
-              {hasRatedCharacterData?.hasRatedCharacter ? (
-                <DeleteRatingButton
-                  characterId={characterId as string}
-                  userId={userId}
-                  refetch={refetch}
-                />
-              ) : (
-                <Text>No rating given yet</Text>
-              )}
-            </Box>
-          )}
+                <Group style={{ maxWidth: '250px' }}>
+                  {image && (
+                    <Image
+                      src={image}
+                      radius="md"
+                      alt={name || 'An image of a Rick and Morty character'}
+                    />
+                  )}
+                </Group>
+              </Group>
 
-          <Group style={{ width: '25%' }}>
-            {character?.image && (
-              <Image
-                src={character?.image}
-                radius="md"
-                alt={character.name || 'An image of a Rick and Morty character'}
-              />
-            )}
-          </Group>
-
-          <Text size="xl">Personal details</Text>
-          <Text size="md">Status: {character?.status}</Text>
-          <Text size="md">Species: {character?.species}</Text>
-          <Text size="md">Gender: {character?.gender}</Text>
-
-          {character?.location && (
-            <>
-              <Text size="xl">Location</Text>
-              <Text size="md">Name: {character.location}</Text>
-            </>
-          )}
-
-          <Group>
-            <Grid>
-              <Grid.Col>
-                <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-                  Average rating
-                </Text>
-                <Stats rating={averageRating} />
-              </Grid.Col>
-            </Grid>
-
-            <Box>
-              <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-                Number of ratings
+              <Text size="xl" weight="bold" color="indigo">
+                Personal details
               </Text>
-              <Text weight={700} size="xl">
-                {numberOfRatings}
+
+              <Divider my={5} />
+
+              <Label label={'Status'} value={status} />
+              <Label label={'Species'} value={species} />
+              <Label label={'Gender'} value={gender} />
+
+              <Text size="xl" weight="bold" color="indigo">
+                Location
               </Text>
-            </Box>
-          </Group>
-        </Grid.Col>
-      </Grid>
-    </Center>
+
+              <Divider mt={5} mb={10} />
+
+              <Label label={'Name'} value={location} />
+
+              <Divider my={10} />
+
+              <Group>
+                <Grid>
+                  <Grid.Col>
+                    <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                      Average rating
+                    </Text>
+                    <Stats rating={averageRating} />
+                  </Grid.Col>
+                </Grid>
+
+                <Box>
+                  <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                    Number of ratings
+                  </Text>
+                  <Text weight={700} size="xl">
+                    {numberOfRatings}
+                  </Text>
+                </Box>
+              </Group>
+              <Divider />
+              <Group mt={10}>
+                {isAuthenticated && (
+                  <>
+                    <Button
+                      variant="light"
+                      leftIcon={<IconStars size={18} />}
+                      onClick={() => ratingModalIsOpenVar(true)}
+                      style={{ flex: 1 }}>
+                      Rate
+                    </Button>
+
+                    {hasRatedCharacter && (
+                      <DeleteRatingButton
+                        characterId={characterId as string}
+                        userId={userId}
+                        refetch={refetch}
+                      />
+                    )}
+                  </>
+                )}
+              </Group>
+            </Grid.Col>
+          </Grid>
+        </Card>
+      </Center>
+    </>
   )
 }
 

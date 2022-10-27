@@ -1,5 +1,5 @@
 import { useDeleteRatingMutation } from 'src/graphql/generated/generated'
-import useRedirect from '../auth/useRedirect'
+import useShowNotification from '../notifications/useShowNotification'
 
 type DeleteRatingProps = {
   characterId: string
@@ -30,8 +30,7 @@ const useDeleteRating = ({ characterId, userId, refetch }: DeleteRatingProps) =>
 
     refetch()
 
-    // Refresh current page
-    useRedirect(location.hash)
+    useShowNotification({ message: 'Successfully deleted rating' })
   }
 
   return {

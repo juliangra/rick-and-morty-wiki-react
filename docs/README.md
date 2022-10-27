@@ -131,7 +131,9 @@ In order to clean up the code, we have created our own custom components, which 
 
 ### Types of testing
 
-The `frontend` has been tested using snapshot tests, component tests and end-to-end (E2E) tests.
+The `frontend` has been tested using unit tests, snapshot tests, component tests and end-to-end (E2E) tests.
+
+For the unit tests, [Jest](https://jestjs.io/) was used. We test that the schema validation to be used in our forms is working as intended, in addition to the rating schema validation. See the tests in [`__tests__/schemas/forms.test.ts`](/frontend/src/__tests__/schemas/forms.test.ts) and [`__tests__/schemas/rating.test.ts`](/frontend/src/__tests__/schemas/rating.test.ts).
 
 For the snapshot tests and component tests, [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) was used. These tests are located in [`frontend/src/__tests__`](/frontend/src/__tests__).
 

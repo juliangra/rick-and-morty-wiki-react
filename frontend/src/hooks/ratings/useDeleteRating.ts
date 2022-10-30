@@ -30,7 +30,7 @@ const useDeleteRating = ({ characterId, userId, refetch }: DeleteRatingProps) =>
 
     refetch()
 
-    useShowNotification({ message: 'Successfully deleted rating' })
+    useShowNotification({ title: 'Success', message: 'Successfully deleted rating' })
   }
 
   return {

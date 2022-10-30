@@ -1,3 +1,4 @@
+import { useReactiveVar } from '@apollo/client'
 import { Box, Button, Card, Center, Divider, Grid, Group, Image, Text, Title } from '@mantine/core'
 import { IconChevronLeft, IconStars } from '@tabler/icons'
 import { useNavigate, useParams } from 'react-router'
@@ -10,12 +11,13 @@ import CustomLoading from 'src/components/common/CustomLoading'
 import useAuthentication from 'src/hooks/auth/useAuthentication'
 import useGetRatingByCharacterId from 'src/hooks/characters/useGetRatingByCharacterId'
 import useRedirectIfInvalidCharacterId from 'src/hooks/characters/useRedirectIfInvalidId'
-import { ratingModalIsOpenVar } from 'src/state/character'
+import { currentRatingVar, ratingModalIsOpenVar } from 'src/state/character'
 
 const CharacterView = () => {
   const navigate = useNavigate()
   const { id: characterId } = useParams()
   useRedirectIfInvalidCharacterId(characterId)
+  const currentRating = useReactiveVar(currentRatingVar)
 
   // Get user session
   const { isAuthenticated, decoded } = useAuthentication()
@@ -32,9 +34,6 @@ const CharacterView = () => {
     refetch
   } = useGetRatingByCharacterId(characterId as string, userId)
 
-  if (loading) return <CustomLoading />
-  if (error || !characterData?.character) return <CustomError />
-
   const { name, image, status, species, gender, location } = characterData?.character || {}
   const rating = ratingData?.rating
 
@@ -43,104 +42,113 @@ const CharacterView = () => {
   const hasRatedCharacter = hasRatedCharacterData?.hasRatedCharacter || false
 
   return (
-    <>
-      <RatingModal
-        characterId={characterId as string}
-        userId={userId}
-        refetch={refetch}
-        value={rating?.value || 0}
-      />
-      <Button
-        leftIcon={<IconChevronLeft size={16} />}
-        onClick={() => {
-          navigate('/characters')
-        }}>
-        Back
-      </Button>
-      <Center>
-        <Card shadow="sm" style={{ width: '350px', marginTop: 10 }} withBorder>
-          <Grid>
-            <Grid.Col span={12}>
-              <Group style={{ justifyContent: 'center', marginBottom: 10 }}>
-                <Title order={2}>{name}</Title>
+    <Box>
+      {loading ? (
+        <CustomLoading />
+      ) : error || !characterData?.character ? (
+        <CustomError />
+      ) : (
+        <Box>
+          <RatingModal
+            characterId={characterId as string}
+            rating={currentRating}
+            userId={userId}
+            refetch={refetch}
+            value={rating?.value || 0}
+          />
+          <Button
+            leftIcon={<IconChevronLeft size={16} />}
+            onClick={() => {
+              navigate('/characters')
+            }}>
+            Back
+          </Button>
+          <Center>
+            <Card shadow="sm" style={{ width: '320px', marginTop: 10 }} withBorder>
+              <Grid>
+                <Grid.Col span={12}>
+                  <Group style={{ justifyContent: 'center', marginBottom: 10 }}>
+                    <Title order={2}>{name}</Title>
 
-                <Group style={{ maxWidth: '250px' }}>
-                  {image && (
-                    <Image
-                      src={image}
-                      radius="md"
-                      alt={name || 'An image of a Rick and Morty character'}
-                    />
-                  )}
-                </Group>
-              </Group>
+                    <Group style={{ maxWidth: '250px' }}>
+                      {image && (
+                        <Image
+                          src={image}
+                          radius="md"
+                          alt={name || 'An image of a Rick and Morty character'}
+                        />
+                      )}
+                    </Group>
+                  </Group>
 
-              <Text size="xl" weight="bold" color="indigo">
-                Personal details
-              </Text>
-
-              <Divider my={5} />
-
-              <Label label={'Status'} value={status} />
-              <Label label={'Species'} value={species} />
-              <Label label={'Gender'} value={gender} />
-
-              <Text size="xl" weight="bold" color="indigo">
-                Location
-              </Text>
-
-              <Divider mt={5} mb={10} />
-
-              <Label label={'Name'} value={location} />
-
-              <Divider my={10} />
-
-              <Group>
-                <Grid>
-                  <Grid.Col>
-                    <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-                      Average rating
-                    </Text>
-                    <Stats rating={averageRating} />
-                  </Grid.Col>
-                </Grid>
-
-                <Box>
-                  <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-                    Number of ratings
+                  <Text size="xl" weight="bold" color="indigo">
+                    Personal details
                   </Text>
-                  <Text weight={700} size="xl">
-                    {numberOfRatings}
-                  </Text>
-                </Box>
-              </Group>
-              <Divider />
-              <Group mt={10}>
-                {isAuthenticated && (
-                  <>
-                    <Button
-                      variant="light"
-                      leftIcon={<IconStars size={18} />}
-                      onClick={() => ratingModalIsOpenVar(true)}
-                      style={{ flex: 1 }}>
-                      Rate
-                    </Button>
 
-                    {hasRatedCharacter && (
-                      <DeleteRatingButton
-                        characterId={characterId as string}
-                        userId={userId}
-                        refetch={refetch}
-                      />
+                  <Divider my={5} />
+
+                  <Label label={'Status'} value={status} />
+                  <Label label={'Species'} value={species} />
+                  <Label label={'Gender'} value={gender} />
+
+                  <Text size="xl" weight="bold" color="indigo">
+                    Location
+                  </Text>
+
+                  <Divider mt={5} mb={10} />
+
+                  <Label label={'Name'} value={location} />
+
+                  <Divider my={10} />
+
+                  <Group>
+                    <Grid>
+                      <Grid.Col>
+                        <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                          Average rating
+                        </Text>
+                        <Stats rating={averageRating} />
+                      </Grid.Col>
+                    </Grid>
+
+                    <Box>
+                      <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                        Number of ratings
+                      </Text>
+                      <Text weight={700} size="xl">
+                        {numberOfRatings}
+                      </Text>
+                    </Box>
+                  </Group>
+                  <Divider />
+                  <Group mt={10}>
+                    {isAuthenticated && (
+                      <>
+                        <Button
+                          variant="light"
+                          leftIcon={<IconStars size={18} />}
+                          onClick={() => ratingModalIsOpenVar(true)}
+                          style={{ flex: 1 }}>
+                          Rate
+                        </Button>
+
+                        {hasRatedCharacter && (
+                          <DeleteRatingButton
+                            characterId={characterId as string}
+                            userId={userId}
+                            refetch={refetch}
+                          />
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-              </Group>
-            </Grid.Col>
-          </Grid>
-        </Card>
-      </Center>
-    </>
+                  </Group>
+                </Grid.Col>
+              </Grid>
+            </Card>
+          </Center>
+        </Box>
+      )}
+    </Box>
   )
 }
 

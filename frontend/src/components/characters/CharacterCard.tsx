@@ -52,7 +52,8 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character }) => {
           mt="md"
           radius="md"
           tabIndex={-1}
-          data-cy={`more-info-${character?.id}`}>
+          data-cy={`more-info-${character?.id}`}
+        >
           More information
         </Button>
       </Link>

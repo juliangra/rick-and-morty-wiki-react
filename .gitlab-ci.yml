@@ -5,10 +5,13 @@ variables:
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
 cache:
+  key: ${CI_COMMIT_REF_SLUG}
   paths:
     - frontend/build/
     - backend/dist/
-    - .cache/*
+    - frontend/node_modules
+    - backend/node_modules
+    - cache/*
     - cache/Cypress
 
 stages:
@@ -58,5 +61,4 @@ frontend:e2e:
     - cd ../backend
     - npm ci
     - cd ../frontend
-    - npx cypress install
     - npm run test:e2e:ci

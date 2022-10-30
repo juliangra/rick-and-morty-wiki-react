@@ -19,7 +19,7 @@
     "test:db:seed": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project3_test\" npm run db:seed",
     "test:backend": "cd ../backend && npm run build && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project3_test\" PORT=8080 node . &",
     "test:db:reset": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project3_test\" npm run db:reset",
-    "test:e2e:ci": "npm run test:e2e:setup && cypress run && npm run test:db:reset"
+    "test:e2e:ci": "npm run test:e2e:setup && npx cypress install && cypress run && npm run test:db:reset"
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",

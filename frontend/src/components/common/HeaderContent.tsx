@@ -45,7 +45,8 @@ const HeaderContent = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '95%'
-      }}>
+      }}
+    >
       <Box>
         <Link to="/" style={{ textDecoration: 'none' }}>
           <Text size={theme.fontSizes.xl} color={theme.colors.indigo[5]}>
@@ -61,7 +62,8 @@ const HeaderContent = () => {
               <Button
                 leftIcon={<IconArrowUp size={16} />}
                 style={transitionStyles}
-                onClick={() => scrollTo({ y: 0 })}>
+                onClick={() => scrollTo({ y: 0 })}
+              >
                 Scroll to top
               </Button>
             )}
@@ -98,7 +100,8 @@ const HeaderContent = () => {
                   <Button
                     onClick={() => navigate('/register')}
                     color="green"
-                    leftIcon={<IconUserPlus size={16} />}>
+                    leftIcon={<IconUserPlus size={16} />}
+                  >
                     Sign up
                   </Button>
                 </>
@@ -116,7 +119,8 @@ const HeaderContent = () => {
           <Menu.Dropdown style={{ minWidth: '150px' }}>
             <Menu.Item
               icon={isDark ? <IconSun size={14} /> : <IconMoonStars size={14} />}
-              onClick={() => toggleColorScheme()}>
+              onClick={() => toggleColorScheme()}
+            >
               {isDark ? 'Light mode' : 'Dark mode'}
             </Menu.Item>
             <Menu.Item component={Link} to="/leaderboard" icon={<IconClipboardText size={14} />}>
@@ -130,7 +134,8 @@ const HeaderContent = () => {
                 <Text size="xs" color="dimmed">
                   ⌘K
                 </Text>
-              }>
+              }
+            >
               Search
             </Menu.Item>
             <Menu.Divider />

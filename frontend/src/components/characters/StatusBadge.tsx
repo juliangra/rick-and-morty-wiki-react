@@ -16,7 +16,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
         right: '10px'
       }}
       leftSection={<Box mt={5}>{icon}</Box>}
-      color={color}>
+      color={color}
+    >
       {status}
     </Badge>
   )

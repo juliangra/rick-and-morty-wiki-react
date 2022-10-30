@@ -37,72 +37,82 @@ const LeaderboardView = () => {
   return (
     <View>
       <Box>
-        {loading && <CustomLoading />}
-        {error && <CustomError />}
-        <Select
-          style={{ marginTop: 20, zIndex: 2 }}
-          data={availableOrders}
-          icon={orderBy === Order.Asc ? <IconSortAscending /> : <IconSortDescending />}
-          placeholder={capitalize(Order.Desc)}
-          label="Order By"
-          onChange={handleOnChange}
-        />
+        {loading ? (
+          <CustomLoading />
+        ) : error ? (
+          <CustomError overlay />
+        ) : (
+          <Box>
+            <MediaQuery largerThan="xs" styles={{ display: 'flex', justifyContent: 'flex-start' }}>
+              <Box>
+                <Select
+                  style={{ padding: 12, zIndex: 2 }}
+                  data={availableOrders}
+                  icon={orderBy === Order.Asc ? <IconSortAscending /> : <IconSortDescending />}
+                  placeholder={capitalize(Order.Desc)}
+                  label="Order By"
+                  onChange={handleOnChange}
+                />
+              </Box>
+            </MediaQuery>
 
-        <ScrollArea>
-          <Table verticalSpacing="sm">
-            <thead>
-              <tr>
-                <th>Users</th>
-                <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                  <th>Created</th>
-                </MediaQuery>
+            <ScrollArea>
+              <Table verticalSpacing="sm">
+                <thead>
+                  <tr>
+                    <th>Users</th>
+                    <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                      <th>Created</th>
+                    </MediaQuery>
 
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users?.map((user) => (
-                <tr key={user.id}>
-                  <td>
-                    <Group>
-                      <Avatar size={40} radius={40} />
-                      <>
-                        <Text size="sm" weight={500}>
-                          {user.username}
-                        </Text>
-                        <Text size="xs" color="dimmed">
-                          {user.email}
-                        </Text>
-                      </>
-                    </Group>
-                  </td>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users?.map((user) => (
+                    <tr key={user.id}>
+                      <td>
+                        <Group>
+                          <Avatar size={40} radius={40} />
+                          <>
+                            <Text size="sm" weight={500}>
+                              {user.username}
+                            </Text>
+                            <Text size="xs" color="dimmed">
+                              {user.email}
+                            </Text>
+                          </>
+                        </Group>
+                      </td>
 
-                  <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                    <td>{getTimeSince(user.createdAt)}</td>
-                  </MediaQuery>
-                  <td>
-                    {user.ratings && userHasRatings(user.ratings) ? (
-                      <Badge fullWidth>{formatRatingStats(user.ratings)}</Badge>
-                    ) : (
-                      <Badge color="gray" fullWidth>
-                        No ratings yet
-                      </Badge>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </ScrollArea>
-        <Center style={{ marginTop: 24, marginBottom: 24 }}>
-          <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-            <Pagination page={page} onChange={setPage} total={numberOfPages} size="xl" />
-          </MediaQuery>
+                      <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                        <td>{getTimeSince(user.createdAt)}</td>
+                      </MediaQuery>
+                      <td>
+                        {user.ratings && userHasRatings(user.ratings) ? (
+                          <Badge size="lg">{formatRatingStats(user.ratings)}</Badge>
+                        ) : (
+                          <Badge color="gray" size="lg">
+                            No ratings yet
+                          </Badge>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </ScrollArea>
+            <Center style={{ marginTop: 24, marginBottom: 24 }}>
+              <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                <Pagination page={page} onChange={setPage} total={numberOfPages} size="xl" />
+              </MediaQuery>
 
-          <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-            <MobilePagination page={page} onChange={setPage} total={numberOfPages} />
-          </MediaQuery>
-        </Center>
+              <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                <MobilePagination page={page} onChange={setPage} total={numberOfPages} />
+              </MediaQuery>
+            </Center>
+          </Box>
+        )}
       </Box>
     </View>
   )

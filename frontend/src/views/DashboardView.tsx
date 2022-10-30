@@ -34,71 +34,88 @@ const DashboardView = () => {
 
   return (
     <View>
-      <FilterDrawer />
-      <Box>
-        {!id ? (
-          <Container>
-            {error && <CustomError />}
-            <Text size="xl">Characters</Text>
-            <Text>Search for any character from any episode of Rick and Morty</Text>
-            <Group>
-              <MediaQuery smallerThan="sm" styles={{ width: '100%' }}>
-                <Button
-                  leftIcon={<IconFilter size={16} />}
-                  onClick={() => filterDrawerIsOpenVar(true)}
-                  data-cy="filter-button">
-                  Filter
-                </Button>
-              </MediaQuery>
-            </Group>
-
-            <TextField
-              label="Search for a character"
-              value={searchInput}
-              style={{ flex: 1 }}
-              my={24}
-              autoFocus
-              rightSection={searchInput && <IconX size={16} onClick={() => setSearchInput('')} />}
-              styles={{ rightSection: { cursor: 'pointer' } }}
-              onChange={(event) => setSearchInput(event.currentTarget.value)}
-              data-testid="search-input"
-              data-cy="search-bar"
-            />
-            {charactersFound ? (
-              <>
-                <Grid data-testid="characters-container" data-cy="characters-container">
-                  {loading ? (
-                    <CustomLoading />
-                  ) : (
-                    characters?.map((character) => (
-                      <Grid.Col lg={4} xs={6} key={character?.id}>
-                        <CharacterCard character={character} />
-                      </Grid.Col>
-                    ))
-                  )}
-                </Grid>
-
-                <Center style={{ marginTop: 24, marginBottom: 24 }}>
-                  <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                    <Pagination page={page} onChange={setPage} total={numberOfPages} size="xl" />
+      {loading ? (
+        <CustomLoading />
+      ) : error ? (
+        <CustomError />
+      ) : (
+        <Box>
+          <FilterDrawer />
+          <Box>
+            {!id ? (
+              <Container>
+                {error && <CustomError />}
+                <Text size="xl">Characters</Text>
+                <Text style={{ paddingTop: 12 }}>
+                  Search for any character from any episode of Rick and Morty
+                </Text>
+                <Group style={{ paddingTop: 12 }}>
+                  <MediaQuery smallerThan="sm" styles={{ width: '100%' }}>
+                    <Button
+                      leftIcon={<IconFilter size={16} />}
+                      onClick={() => filterDrawerIsOpenVar(true)}
+                      data-cy="filter-button">
+                      Filter
+                    </Button>
                   </MediaQuery>
+                </Group>
 
-                  <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-                    <MobilePagination page={page} onChange={setPage} total={numberOfPages} />
-                  </MediaQuery>
-                </Center>
-              </>
+                <TextField
+                  label="Search for a character"
+                  value={searchInput}
+                  style={{ flex: 1 }}
+                  my={24}
+                  autoFocus
+                  rightSection={
+                    searchInput && <IconX size={16} onClick={() => setSearchInput('')} />
+                  }
+                  styles={{ rightSection: { cursor: 'pointer' } }}
+                  onChange={(event) => setSearchInput(event.currentTarget.value)}
+                  data-testid="search-input"
+                  data-cy="search-bar"
+                />
+                {charactersFound ? (
+                  <>
+                    <Grid data-testid="characters-container" data-cy="characters-container">
+                      {loading ? (
+                        <CustomLoading />
+                      ) : (
+                        characters?.map((character) => (
+                          <Grid.Col lg={4} xs={6} key={character?.id}>
+                            <CharacterCard character={character} />
+                          </Grid.Col>
+                        ))
+                      )}
+                    </Grid>
+
+                    <Center style={{ marginTop: 24, marginBottom: 24 }}>
+                      <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                        <Pagination
+                          page={page}
+                          onChange={setPage}
+                          total={numberOfPages}
+                          size="xl"
+                        />
+                      </MediaQuery>
+
+                      <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                        <MobilePagination page={page} onChange={setPage} total={numberOfPages} />
+                      </MediaQuery>
+                    </Center>
+                  </>
+                ) : (
+                  <Center style={{ display: 'flex' }}>
+                    <IconZoomCancel />
+                    <Text ml={5}>No characters found with current filters</Text>
+                  </Center>
+                )}
+              </Container>
             ) : (
-              <Center style={{ display: 'flex' }}>
-                <IconZoomCancel />
-                <Text ml={5}>No characters found with current filters</Text>
-              </Center>
+              <Outlet />
             )}
-          </Container>
-        ) : (
-          <Outlet />
-        )}
-      </Box>
+          </Box>
+        </Box>
+      )}
     </View>
   )
 }

@@ -1,6 +1,7 @@
 import { ActionIconProps, Button } from '@mantine/core'
 import { IconTrash } from '@tabler/icons'
 import useDeleteRating from 'src/hooks/ratings/useDeleteRating'
+import { currentRatingVar } from 'src/state/character'
 
 interface DeleteRatingButtonProps extends ActionIconProps {
   characterId: string
@@ -21,12 +22,17 @@ const DeleteRatingButton: React.FC<DeleteRatingButtonProps> = ({
     refetch
   })
 
+  const handleDeleteRating = () => {
+    handleOnClick()
+    currentRatingVar(0)
+  }
+
   return (
     <Button
       color="red"
       leftIcon={<IconTrash size={18} />}
       variant="light"
-      onClick={handleOnClick}
+      onClick={handleDeleteRating}
       data-testid={testId}
       data-cy={testId}>
       Delete rating

@@ -1,8 +1,10 @@
+import { useEffect } from 'react'
 import {
   useGetRatingQuery,
   useGetRatingStatsByCharacterIdQuery,
   useHasRatedCharacterQuery
 } from 'src/graphql/generated/generated'
+import { currentRatingVar } from 'src/state/character'
 import useGetCharacterById from './useGetCharacterById'
 
 /**
@@ -55,6 +57,13 @@ const useGetRatingByCharacterId = (characterId: string, userId: string) => {
       userId: userId
     }
   })
+
+  const rating = ratingData?.rating
+
+  // Set the reactive variable once the rating has loaded
+  useEffect(() => {
+    currentRatingVar(rating?.value || 0)
+  }, [rating])
 
   /**
    * Refetches neccessary data in a batch.

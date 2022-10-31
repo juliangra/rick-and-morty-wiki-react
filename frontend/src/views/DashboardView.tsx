@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Box,
   Button,
   Center,
@@ -54,7 +55,8 @@ const DashboardView = () => {
                     <Button
                       leftIcon={<IconFilter size={16} />}
                       onClick={() => filterDrawerIsOpenVar(true)}
-                      data-cy="filter-button">
+                      data-cy="filter-button"
+                    >
                       Filter
                     </Button>
                   </MediaQuery>
@@ -67,8 +69,16 @@ const DashboardView = () => {
                   my={24}
                   autoFocus
                   rightSection={
-                    searchInput && <IconX size={16} onClick={() => setSearchInput('')} />
+                    searchInput && (
+                      <ActionIcon>
+                        <IconX size={16} onClick={() => setSearchInput('')} />
+                      </ActionIcon>
+                    )
                   }
+                  onKeyDown={(e) => {
+                    if (e.key !== 'Escape') return
+                    setSearchInput('')
+                  }}
                   styles={{ rightSection: { cursor: 'pointer' } }}
                   onChange={(event) => setSearchInput(event.currentTarget.value)}
                   data-testid="search-input"

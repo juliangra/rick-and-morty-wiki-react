@@ -75,11 +75,6 @@ const HeaderContent = () => {
         <Box>
           <Box>
             <Group position="right">
-              <Link to="/leaderboard" style={{ textDecoration: 'none' }}>
-                <Text size={theme.fontSizes.md} color={theme.colors.indigo[5]}>
-                  Leaderboard
-                </Text>
-              </Link>
               <ActionIcon variant="outline" onClick={() => toggleColorScheme()}>
                 {isDark ? (
                   <IconSun size={16} color="white" />
@@ -87,6 +82,11 @@ const HeaderContent = () => {
                   <IconMoonStars size={16} color="black" />
                 )}
               </ActionIcon>
+              <Link to="/leaderboard" style={{ textDecoration: 'none' }}>
+                <Button leftIcon={<IconClipboardText size={14} />} variant="light" color="green">
+                  Leaderboard
+                </Button>
+              </Link>
 
               {isAuthenticated ? (
                 <Button onClick={signOut} leftIcon={<IconLogout size={16} />}>

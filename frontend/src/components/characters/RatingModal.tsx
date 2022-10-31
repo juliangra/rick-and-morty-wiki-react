@@ -12,34 +12,26 @@ interface RatingModalProps {
   characterId: string
   userId: string
   testId?: string
-  value: number
-  rating: number
   refetch: () => void
 }
 
-const RatingModal: React.FC<RatingModalProps> = ({
-  characterId,
-  userId,
-  testId,
-  rating,
-  refetch,
-  value
-}) => {
+const RatingModal: React.FC<RatingModalProps> = ({ characterId, userId, testId, refetch }) => {
   const theme = useMantineTheme()
   const isOpen = useReactiveVar(ratingModalIsOpenVar)
+  const currentRating = useReactiveVar(currentRatingVar)
   const closeModal = () => ratingModalIsOpenVar(false)
 
   const { saveRating, loading, error } = useRateCharacter({
     characterId,
     userId,
     refetch,
-    defaultValue: value
+    defaultValue: currentRating
   })
 
   const handleSaveRating = () => {
-    if (rating <= 0) return
+    if (currentRating <= 0) return
 
-    saveRating(rating)
+    saveRating(currentRating)
     closeModal()
 
     useShowNotification({ title: 'Success', message: 'Rating saved successfully.' })
@@ -73,8 +65,8 @@ const RatingModal: React.FC<RatingModalProps> = ({
                       size={35}
                       key={i}
                       onClick={() => currentRatingVar(i + 1)}
-                      fill={i < rating ? theme.colors.yellow[5] : 'none'}
-                      color={i < rating ? theme.colors.yellow[5] : theme.colors.gray[1]}
+                      fill={i < currentRating ? theme.colors.yellow[5] : 'none'}
+                      color={i < currentRating ? theme.colors.yellow[5] : theme.colors.gray[1]}
                     />
                   )
                 })}

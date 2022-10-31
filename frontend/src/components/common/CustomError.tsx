@@ -16,7 +16,8 @@ const CustomError: React.FC<CustomErrorProps> = ({ title, description, overlay =
           title={title ?? ''}
           color="red"
           style={{ width: '100%' }}
-          data-cy="alert">
+          data-cy="alert"
+        >
           {description || 'An unexpected error occurred! Ensure you are connected to the internet.'}
         </Alert>
       </Center>

@@ -1,4 +1,3 @@
-import { useReactiveVar } from '@apollo/client'
 import { Box, Button, Card, Center, Divider, Grid, Group, Image, Text, Title } from '@mantine/core'
 import { IconChevronLeft, IconStars } from '@tabler/icons'
 import { useNavigate, useParams } from 'react-router'
@@ -11,31 +10,22 @@ import CustomLoading from 'src/components/common/CustomLoading'
 import useAuthentication from 'src/hooks/auth/useAuthentication'
 import useGetRatingByCharacterId from 'src/hooks/characters/useGetRatingByCharacterId'
 import useRedirectIfInvalidCharacterId from 'src/hooks/characters/useRedirectIfInvalidId'
-import { currentRatingVar, ratingModalIsOpenVar } from 'src/state/character'
+import { ratingModalIsOpenVar } from 'src/state/character'
 
 const CharacterView = () => {
   const navigate = useNavigate()
   const { id: characterId } = useParams()
   useRedirectIfInvalidCharacterId(characterId)
-  const currentRating = useReactiveVar(currentRatingVar)
 
   // Get user session
   const { isAuthenticated, decoded } = useAuthentication()
   const userId = decoded?.id || ''
 
   // Get all necessary data about a character and rating
-  const {
-    characterData,
-    ratingData,
-    ratingStatsData,
-    hasRatedCharacterData,
-    loading,
-    error,
-    refetch
-  } = useGetRatingByCharacterId(characterId as string, userId)
+  const { characterData, ratingStatsData, hasRatedCharacterData, loading, error, refetch } =
+    useGetRatingByCharacterId(characterId as string, userId)
 
   const { name, image, status, species, gender, location } = characterData?.character || {}
-  const rating = ratingData?.rating
 
   const averageRating = ratingStatsData?.ratingStatsByCharacterId.average || 0
   const numberOfRatings = ratingStatsData?.ratingStatsByCharacterId.count || 0
@@ -49,13 +39,7 @@ const CharacterView = () => {
         <CustomError />
       ) : (
         <Box>
-          <RatingModal
-            characterId={characterId as string}
-            rating={currentRating}
-            userId={userId}
-            refetch={refetch}
-            value={rating?.value || 0}
-          />
+          <RatingModal characterId={characterId as string} userId={userId} refetch={refetch} />
           <Button
             leftIcon={<IconChevronLeft size={16} />}
             onClick={() => {

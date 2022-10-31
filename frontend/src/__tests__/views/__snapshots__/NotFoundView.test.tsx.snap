@@ -53,21 +53,6 @@ exports[`NotFoundView matches snapshot 1`] = `
           <div
             className="mantine-Group-root mantine-puhv18"
           >
-            <a
-              href="/leaderboard"
-              onClick={[Function]}
-              style={
-                Object {
-                  "textDecoration": "none",
-                }
-              }
-            >
-              <div
-                className="mantine-Text-root mantine-1s5yosa"
-              >
-                Leaderboard
-              </div>
-            </a>
             <button
               className="mantine-UnstyledButton-root mantine-ActionIcon-root mantine-1659fq7"
               onClick={[Function]}
@@ -100,6 +85,74 @@ exports[`NotFoundView matches snapshot 1`] = `
                 />
               </svg>
             </button>
+            <a
+              href="/leaderboard"
+              onClick={[Function]}
+              style={
+                Object {
+                  "textDecoration": "none",
+                }
+              }
+            >
+              <button
+                className="mantine-UnstyledButton-root mantine-Button-root mantine-1yzv7ux"
+                data-button={true}
+                type="button"
+              >
+                <div
+                  className="mantine-3xbgk5 mantine-Button-inner"
+                >
+                  <span
+                    className="mantine-Button-icon mantine-Button-leftIcon mantine-1g4orza"
+                  >
+                    <svg
+                      className="icon icon-tabler icon-tabler-clipboard-text"
+                      fill="none"
+                      height={14}
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                      width={14}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0 0h24v24H0z"
+                        fill="none"
+                        stroke="none"
+                      />
+                      <path
+                        d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"
+                      />
+                      <rect
+                        height={4}
+                        rx={2}
+                        width={6}
+                        x={9}
+                        y={3}
+                      />
+                      <path
+                        d="M9 12h6"
+                      />
+                      <path
+                        d="M9 16h6"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    className="mantine-qo1k2 mantine-Button-label"
+                    style={
+                      Object {
+                        "textTransform": undefined,
+                      }
+                    }
+                  >
+                    Leaderboard
+                  </span>
+                </div>
+              </button>
+            </a>
             <button
               className="mantine-UnstyledButton-root mantine-Button-root mantine-4xmesm"
               data-button={true}

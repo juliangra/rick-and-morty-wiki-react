@@ -88,7 +88,7 @@ const LeaderboardView = () => {
                       <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
                         <td>{getTimeSince(user.createdAt)}</td>
                       </MediaQuery>
-                      <td>
+                      <td style={{ textAlign: 'center' }}>
                         {user.ratings && userHasRatings(user.ratings) ? (
                           <Badge size="lg">{formatRatingStats(user.ratings)}</Badge>
                         ) : (

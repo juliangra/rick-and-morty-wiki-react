@@ -34,7 +34,8 @@ const DeleteRatingButton: React.FC<DeleteRatingButtonProps> = ({
       variant="light"
       onClick={handleDeleteRating}
       data-testid={testId}
-      data-cy={testId}>
+      data-cy={testId}
+    >
       Delete rating
     </Button>
   )

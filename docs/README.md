@@ -14,7 +14,7 @@ The frontend is a single-page application built with React. The backend is a Gra
 
 As a user, you can search for character by name. The search is case-insensitive, and will return all characters whose name contains the search term.
 
-In `backend`, this is done in the `characters` query resolver (see [`backend/src/resolvers/index.ts`](/backend/src/resolvers/Query.ts)). Filtering by name is part of the `options` that are passed to the `.findMany(...)` Prisma query.
+In `backend`, this is done in the `characters` query resolver (see [`backend/src/resolvers/query.ts`](/backend/src/resolvers/query.ts)). Filtering by name is part of the `options` that are passed to the `.findMany(...)` Prisma query.
 
 In `frontend`, this is a simple text input field. In order to not send an unnecessary amount of requests to the backend, the value is [debounced using Mantine's implementation](https://mantine.dev/hooks/use-debounced-value/). For implementation details, see the [`useGetCharacters`](/frontend/src/hooks/characters/useGetCharacters.ts) hook.
 
@@ -38,7 +38,7 @@ The characters can be filtered on various attributes.
 
 In `frontend`, the filter is set using Apollo state management's reactive variables. For details on how this is implemented, see the [`useGetCharacters`](/frontend/src/hooks/characters/useGetCharacters.ts) hook.
 
-In `backend`, this is done in the `characters` query resolver (see [`backend/src/resolvers/index.ts`](/backend/src/resolvers/Query.ts)). The compund filtering is the `options` object that is passed to the `.findMany(...)` Prisma query. For more information on how this works, see the [Prisma documentation](https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting).
+In `backend`, this is done in the `characters` query resolver (see [`backend/src/resolvers/query.ts`](/backend/src/resolvers/query.ts)). The compund filtering is the `options` object that is passed to the `.findMany(...)` Prisma query. For more information on how this works, see the [Prisma documentation](https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting).
 
 **It is important to note that** this filtering is applied to the entire dataset, and is then paginated and delivered to the client. In other words, the client simply displays the filtered data it receives from the server.
 

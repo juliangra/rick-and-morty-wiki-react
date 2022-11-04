@@ -41,7 +41,7 @@ Note that we have extracted the section about universal design, web accessibilit
 - TypeScript
 - GraphQL
 - JSON Web Token, for handling the user session
-- Prisma Client, a client for interacting with the PostgreSQL database
+- Prisma Client, a client for interacting with the MySQL database
 - Rollup, for transpiling and bundling the application to JavaScript
 
 ### Database

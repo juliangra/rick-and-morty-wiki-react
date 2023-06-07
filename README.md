@@ -1,4 +1,4 @@
-# Rik and Morty Wiki - IT2810
+# Rick and Morty Wiki - IT2810 (React)
 
 ## Description
 

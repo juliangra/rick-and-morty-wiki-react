@@ -86,6 +86,9 @@ cd backend
 # Install dependencies
 npm i
 
+# Start development database (Local PostgreSQL instance)
+docker-compose up -d
+
 # Start application in development mode
 npm run dev
 

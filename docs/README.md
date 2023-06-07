@@ -4,9 +4,9 @@
 
 The application is a full-stack web application with a frontend and backend, allowing a user to search and filter character from Rick and Morty. These characters can be rated by users, and the users can be sorted by their number of ratings.
 
-The characters are fetched from the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql/), and are populated in our own MySQL database. For implementation details on how this is done, please see the scripts in the [`db` directory](/backend/db).
+The characters are fetched from the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql/), and are populated in our own PostgreSQL database. For implementation details on how this is done, please see the scripts in the [`db` directory](/backend/db).
 
-The frontend is a single-page application built with React. The backend is a GraphQL server built with Express and [`express-graphql`](https://graphql.org/graphql-js/running-an-express-graphql-server/), and is connected to a MySQL database using [Prisma](https://www.prisma.io/).
+The frontend is a single-page application built with React. The backend is a GraphQL server built with Express and [`express-graphql`](https://graphql.org/graphql-js/running-an-express-graphql-server/), and is connected to a PostgreSQL database using [Prisma](https://www.prisma.io/).
 
 ## Content and functionality
 
@@ -66,9 +66,9 @@ The application design is simplistic and minimalistic. The application is built 
 
 When fetching characters, the list of characters are displayed in a simple and easy to understand list format. The user can learn more about each character by clicking a button with **More information** that stands out, making the UI easy to use.
 
-### Database and the virtual machine, with seeded data
+### Database and seeded data
 
-A MySQL database has been installed on the virtual machine (VM) hosted by NTNU, and connected using the Prisma ORM. We have consciously not added the database connection string to `.gitignore`, as this is a public repository. This is to make it easier for peer reviewers to test the application.
+A PostgreSQL database can be installed locally using `docker-compose up`, and connected using the Prisma ORM. We have consciously not added the database connection string to `.gitignore`, as this is a public repository. This is to make it easier for peer reviewers to test the application.
 
 The process of populating the database is split into three parts, and can all be executed using `npm run db:seed` in the `backend` directory. There should be no need for a peer reviewer to do this, but it is possible.
 

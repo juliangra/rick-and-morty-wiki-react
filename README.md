@@ -1,4 +1,4 @@
-# Team 11: Project 3
+# Rik and Morty Wiki - IT2810
 
 ## Description
 
@@ -6,9 +6,23 @@ This project is full-stack web application about Rick and Morty characters.
 
 As a user, you can search and filter characters. As a logged in user, you can rate a given character. You can also see a leaderboard of all users' number of ratings, sorted in ascending or descending order.
 
-## Live demo
+## Screenshots
 
-Please use [this link](http://it2810-11.idi.ntnu.no/project3) to visit a live demo of the website.
+
+### Splash screen
+![Splash screen](docs/images/splash.png)
+
+### Characters overview
+![Characters overview](docs/images/characters.png)
+
+### Filtering characters
+![Filtering characters](docs/images/filtering.png)
+
+### Character view
+![Character view](docs/images/character_view.png)
+
+### Leaderboard
+![Leaderboard](docs/images/leaderboard.png)
 
 ## Developer Information
 
@@ -41,12 +55,12 @@ Note that we have extracted the section about universal design, web accessibilit
 - TypeScript
 - GraphQL
 - JSON Web Token, for handling the user session
-- Prisma Client, a client for interacting with the MySQL database
+- Prisma Client, a client for interacting with the PostgreSQL database
 - Rollup, for transpiling and bundling the application to JavaScript
 
 ### Database
 
-- MySQL, a relational database running on the virtual machine hosted by NTNU
+- PostgreSQL, a relational database running locally using `docker-compose`
 
 ## Running the application
 
@@ -86,8 +100,8 @@ npm start
 Ensure you have a `.env` file located in the `backend/.env` directory with the following contents:
 
 ```sh
-PORT=8080
-DATABASE_URL="mysql://team-11:password@it2810-11.idi.ntnu.no:3306/project3"
+PORT=8081
+DATABASE_URL="postgresql://myuser:mypassword@localhost:5432/mydatabase"
 ```
 
 The `.env` file is not part of the `.gitignore`, as it is not sensitive information in this project, and other students require access to the database in order to run it locally.
